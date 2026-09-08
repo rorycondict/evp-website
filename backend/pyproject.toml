@@ -10,3 +10,6 @@ dependencies = [
     "resend>=2.43.0",
     "ruff>=0.16.6",
 ]
+
+[tool.fastapi]
+entrypoint = "app.main:app"

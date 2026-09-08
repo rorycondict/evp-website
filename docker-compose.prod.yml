@@ -15,7 +15,7 @@ services:
     image: ghcr.io/rorycondict/evp-website/backend:latest
     container_name: evp-backend
     # prod specific
-    command: uv run uvicorn main:app --host 0.0.0.0 --port 17017
+    command: uv run uvicorn main:app
     env_file:
       - ./.env
     restart: unless-stopped

@@ -17,7 +17,7 @@ services:
     image: ghcr.io/rorycondict/evp-website/backend:latest
     container_name: evp-backend
     # dev specific
-    command: uv run uvicorn main:app --host 0.0.0.0 --port 17017 --reload
+    command: uv run uvicorn main:app --reload
     env_file:
       - ./backend/.env
     volumes:
