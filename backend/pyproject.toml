@@ -1,72 +1,12 @@
 [project]
-name = "evp-website"
-version = "0.1.0"
-description = "Add your description here"
+name = "evp-backend"
+version = "1.0.0"
+description = "Backend for Edinburgh VenturePoint's website."
 readme = "README.md"
 requires-python = ">=3.13"
 dependencies = [
-    "annotated-types==0.7.0",
-    "asgiref==3.11.1",
-    "Django==6.0.5",
-    "django-cors-headers==4.9.0",
-    "django-jazzmin>=3.0.4",
-    "django-ninja==1.6.2",
-    "gunicorn>=26.0.0",
-    "pydantic==2.13.4",
-    "pydantic-settings==2.14.1",
-    "pydantic_core==2.46.4",
-    "pymysql>=1.2.0",
-    "python-decouple==3.8",
-    "resend>=0.7.0",
-    "sqlparse==0.5.5",
-    "typing-inspection==0.4.2",
-    "typing_extensions==4.15.0",
-    "tzdata==2026.2",
-    "django-ratelimit>=4.1.0",
-    "redis>=5.0",
-    "nh3>=0.3.7",
-    "email-validator>=2.3.0",
+    "fastapi[standard]>=0.141.1",
+    "pydantic-settings>=2.15.0",
+    "resend>=2.43.0",
+    "ruff>=0.16.6",
 ]
-
-[dependency-groups]
-dev = [
-    "hypothesis>=6.131.0",
-    "pytest>=8.3.0",
-    "pytest-django>=4.9.0",
-    "freezegun>=1.5.0",
-    "ruff>=0.16.0",
-]
-
-[tool.pytest.ini_options]
-DJANGO_SETTINGS_MODULE = "config.settings"
-python_files = ["test_*.py", "*_test.py"]
-python_classes = ["Test*"]
-python_functions = ["test_*"]
-
-[tool.ruff]
-target-version = "py313"
-extend-exclude = ["**/migrations/"]
-
-[tool.ruff.lint]
-select = [
-    "E",   # pycodestyle errors
-    "F",   # pyflakes
-    "W",   # pycodestyle warnings
-    "I",   # isort (import sorting)
-    "UP",  # pyupgrade (modernize Python syntax)
-    "DJ",  # flake8-django (Django-specific rules)
-    "B",   # flake8-bugbear (common bugs and design flaws)
-    "C4",  # flake8-comprehensions
-    "SIM", # flake8-simplify
-    "PT",  # flake8-pytest-style (Added for pytest)
-    "S",   # flake8-bandit (Added for security)
-    "TCH", # flake8-type-checking (Added for Pydantic/Ninja)
-    "RUF", # Ruff-specific rules (Added for overall quality)
-]
-
-ignore = []
-
-[tool.ruff.lint.per-file-ignores]
-# Relax security rules in tests where assert and hardcoded strings are normal
-"**/tests.py" = ["S101", "S105", "S106"]
-"**/test_*.py" = ["S101", "S105", "S106"]
