@@ -18,7 +18,7 @@ export default function About() {
 			<PageMeta title="About Us" description="Meet the team behind EVP, and find out what we do." />
 
 			<HeroSection image={aboutBkg} imageAlt="About Background">
-				<UnderlinedTitle id="who-we-are" title="Who we are" />
+				<UnderlinedTitle id="who-we-are" title="Who We Are" />
 				<motion.p
 					initial={{ opacity: 0, y: 30 }}
 					whileInView={{ opacity: 1, y: 0 }}
@@ -59,7 +59,7 @@ export default function About() {
 					>
 						<h2
 							id="idea"
-							data-nav-label="Got an idea?"
+							data-nav-label="Got an Idea?"
 							className="mb-4 text-3xl leading-tight font-bold italic md:text-5xl md:leading-16"
 						>
 							Have a great idea, but lack the funding?
@@ -91,7 +91,7 @@ export default function About() {
 			<div className="mx-auto mt-10 w-full max-w-6xl px-4 md:px-8">
 				<UnderlinedTitle
 					id="meet-the-team"
-					title="Meet the team"
+					title="Meet the Team"
 					className="py-10 pt-20 md:py-15 md:pt-50"
 					size="text-4xl md:text-6xl"
 					level={2}
@@ -108,7 +108,7 @@ export default function About() {
 				heading="Want to get involved?"
 				body={[
 					'Our team is constantly bringing on new members.',
-					<strong key="cta">Get in touch to see how you can be part of EVP.</strong>,
+					<strong key="cta">Get involved and see where EVP can take you.</strong>,
 				]}
 			/>
 		</div>

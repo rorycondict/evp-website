@@ -1,7 +1,7 @@
 import { motion } from 'framer-motion';
 
 import contactImg from '@/assets/homepage/promo-tower.webp';
-import { HeroSection, Socials, UnderlinedTitle } from '@/components/ui';
+import { HeroSection, InteractiveLinkButton, UnderlinedTitle } from '@/components/ui';
 
 /**
  * Contact page hero: background image + overlay + glow + title + socials.
@@ -10,7 +10,7 @@ import { HeroSection, Socials, UnderlinedTitle } from '@/components/ui';
 export function ContactHero() {
 	return (
 		<HeroSection image={contactImg} imageAlt="The Scottish flag on a cathedral tower">
-			<UnderlinedTitle id="get-in-touch" title="Get in touch" />
+			<UnderlinedTitle id="get-in-touch" title="Get in Touch" />
 
 			<motion.div
 				initial={{ opacity: 0, y: 30 }}
@@ -28,10 +28,17 @@ export function ContactHero() {
 				whileInView={{ opacity: 1, y: 0 }}
 				viewport={{ once: true, amount: 1 }}
 				transition={{ duration: 0.5, ease: 'easeIn', delay: 0.3 }}
-				className="mx-auto max-w-2xl pb-5 text-xl"
+				className="mx-auto"
 			>
-				<p className="mb-5 text-center">Stay in the loop. Find us on:</p>
-				<Socials className="mx-2 h-11 w-11 md:h-9 md:w-9" />
+				<p className="mb-5 text-center text-xl">
+					Our contact form is always open. We'll be in touch.
+				</p>
+				<InteractiveLinkButton
+					to="/connect#contact"
+					className="mx-auto w-fit px-20 py-3 text-xl tracking-widest uppercase"
+				>
+					Contact Us
+				</InteractiveLinkButton>
 			</motion.div>
 		</HeroSection>
 	);

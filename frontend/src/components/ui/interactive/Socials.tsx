@@ -1,6 +1,4 @@
-import { Mail } from 'lucide-react';
 import { FaInstagram, FaLinkedin } from 'react-icons/fa6';
-import { Link } from 'react-router';
 
 interface SocialsProps {
 	className?: string;
@@ -36,16 +34,6 @@ export function Socials({ className = 'h-6 w-6 md:h-5 md:w-5' }: SocialsProps) {
 			>
 				<FaInstagram className={className} />
 			</a>
-
-			<Link
-				to="/contact#email"
-				className={linkClass}
-				aria-label="Email"
-				title="Email"
-				viewTransition
-			>
-				<Mail className={className} />
-			</Link>
 		</div>
 	);
 }

@@ -32,7 +32,7 @@ export function PromoCard({ image, title, body, to, index = 0, className }: Prom
 				<Link
 					to={to}
 					viewTransition
-					className="text-accent button-underline mx-auto text-2xl font-bold transition-opacity md:text-xl"
+					className="text-accent button-underline mx-auto text-2xl font-bold transition-opacity"
 				>
 					Learn More...
 				</Link>

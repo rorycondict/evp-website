@@ -57,7 +57,7 @@ function AboutUsSection() {
 				imageAlt="A group photo with several members of EVP's committee"
 			>
 				<h2 id="who-we-are" className="text-4xl font-bold md:text-5xl">
-					Who we are
+					Who We Are
 				</h2>
 				<SectionDivider width="w-75 md:w-100" my="my-2" />
 				<p className="text-lg md:text-xl">
@@ -68,7 +68,7 @@ function AboutUsSection() {
 					We exist to identify, support, and showcase the most promising student-led start-ups in
 					Scotland.
 				</p>
-				<TextLink to="about" className="mt-5 text-2xl md:text-xl">
+				<TextLink to="about" className="mt-5 text-2xl">
 					Learn More...
 				</TextLink>
 			</MediaTextSection>
@@ -80,19 +80,19 @@ function WhatWeDoSection() {
 	const cards: { img: string; title: string; body: string; to: string }[] = [
 		{
 			img: whatWeDoImg1,
-			title: 'Discover our start-ups',
+			title: 'Discover Our Start-ups',
 			body: "Read about the student-led start-ups that we've worked with.",
 			to: 'startups',
 		},
 		{
 			img: whatWeDoImg2,
-			title: 'Our investing programme',
+			title: 'Our Investing Programme',
 			body: 'We grant students real exposure to early-stage investing.',
 			to: 'contact#scout-programme',
 		},
 		{
 			img: whatWeDoImg3,
-			title: 'Network & partnerships',
+			title: 'Network & Partnerships',
 			body: 'From angel syndicates to celebrated founders.',
 			to: 'contact#network',
 		},
@@ -102,7 +102,7 @@ function WhatWeDoSection() {
 		<section className="w-full py-25">
 			<motion.div {...fadeUp()}>
 				<h2 id="what-we-do" className="text-center text-4xl font-bold md:text-5xl">
-					What we do
+					What We Do
 				</h2>
 				<SectionDivider className="mx-auto" width="w-75 md:w-100" my="my-2" />
 			</motion.div>
@@ -131,7 +131,7 @@ function EventsSection() {
 			<motion.div {...fadeUp()} className="flex flex-col items-center">
 				<h1
 					id="events"
-					data-nav-label="Our events"
+					data-nav-label="Our Events"
 					className="pt-10 pb-5 text-center text-5xl font-bold"
 				>
 					Join us at our next event!
@@ -141,7 +141,7 @@ function EventsSection() {
 					From exclusive investor meet-ups to the most promising start-ups, we've got something to
 					offer everyone.
 				</p>
-				<TextLink to="events" className="mx-auto pt-5 text-3xl md:text-2xl">
+				<TextLink to="events" className="mx-auto pt-5 text-3xl">
 					See events...
 				</TextLink>
 			</motion.div>

@@ -6,7 +6,6 @@ export * from './interactive/button/button-variants';
 export * from './interactive/FormField';
 export * from './interactive/input/Input';
 export * from './interactive/input/input-variants';
-export * from './interactive/InteractiveContactButton';
 export * from './interactive/InteractiveLinkButton';
 export * from './interactive/PrimaryButton';
 export * from './interactive/Socials';

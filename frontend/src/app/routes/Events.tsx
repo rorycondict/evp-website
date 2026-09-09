@@ -1,6 +1,14 @@
 import { motion } from 'framer-motion';
 
-import { EventsBanner, PageMeta, SectionHeading, UnderlinedTitle } from '@/components/ui';
+import contactImg from '@/assets/homepage/events-banner/event-2.webp';
+
+import {
+	ContactSection,
+	EventsBanner,
+	PageMeta,
+	SectionHeading,
+	UnderlinedTitle,
+} from '@/components/ui';
 import {
 	AnimatedCounter,
 	EventCard,
@@ -16,7 +24,7 @@ export default function Events() {
 				title="Our Events"
 				description="See what's coming up, and how you can get involved."
 			/>
-			<UnderlinedTitle id="our-events" title="Our events" className="mb-10" />
+			<UnderlinedTitle id="our-events" title="Our Events" className="mb-10" />
 			<div className="glass-box py-20">
 				<EventsBanner />
 
@@ -55,8 +63,9 @@ export default function Events() {
 					</motion.p>
 				</div>
 			</div>
-			<section className="mx-auto mt-50 w-full max-w-6xl px-4">
-				<SectionHeading id="upcoming-events" title="Upcoming events" size="lg" />
+
+			<section className="mx-auto mt-30 w-full max-w-6xl px-4">
+				<SectionHeading id="upcoming-events" title="Upcoming Events" size="lg" />
 
 				{UPCOMING_EVENTS.length > 0 ? (
 					<div className="mt-10 flex flex-col gap-6">
@@ -78,10 +87,28 @@ export default function Events() {
 					</motion.div>
 				)}
 			</section>
-			<section className="mx-auto mt-50 w-full max-w-6xl px-4 pb-20">
+
+			<section className="mx-auto mt-30 w-full px-4">
+				<ContactSection
+					image={contactImg}
+					imageAlt="Event photo"
+					heading="Never miss another event."
+					body={[
+						<p>
+							Subscribe to our newsletter and be the first to know
+							<br />
+							when our next event is.
+						</p>,
+					]}
+					buttonText="Subscribe"
+					to="/connect#newsletter"
+				/>
+			</section>
+
+			<section className="mx-auto mt-10 w-full max-w-6xl px-4 pb-20">
 				<SectionHeading
 					id="past-events"
-					title="Past events"
+					title="Past Events"
 					size="lg"
 					subtitle="A look back at where we've been."
 				/>

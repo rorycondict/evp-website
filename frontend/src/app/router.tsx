@@ -9,7 +9,7 @@ import Home from './routes/Home';
 import Privacy from './routes/Privacy';
 import Startups from './routes/Startups';
 import Terms from './routes/Terms';
-import Subscribe from './routes/Subscribe';
+import Connect from './routes/Connect';
 
 export const router = createBrowserRouter([
 	{
@@ -27,7 +27,7 @@ export const router = createBrowserRouter([
 					{ path: 'events', element: <Events /> },
 					{ path: 'privacy', element: <Privacy /> },
 					{ path: 'terms', element: <Terms /> },
-					{ path: 'subscribe', element: <Subscribe /> },
+					{ path: 'connect', element: <Connect /> },
 
 					// catch all for invalid pages
 					{

@@ -1,8 +1,9 @@
 import networkImg from '@/assets/contact/promo-network.webp';
 import scoutImg from '@/assets/contact/promo-scout.webp';
-import { SectionDivider, UnderlinedTitle } from '@/components/ui';
+import contactImg from '@/assets/contact/promo-scout.webp';
+import { ContactSection, SectionDivider, UnderlinedTitle } from '@/components/ui';
 import { MediaTextSection } from '@/components/ui/section/MediaTextSection';
-import { ContactFormSection, ContactHero, OfferCardsSection } from '@/features/contact';
+import { ContactHero, OfferCardsSection } from '@/features/contact';
 
 export default function Contact() {
 	return (
@@ -43,7 +44,7 @@ export default function Contact() {
 						imageAlt="A group photo with several members of EVP's committee"
 					>
 						<h2 id="network" className="text-4xl font-bold md:text-5xl">
-							Our network
+							Our Network
 						</h2>
 						<SectionDivider width="w-75 md:w-100" my="my-2" />
 						<b className="text-lg md:text-xl">
@@ -65,7 +66,15 @@ export default function Contact() {
 			</section>
 
 			<div className="mx-auto flex w-full flex-col gap-20 py-30">
-				<ContactFormSection />
+				<ContactSection
+					image={contactImg}
+					imageAlt="Event photo"
+					heading="Any Questions?"
+					body={[
+						'Have a question about our Scout Programme, upcoming events, or potential partnerships?',
+						<strong key="cta">Get involved and discover what we can do for you.</strong>,
+					]}
+				/>
 			</div>
 		</div>
 	);

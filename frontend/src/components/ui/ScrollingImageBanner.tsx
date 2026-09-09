@@ -50,9 +50,6 @@ export function ScrollingImageBanner({
 						src={img.src}
 						alt={img.alt}
 						className={`${heightClass} w-auto shrink-0 rounded-lg object-cover shadow-lg`}
-						style={{
-							viewTransitionName: `banner-image-${i}`,
-						}}
 					/>
 				))}
 			</div>

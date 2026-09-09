@@ -2,7 +2,7 @@ import { motion } from 'framer-motion';
 import { useMemo } from 'react';
 
 import startupsBkg from '@/assets/startups/startups-bkg.webp';
-import { HeroSection, InteractiveContactButton, PageMeta, UnderlinedTitle } from '@/components/ui';
+import { HeroSection, InteractiveLinkButton, PageMeta, UnderlinedTitle } from '@/components/ui';
 import { generateColumns, PartnersSection, StartupBlock, STARTUPS } from '@/features/startups';
 
 export default function Startups() {
@@ -16,7 +16,7 @@ export default function Startups() {
 			/>
 			{/* Hero */}
 			<HeroSection image={startupsBkg} imageAlt="About Background">
-				<UnderlinedTitle id="our-start-ups" title="Our start-ups" />
+				<UnderlinedTitle id="our-start-ups" title="Our Start-ups" />
 
 				<motion.p
 					initial={{ opacity: 0, y: 30 }}
@@ -52,7 +52,7 @@ export default function Startups() {
 				>
 					<UnderlinedTitle
 						id="meet-the-startups"
-						navLabel="Meet the startups"
+						navLabel="Meet the Startups"
 						title="Meet the student-led ventures we've worked with."
 						size="text-5xl"
 						level={2}
@@ -62,21 +62,18 @@ export default function Startups() {
 				{/* 3-Column Ragged Edge Layout */}
 				<div className="glass-box mx-auto w-full">
 					<div className="mx-auto grid w-full max-w-7xl grid-cols-1 gap-6 py-20 lg:grid-cols-3">
-						{/* Left Column - Aligns inward (right) */}
 						<div className="flex flex-col items-center gap-6 lg:items-end lg:pt-16">
 							{columns.left.map((startup) => (
 								<StartupBlock key={startup.id} startup={startup} />
 							))}
 						</div>
 
-						{/* Center Column - Acts as the anchor */}
 						<div className="flex flex-col items-center gap-6">
 							{columns.center.map((startup) => (
 								<StartupBlock key={startup.id} startup={startup} />
 							))}
 						</div>
 
-						{/* Right Column - Aligns inward (left) */}
 						<div className="flex flex-col items-center gap-6 lg:items-start lg:pt-32">
 							{columns.right.map((startup) => (
 								<StartupBlock key={startup.id} startup={startup} />
@@ -89,18 +86,19 @@ export default function Startups() {
 					<motion.div
 						initial={{ opacity: 0, y: 40 }}
 						whileInView={{ opacity: 1, y: 0 }}
-						viewport={{ once: true, margin: '-40px' }}
+						viewport={{ once: true, amount: 0.3 }}
 						transition={{ duration: 0.5, ease: 'easeIn' }}
-						className="border-accent group relative z-10 mx-auto flex h-150 flex-col items-center justify-center gap-4 overflow-hidden rounded-xl border-4 text-center transition-all duration-300"
+						className="border-accent group relative z-10 mx-auto flex h-150 flex-col items-center justify-center gap-4 overflow-hidden rounded-xl border-4 text-center"
 					>
 						<div className="glass-box pointer-events-none absolute inset-0 overflow-hidden" />
 
 						<div className="z-10 flex flex-col items-center justify-center gap-4">
 							<UnderlinedTitle
 								id="you"
-								navLabel="Reach out"
-								title={'You?'}
+								navLabel="Get Involved"
+								title="You?"
 								size="text-7xl"
+								className="font-title"
 								animated={false}
 								level={2}
 							/>
@@ -109,10 +107,16 @@ export default function Startups() {
 							</b>
 
 							<p className="text-foreground-muted px-10 pb-10 text-xl transition-colors duration-300">
-								Share your vision with us, and we'll help you realise it.
+								Share your vision with us, and we'll see it realised.
 							</p>
 
-							<InteractiveContactButton />
+							<InteractiveLinkButton
+								to="/connect"
+								className="px-20 py-4 text-2xl tracking-widest uppercase md:text-2xl"
+								ariaLabel="Get Involved"
+							>
+								Get Involved
+							</InteractiveLinkButton>
 						</div>
 					</motion.div>
 				</div>

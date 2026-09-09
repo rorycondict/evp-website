@@ -23,7 +23,7 @@ export function StartupBlock({ startup }: StartupBlockProps) {
 			initial={{ opacity: 0, y: 24 }}
 			whileInView={{ opacity: 1, y: 0 }}
 			viewport={{ once: true, margin: '-60px' }}
-			transition={{ duration: 0.5, ease: 'easeOut', delay: (globalIndex % 9) * 0.08 }}
+			transition={{ duration: 0.5, ease: 'easeOut', delay: (globalIndex % 9) * 0.05 }}
 			onClick={() => {
 				if (window.matchMedia('(max-width: 767px)').matches) {
 					setIsRevealed(!isRevealed);

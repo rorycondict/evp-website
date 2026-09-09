@@ -1,8 +1,7 @@
-import { Socials } from '@/components/ui';
+import { InteractiveLinkButton, Socials } from '@/components/ui';
 
 import { ShareButton } from './ShareButton';
 import { ThemeToggle } from './ThemeToggle';
-import { SubscribeButton } from './SubscribeButton';
 
 /**
  * Hero actions: `Socials (left) | Subscribe (centered, enlarged) | ThemeToggle (right)`.
@@ -14,7 +13,13 @@ export function HeroActions() {
 				<span className="text-foreground-muted hidden select-none md:inline" aria-hidden>
 					|
 				</span>
-				<SubscribeButton size="large" className="w-full justify-center md:w-auto" />
+				<InteractiveLinkButton
+					to="/connect"
+					className="px-8 py-3 text-base tracking-widest uppercase"
+					ariaLabel="Get Involved"
+				>
+					Get Involved
+				</InteractiveLinkButton>
 				<span className="text-foreground-muted hidden select-none md:inline" aria-hidden>
 					|
 				</span>

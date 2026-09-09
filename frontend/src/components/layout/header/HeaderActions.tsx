@@ -1,4 +1,4 @@
-import { SubscribeButton } from './SubscribeButton';
+import { InteractiveLinkButton } from '@/components/ui';
 import { ThemeToggle } from './ThemeToggle';
 
 /**
@@ -7,12 +7,18 @@ import { ThemeToggle } from './ThemeToggle';
  */
 export function HeaderActions() {
 	return (
-		<div className="flex items-center gap-2">
+		<div className="flex items-center gap-4">
 			<ThemeToggle />
 			<span className="text-foreground-muted hidden select-none md:inline" aria-hidden>
 				|
 			</span>
-			<SubscribeButton />
+			<InteractiveLinkButton
+				to="/connect"
+				className="px-6 py-2 text-sm tracking-widest uppercase"
+				ariaLabel="Connect"
+			>
+				Get Involved
+			</InteractiveLinkButton>
 		</div>
 	);
 }

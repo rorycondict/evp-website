@@ -1,9 +1,7 @@
 import { motion } from 'framer-motion';
 import type { ReactNode } from 'react';
 
-import { SectionDivider } from '@/components/ui';
-
-import { InteractiveContactButton } from '../interactive/InteractiveContactButton';
+import { InteractiveLinkButton, SectionDivider } from '@/components/ui';
 
 interface ContactSectionProps {
 	image: string;
@@ -14,6 +12,8 @@ interface ContactSectionProps {
 	body: ReactNode[];
 	/** Extra Tailwind classes on the outer <section>. */
 	className?: string;
+	buttonText?: string;
+	to?: string;
 }
 
 /**
@@ -25,6 +25,8 @@ export function ContactSection({
 	heading,
 	body,
 	className = '',
+	buttonText = 'Get Involved',
+	to = '/connect',
 }: ContactSectionProps) {
 	return (
 		<section className={`relative w-full pb-30 ${className}`}>
@@ -57,7 +59,7 @@ export function ContactSection({
 						transition={{ duration: 0.5, ease: 'easeIn' }}
 						className="text-center"
 					>
-						<h1 id="reach-out" data-nav-label="Reach out" className="pt-10 pb-5 text-5xl font-bold">
+						<h1 id="connect" data-nav-label={buttonText} className="pt-10 pb-5 text-5xl font-bold">
 							{heading}
 						</h1>
 						{body.map((line, i) => (
@@ -75,7 +77,13 @@ export function ContactSection({
 						viewport={{ once: true, amount: 0.8 }}
 						transition={{ duration: 0.3, ease: 'easeIn' }}
 					>
-						<InteractiveContactButton />
+						<InteractiveLinkButton
+							to={to}
+							className="px-30 py-4 text-2xl tracking-widest uppercase md:text-2xl"
+							ariaLabel={buttonText}
+						>
+							{buttonText}
+						</InteractiveLinkButton>
 					</motion.div>
 				</div>
 			</div>
