@@ -16,6 +16,8 @@ interface MediaTextSectionProps {
 	reverse?: boolean;
 	/** Extra classes on the outer container. */
 	className?: string;
+	/** Extra classes on the text column (e.g. alignment overrides). */
+	textClassName?: string;
 }
 
 /**
@@ -29,6 +31,7 @@ export function MediaTextSection({
 	children,
 	reverse = false,
 	className,
+	textClassName,
 }: MediaTextSectionProps) {
 	const imageCol = (
 		<motion.div
@@ -49,6 +52,7 @@ export function MediaTextSection({
 			className={cn(
 				'flex w-full flex-col items-center gap-5 text-center md:w-1/2',
 				reverse ? 'md:items-end md:text-right' : 'md:items-start md:text-left',
+				textClassName,
 			)}
 		>
 			{children}

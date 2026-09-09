@@ -1,6 +1,7 @@
 export * from '../../features/events/components/EventsBanner';
 export * from './chip/Chip';
 export * from './chip/chip-variants';
+export * from './interactive/AnimatedCheckbox';
 export * from './interactive/button/Button';
 export * from './interactive/button/button-variants';
 export * from './interactive/FormField';
@@ -19,6 +20,7 @@ export * from './PromoCard';
 export * from './RadialGlowOverlay';
 export * from './ScrollingImageBanner';
 export * from './section/ConnectSection';
+export * from './section/FormSection';
 export * from './section/glass-section/glass-section-variants';
 export * from './section/glass-section/GlassSection';
 export * from './section/HeroSection';

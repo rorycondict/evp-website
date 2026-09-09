@@ -1,9 +1,15 @@
 import { motion } from 'framer-motion';
 import { useState } from 'react';
 
-import contactImg from '@/assets/homepage/promo-conf.webp';
-import { buttonVariants, FormField, FormSection, Input, inputVariants } from '@/components/ui';
-import { cn } from '@/utils/cn';
+import newsletterImg from '@/assets/contact/promo-network.webp';
+import {
+	AnimatedCheckbox,
+	buttonVariants,
+	FormField,
+	FormSection,
+	Input,
+	TextLink,
+} from '@/components/ui';
 
 type FormState = 'idle' | 'submitting' | 'success' | 'error';
 
@@ -11,36 +17,37 @@ interface FormFields {
 	firstName: string;
 	lastName: string;
 	email: string;
-	message: string;
 }
 
-const INITIAL_FIELDS: FormFields = { firstName: '', lastName: '', email: '', message: '' };
+const INITIAL_FIELDS: FormFields = { firstName: '', lastName: '', email: '' };
 
 /**
- * Contact form section: first/last name, email and message fields beside an
- * image. Rendered on the Connect page; posts to /contact-submit once the API
- * layer lands (see TODO in handleSubmit).
+ * Newsletter sign-up section: optional first/last name, required email and a
+ * consent checkbox linking to the privacy policy and terms of service. The
+ * image sits on the opposite side from the contact form. Will post to
+ * /newsletter-subscribe once the API layer lands (see TODO in handleSubmit).
  */
-export function ContactFormSection() {
+export function NewsletterSection() {
 	const [fields, setFields] = useState<FormFields>(INITIAL_FIELDS);
+	const [consent, setConsent] = useState(false);
 	const [status, setStatus] = useState<FormState>('idle');
 
-	function handleChange(e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) {
+	function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
 		setFields((prev) => ({ ...prev, [e.target.name]: e.target.value }));
 	}
 
 	async function handleSubmit(e: React.MouseEvent<HTMLButtonElement>) {
 		e.preventDefault();
 
-		const { firstName, lastName, email, message } = fields;
-		if (!firstName.trim() || !lastName.trim() || !email.trim() || !message.trim()) return;
+		if (!fields.email.trim() || !consent) return;
 
 		setStatus('submitting');
 
 		try {
-			// TODO: POST to /contact-submit once the API layer lands.
+			// TODO: POST to /newsletter-subscribe once the API layer lands.
 			setStatus('success');
 			setFields(INITIAL_FIELDS);
+			setConsent(false);
 		} catch {
 			setStatus('error');
 		}
@@ -48,39 +55,35 @@ export function ContactFormSection() {
 
 	const isSubmitting = status === 'submitting';
 	const isSuccess = status === 'success';
-	const isComplete =
-		!!fields.firstName.trim() &&
-		!!fields.lastName.trim() &&
-		!!fields.email.trim() &&
-		!!fields.message.trim();
+	const canSubmit = !!fields.email.trim() && consent;
 
 	return (
 		<FormSection
-			id="contact"
-			image={contactImg}
-			imageAlt="Attendees networking at an EVP event"
-			title="Contact us"
-			subtitle="Fill in the form below and we'll get back to you as soon as possible."
+			id="newsletter"
+			reverse
+			image={newsletterImg}
+			imageAlt="A group photo with several members of EVP's committee"
+			title="Join our newsletter"
+			subtitle="Get event announcements, start-up spotlights and scout news straight to your inbox."
 		>
 			<div className="flex w-full flex-col gap-4">
-				{/* Name — first and last side by side */}
 				<div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-					<FormField id="first-name-field" label="first name">
+					<FormField id="newsletter-first-name-field" label="first name">
 						<Input
-							id="first-name-field"
+							id="newsletter-first-name-field"
 							name="firstName"
 							type="text"
 							autoComplete="given-name"
 							value={fields.firstName}
 							onChange={handleChange}
-							placeholder="Jane"
+							placeholder="John"
 							disabled={isSubmitting || isSuccess}
 							size="md"
 						/>
 					</FormField>
-					<FormField id="last-name-field" label="last name">
+					<FormField id="newsletter-last-name-field" label="last name">
 						<Input
-							id="last-name-field"
+							id="newsletter-last-name-field"
 							name="lastName"
 							type="text"
 							autoComplete="family-name"
@@ -94,9 +97,9 @@ export function ContactFormSection() {
 				</div>
 
 				{/* Email */}
-				<FormField id="email-field" label="email">
+				<FormField id="newsletter-email-field" label="email">
 					<Input
-						id="email-field"
+						id="newsletter-email-field"
 						name="email"
 						type="email"
 						autoComplete="email"
@@ -107,27 +110,29 @@ export function ContactFormSection() {
 						size="md"
 					/>
 				</FormField>
-				{/* Message */}
-				<FormField id="message-field" label="message">
-					<textarea
-						id="message-field"
-						name="message"
-						rows={6}
-						value={fields.message}
-						onChange={handleChange}
-						placeholder="What can EVP do for you?"
+
+				{/* Consent */}
+				<div className="flex items-start gap-3 pt-1 text-left">
+					<AnimatedCheckbox
+						checked={consent}
+						onChange={setConsent}
 						disabled={isSubmitting || isSuccess}
-						className={cn(inputVariants({ size: 'md' }), 'resize-none')}
 					/>
-				</FormField>
+					<p className="text-sm leading-relaxed">
+						I have read and agree to the <TextLink to="/privacy">privacy policy</TextLink> and{' '}
+						<TextLink to="/terms">terms of service</TextLink>, and consent to receiving emails from
+						EVP.
+					</p>
+				</div>
+
 				{/* Submit */}
 				<button
 					type="button"
 					onClick={handleSubmit}
-					disabled={isSubmitting || isSuccess || !isComplete}
+					disabled={isSubmitting || isSuccess || !canSubmit}
 					className={buttonVariants({ intent: 'primary', size: 'md', className: 'mt-2 w-full' })}
 				>
-					{isSubmitting ? 'sending...' : isSuccess ? 'sent!' : 'send message'}
+					{isSubmitting ? 'subscribing...' : isSuccess ? 'subscribed!' : 'subscribe'}
 				</button>
 
 				{/* Feedback messages */}
@@ -137,7 +142,7 @@ export function ContactFormSection() {
 						animate={{ opacity: 1, y: 0 }}
 						className="text-foreground text-center text-lg md:text-left"
 					>
-						Thanks for reaching out - we'll be in touch soon.
+						You're on the list - keep an eye on your inbox.
 					</motion.p>
 				)}
 				{status === 'error' && (
@@ -146,7 +151,7 @@ export function ContactFormSection() {
 						animate={{ opacity: 1, y: 0 }}
 						className="text-lg-400 text-center text-sm md:text-left"
 					>
-						Something went wrong. Please try again or email us directly.
+						Something went wrong. Please try again later.
 					</motion.p>
 				)}
 			</div>

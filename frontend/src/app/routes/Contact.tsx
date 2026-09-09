@@ -1,6 +1,6 @@
 import networkImg from '@/assets/contact/promo-network.webp';
 import scoutImg from '@/assets/contact/promo-scout.webp';
-import contactImg from '@/assets/contact/promo-scout.webp';
+import contactImg from '@/assets/homepage/homepage-bkg.webp';
 import { ConnectSection, SectionDivider, UnderlinedTitle } from '@/components/ui';
 import { MediaTextSection } from '@/components/ui/section/MediaTextSection';
 import { ContactHero, OfferCardsSection } from '@/features/contact';

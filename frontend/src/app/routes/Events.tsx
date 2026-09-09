@@ -88,7 +88,7 @@ export default function Events() {
 				)}
 			</section>
 
-			<section className="mx-auto mt-30 w-full px-4">
+			<section className="mx-auto mt-30 w-full">
 				<ConnectSection
 					image={contactImg}
 					imageAlt="Event photo"
