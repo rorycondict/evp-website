@@ -1,7 +1,6 @@
 import { motion } from 'framer-motion';
 import { useState } from 'react';
 
-import contactImg from '@/assets/homepage/promo-conf.webp';
 import { buttonVariants, FormField, FormSection, Input, inputVariants } from '@/components/ui';
 import { cn } from '@/utils/cn';
 
@@ -17,9 +16,9 @@ interface FormFields {
 const INITIAL_FIELDS: FormFields = { firstName: '', lastName: '', email: '', message: '' };
 
 /**
- * Contact form section: first/last name, email and message fields beside an
- * image. Rendered on the Connect page; posts to /contact-submit once the API
- * layer lands (see TODO in handleSubmit).
+ * Contact form section: first/last name, email and message fields in a
+ * centered glass-box section. Rendered on the Connect page; posts to
+ * /contact-submit once the API layer lands (see TODO in handleSubmit).
  */
 export function ContactFormSection() {
 	const [fields, setFields] = useState<FormFields>(INITIAL_FIELDS);
@@ -57,8 +56,6 @@ export function ContactFormSection() {
 	return (
 		<FormSection
 			id="contact"
-			image={contactImg}
-			imageAlt="Attendees networking at an EVP event"
 			title="Contact us"
 			subtitle="Fill in the form below and we'll get back to you as soon as possible."
 		>

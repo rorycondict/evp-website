@@ -1,7 +1,6 @@
 import { motion } from 'framer-motion';
 import { useState } from 'react';
 
-import newsletterImg from '@/assets/contact/promo-network.webp';
 import {
 	AnimatedCheckbox,
 	buttonVariants,
@@ -23,9 +22,9 @@ const INITIAL_FIELDS: FormFields = { firstName: '', lastName: '', email: '' };
 
 /**
  * Newsletter sign-up section: optional first/last name, required email and a
- * consent checkbox linking to the privacy policy and terms of service. The
- * image sits on the opposite side from the contact form. Will post to
- * /newsletter-subscribe once the API layer lands (see TODO in handleSubmit).
+ * consent checkbox linking to the privacy policy and terms of service. Will
+ * post to /newsletter-subscribe once the API layer lands (see TODO in
+ * handleSubmit).
  */
 export function NewsletterSection() {
 	const [fields, setFields] = useState<FormFields>(INITIAL_FIELDS);
@@ -60,10 +59,7 @@ export function NewsletterSection() {
 	return (
 		<FormSection
 			id="newsletter"
-			reverse
-			image={newsletterImg}
-			imageAlt="A group photo with several members of EVP's committee"
-			title="Join our newsletter"
+			title="Subscribe to Our Newsletter"
 			subtitle="Get event announcements, start-up spotlights and scout news straight to your inbox."
 		>
 			<div className="flex w-full flex-col gap-4">

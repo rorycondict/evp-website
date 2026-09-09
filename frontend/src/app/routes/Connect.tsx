@@ -11,9 +11,9 @@ export default function Connect() {
 			<ConnectHero />
 
 			{/* Connect page sections — add new self-contained sections to this stack. */}
-			<div className="flex w-full flex-col gap-10 px-4 pb-25">
-				<ContactFormSection />
+			<div className="flex w-full flex-col gap-10 pt-10 pb-25">
 				<NewsletterSection />
+				<ContactFormSection />
 				<ScoutApplicationsSection />
 			</div>
 		</div>

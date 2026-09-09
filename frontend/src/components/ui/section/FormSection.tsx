@@ -1,18 +1,20 @@
+import { motion } from 'framer-motion';
 import type { ReactNode } from 'react';
 
 import { cn } from '@/utils/cn';
+import { fadeUp } from '@/utils/motion';
 
 import { MediaTextSection } from './MediaTextSection';
 import { SectionDivider } from './SectionDivider';
 
 interface FormSectionProps {
-	/** Background image shown beside the section content. */
-	image: string;
-	imageAlt: string;
+	/** Optional image shown beside the content. When omitted, the section renders as a centered single column. */
+	image?: string;
+	imageAlt?: string;
 	/** Section heading text. */
 	title: string;
 	/** Intro copy rendered under the heading. */
-	subtitle?: string;
+	subtitle?: ReactNode;
 	/** Anchor id on the heading, e.g. "#contact" deep links. */
 	id?: string;
 	/** Render the content on the left and the image on the right. */
@@ -26,14 +28,15 @@ interface FormSectionProps {
 }
 
 /**
- * Glass-box form section: image on one side, heading + divider + subtitle and
- * arbitrary content (usually a form) on the other. Shared by the Connect page
- * sections (contact form, newsletter, scout applications, ...) so new
- * sections only need content and an image.
+ * Glass-box form section: heading + divider + subtitle and arbitrary content
+ * (usually a form), centered in a single column. Pass an image to switch to
+ * the two-column MediaTextSection layout instead. Shared by the Connect page
+ * sections (contact form, newsletter, venture scout applications, ...) so new
+ * sections only need content.
  */
 export function FormSection({
 	image,
-	imageAlt,
+	imageAlt = '',
 	title,
 	subtitle,
 	id,
@@ -42,23 +45,38 @@ export function FormSection({
 	className,
 	children,
 }: FormSectionProps) {
+	const content = (
+		<>
+			<h2 id={id} className="-scroll-mt-25 text-4xl font-bold md:text-5xl">
+				{title}
+			</h2>
+			<SectionDivider width="w-75 md:w-100" my="my-2" />
+			{subtitle && <p className="text-lg md:text-xl">{subtitle}</p>}
+			{children}
+		</>
+	);
+
 	return (
-		<section className={cn('glass-box w-full overflow-hidden py-25 md:py-40', className)}>
-			<MediaTextSection
-				image={image}
-				imageAlt={imageAlt}
-				imageHeight={imageHeight}
-				reverse={reverse}
-				className="md:flex-row md:items-start"
-				textClassName="md:items-start md:text-left"
-			>
-				<h2 id={id} className="-scroll-mt-25 text-4xl font-bold md:text-5xl">
-					{title}
-				</h2>
-				<SectionDivider width="w-75 md:w-100" my="my-2" />
-				{subtitle && <p className="text-lg md:text-xl">{subtitle}</p>}
-				{children}
-			</MediaTextSection>
+		<section className={cn('glass-box w-full overflow-hidden px-5 py-5 md:py-15', className)}>
+			{image ? (
+				<MediaTextSection
+					image={image}
+					imageAlt={imageAlt}
+					imageHeight={imageHeight}
+					reverse={reverse}
+					className="md:flex-row md:items-start"
+					textClassName="md:items-start md:text-left"
+				>
+					{content}
+				</MediaTextSection>
+			) : (
+				<motion.div
+					{...fadeUp()}
+					className="mx-auto flex w-full max-w-2xl flex-col items-center gap-5 text-center"
+				>
+					{content}
+				</motion.div>
+			)}
 		</section>
 	);
 }
