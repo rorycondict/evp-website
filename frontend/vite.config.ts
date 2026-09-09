@@ -10,26 +10,4 @@ export default defineConfig({
 			'@': path.resolve(import.meta.dirname, './src'),
 		},
 	},
-	server: {
-		proxy: {
-			'/api': {
-				target: 'http://127.0.0.1:16017',
-				changeOrigin: true,
-			},
-		},
-	},
-	build: {
-		rollupOptions: {
-			output: {
-				manualChunks(id) {
-					if (id.includes('node_modules')) {
-						if (id.includes('three')) return 'threejs-engine';
-						if (id.includes('react')) return 'vendor-react';
-						if (id.includes('react-router')) return 'vendor-router';
-						return 'vendor'; // all other third-party dependencies
-					}
-				},
-			},
-		},
-	},
 });

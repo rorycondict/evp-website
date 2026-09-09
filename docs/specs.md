@@ -3,17 +3,23 @@
 |                  |                                           |
 | ---------------- | ----------------------------------------- |
 | **Product**      | Edinburgh VenturePoint (EVP) Website      |
-| **Status**       | Live — https://edinburghventurepoint.com  |
+| **Status**       | In transition — FastAPI rewrite landed; subscribe page & frontend API wiring pending |
 | **Hosting**      | Tardis servers (https://tardisproject.uk) |
-| **Last updated** | 2026-09-05                                |
+| **Last updated** | 2026-09-09                                |
 
 ## 1. Overview
 
 The official website for **Edinburgh VenturePoint**, an entrepreneurship society at the
 University of Edinburgh. The site presents the society to students, founders, sponsors,
-and partners; showcases events and startups; provides contact pathways; and gives
-members accounts with role-based access to an internal startup database and
-society communications.
+and partners; showcases events and startups; provides contact pathways; and (planned)
+lets visitors subscribe to a newsletter.
+
+> **2026-09 rewrite note:** the backend was rewritten from Django to **FastAPI** and
+> drastically slimmed down. Member accounts, passwordless OTP authentication, roles,
+> the internal startup database, the Django admin panel, and admin update emails were
+> **removed**. The site is now fully public; the backend exposes exactly two endpoints
+> (contact form + newsletter subscribe). A `/subscribe` page exists as a stub and the
+> frontend is not yet wired to the API — these are the next tasks.
 
 ## 2. Goals & Objectives
 
@@ -22,10 +28,7 @@ society communications.
 - Showcase member/alumni **startups**.
 - Provide clear **contact** channels for enquiries and sponsorship.
 - Communicate the society's mission, team, and history (**About**).
-- Allow **members** to create passwordless accounts (email one-time code).
-- Maintain an internal **startup database** contributed to by Scouts and managed by Admins.
-- Let **Admins** send update emails to all members.
-- Allow committee members to manage content via an admin panel.
+- Let visitors **subscribe to the newsletter** (page stubbed; backend endpoint live).
 
 ## 3. Target Audience
 
@@ -38,142 +41,93 @@ society communications.
 
 ### 4.1 In Scope (current pages)
 
-| Page     | Route       | Purpose                                                           |
-| -------- | ----------- | ----------------------------------------------------------------- |
-| Home     | `/`         | Landing page, hero, highlights, calls to action                   |
-| About    | `/about`    | Mission, history, committee/team                                  |
-| Startups | `/startups` | Showcase of society-affiliated startups and partner organisations |
-| Events   | `/events`   | Upcoming and past events                                          |
-| Contact  | `/contact`  | Contact form / enquiry details                                    |
-| Privacy  | `/privacy`  | Privacy Policy (static legal copy)                                |
-| Terms    | `/terms`    | Terms of Service (static legal copy)                              |
-| Join     | `/join`     | Unified login/signup (email → OTP code → names if new)            |
-| Member   | `/member`   | Member dashboard (protected, role-based widgets)                  |
-| Error    | `*` (404)   | Friendly not-found / error page                                   |
+| Page      | Route        | Purpose                                                           |
+| --------- | ------------ | ----------------------------------------------------------------- |
+| Home      | `/`          | Landing page, hero, highlights, calls to action                   |
+| About     | `/about`     | Mission, history, committee/team                                  |
+| Startups  | `/startups`  | Showcase of society-affiliated startups and partner organisations |
+| Events    | `/events`    | Upcoming and past events                                          |
+| Contact   | `/contact`   | Contact form / enquiry details                                    |
+| Subscribe | `/subscribe` | Newsletter sign-up (**stub** — implementation pending)            |
+| Privacy   | `/privacy`   | Privacy Policy (static legal copy)                                |
+| Terms     | `/terms`     | Terms of Service (static legal copy)                              |
+| Error     | `*` (404)    | Friendly not-found / error page                                   |
 
 ### 4.2 Backend Capabilities
 
-- **Accounts**: custom email-based user model, **passwordless authentication**
-  (one-time email code → Django **session** cookie, CSRF-protected — no JWT;
-  codes are stored hashed (SHA-256) and compared constant-time).
-  Every user has an auto-generated, globally-unique, immutable `username` ID
-  (created on account creation, never shown in the UI) so activity stays
-  attributable if the email changes. Unified login/signup: `POST
-  /api/accounts/otp/request` returns `{exists}`; `POST /api/accounts/otp/verify`
-  returns `{created}` and signs the user in — new accounts are created on first
-  verification and then prompted for first/last name. Profile `GET/PATCH
-  /api/accounts/me` (names, update-email opt-in), OTP-verified email change
-  `POST /api/accounts/email/change`, `POST /api/accounts/logout`, member list
-  `GET /api/accounts/members` (admin/committee only), admin send-all-emails at
-  `POST /api/accounts/sendall` (delivery runs asynchronously in a background
-  thread — the response is `{queued, skipped, job_id}` and progress/results
-  are pollable at `GET /api/accounts/sendall/jobs[/{id}]`, admin only), CSRF
-  bootstrap at `GET /api/csrf`. Admin management.
-- **Roles**: every account has one of four roles — `member` (default),
-  `scout`, `committee`, `admin` — elevated manually via the Django admin.
-  See §4.3 for the capability matrix.
-- **Startup database**: `StartupEntry` records (unique name, founders,
-  founding date, description, website, linkedin, email, location, notes)
-  linked many-to-many to `Founder` records (first & last name as the
-  composite natural key, occupation, location, linkedin, email, notes), with
-  an ownership-based permission model, exposed at `/api/startupdb`. The
-  schema is expected to evolve.
-- **Admin communications**: Admins can send update emails to all members
-  (opt-out via `receives_update_emails`).
-- **Admin panel** (`/evp-dev/`, Jazzmin-themed) for committee/admin content and
-  role management. Note: the admin URL is `/evp-dev/`, not `/admin/`.
-- **REST API** (`/api/`, Django Ninja) with auto-generated docs at `/api/docs`
-  (DEBUG only). All endpoints are rate-limited via `django-ratelimit`.
+- **FastAPI** app (single module, `backend/app/main.py`), no database. Exactly two
+  endpoints, both integrated with **Resend**:
+  - `POST /contact-submit` — validates the contact form (`first_name`, `last_name`,
+    `email`, `message`), then notifies the members of a hardcoded Resend
+    "Contact Handler" segment by BCC using the `contact-form-notification`
+    Resend template. Returns `204` on success (including mock mode) and `502`
+    with a generic error detail on Resend failures.
+  - `POST /newsletter-subscribe` — validates the submission (`email`, `first_name`,
+    `last_name`) and creates a Resend contact. Returns `204` on success and `502`
+    on failure.
+- **Mock mode**: when `RESEND_API_KEY` is unset, submissions are logged and return
+  `204` — the site works end-to-end locally without any keys.
+- **Auto-generated API docs** at `/docs` on the backend (FastAPI default; not
+  currently proxied through Nginx).
 
-### 4.3 Roles & Permissions
+### 4.3 Out of Scope / Removed
 
-| Capability                        | Member | Scout | Committee | Admin |
-| --------------------------------- | ------ | ----- | --------- | ----- |
-| View startup database             | ❌     | ✅    | ✅        | ✅    |
-| Add startups/founders             | ❌     | ✅    | ✅        | ✅    |
-| Edit/delete **own** startups/founders | ❌  | ✅    | ✅        | ✅    |
-| Edit/delete **any** startup/founder   | ❌  | ❌    | ❌        | ✅    |
-| View all members                  | ❌     | ❌    | ✅        | ✅    |
-| Send update emails to all members | ❌     | ❌    | ❌        | ✅    |
-| Django admin panel                | ❌     | ❌    | ❌        | ✅    |
-
-Committee startup permissions currently equal Scout's and are subject to
-change; the rule lives in a single backend permission function.
-
-### 4.4 Out of Scope (for now)
-
-- Password-based login (the schema keeps the extension point open).
+- **Member accounts and authentication** (removed in the rewrite — no login,
+  roles, or sessions).
+- **Internal startup database** and its API (removed).
+- **Django admin panel** (removed with Django).
+- **Admin update emails / member communications** (removed).
+- **Rate limiting and edge security headers** (removed with the rewrite; pending
+  re-introduction — see AGENTS.md Known Issues).
 - Payments, ticketing, or e-commerce.
-- Blog/CMS beyond what the admin panel manages.
-- A persistent newsletter/issue archive — admin emails are ad-hoc sends.
-- Public display of the internal startup database (the `/startups` page remains
-  a curated showcase).
+- Blog/CMS.
 
 ## 5. Functional Requirements
 
 1. The site shall render all public pages as a client-side React SPA with a shared layout.
 2. Unknown routes shall display a styled 404 error page.
-3. The backend shall expose a REST API under `/api/` with OpenAPI docs (DEBUG only).
-4. Authentication shall be passwordless and unified: the user is first prompted
-   for their email; `POST /api/accounts/otp/request` queries the database and
-   returns `{exists}`. Existing users verify the one-time code to establish a
-   Django **session** (via `login()`); unknown emails also verify the code, at
-   which point a new account is created (`POST /api/accounts/otp/verify` returns
-   `{created}`) and the user is prompted for a first and last name. No JWT is
-   issued; mutating requests must send the CSRF token obtained from
-   `GET /api/csrf`.
-5. Every account shall have a role (`member`, `scout`, `committee`, `admin`),
-   changeable only by staff through the Django admin.
-5a. Every account shall have an auto-generated, globally-unique, immutable
-   `username` ID (never user-visible) that persists across email changes and is
-   used to attribute activity (e.g. `created_by` on startup database records).
-5b. Users shall manage their account settings (first/last name, email via
-   OTP confirmation, and the update-email opt-in) from an account settings
-   widget in the member area.
-6. The startup database shall store startups and founders as separate record
-   types, linked many-to-many (a startup has one or more founders; a founder
-   may appear on multiple startups). Both shall be readable and writable per
-   the role matrix in §4.3, with `created_by` always set server-side from the
-   authenticated user.
-7. Administrators shall manage users, roles, and content through the Django admin panel.
-8. Admins shall be able to send update emails to all members who have not opted out.
-9. The frontend shall fetch dynamic data via the API (TanStack React Query) with runtime validation (zod).
-10. The member dashboard (`/member`) shall be a protected, role-filtered page
-    with hash-based navigation (e.g. `/member#startups`). Widgets are registered
-    in a central registry and shown/hidden based on the user's role. Pages:
-    Home (welcome + account settings), Startup Database (scout+), Member List
-    (committee+), Admin (admin only). The Startup Database page is currently
-    disabled in the dashboard UI pending reimplementation; the `/api/startupdb`
-    endpoints remain live.
+3. The backend shall expose `POST /contact-submit` and `POST /newsletter-subscribe`
+   with Pydantic validation, returning `204` on success and `502` on email-service
+   failure (and logging instead of sending when no API key is configured).
+4. The Contact page form shall submit to `/contact-submit` (**wiring pending** —
+   the form UI exists but does not yet call the API).
+5. The Subscribe page shall let visitors sign up to the newsletter via
+   `/newsletter-subscribe` (**page currently a stub — implementation next**).
+6. The frontend shall call the API through a central, runtime-validated (zod)
+   client layer with React Query (**pending** — dependencies installed, layer
+   not yet built).
+7. `robots.txt` and `sitemap.xml` shall be served from `frontend/public/`.
 
 ## 6. Non-Functional Requirements
 
 - **Performance**: static assets served via Nginx; frontend built and minified by Vite.
 - **SEO**: `robots.txt` and `sitemap.xml` served from `frontend/public/`.
-- **Reliability**: fully containerized (Docker Compose); production deploys automated via GitHub Actions (CI test job → matrix build → GHCR → SSH rolling update); images tagged with both `latest` and commit SHA (the prod compose pins `IMAGE_TAG` — the CI deploy exports the commit's short SHA, and rollback on the server is `IMAGE_TAG=<old sha> docker-compose up -d`; see AGENTS.md).
-- **Security**: environment-based secrets (`backend/.env` in dev; a root-level `.env` via compose `env_file` in prod), CORS restricted to explicit origins, session + CSRF auth, no committed credentials. All API endpoints rate-limited via `django-ratelimit` (per-IP or per-user-or-IP), with counts stored in a shared Redis cache so limits are enforced across all Gunicorn workers when `CACHE_URL` is set (per-process `LocMemCache` fallback otherwise — dev is Redis-backed by default via `backend/.env`; prod depends on the server's root `.env`; see AGENTS.md Known Issues). Nginx also applies rate limiting (`limit_req_zone`: global 20r/s, API 5r/s). Security headers (HSTS, CSP, X-Frame-Options, X-Content-Type-Options, Referrer-Policy, Permissions-Policy) are enforced at the Nginx edge (see AGENTS.md for the full list and rationale).
-- **Maintainability**: TypeScript + ESLint/Prettier on the frontend; type-hinted Python + Pydantic schemas on the backend. Frontend tests via Vitest + @testing-library/react; backend tests via Django's test runner.
+- **Reliability**: fully containerized (Docker Compose); production deploys automated via GitHub Actions (CI test job → matrix build → GHCR → SSH update). Images are tagged `latest` + commit SHA, but tag pinning is not yet wired into the compose files (see AGENTS.md Known Issues).
+- **Security**: environment-based secrets (`backend/.env` in dev; a root-level `.env` via compose `env_file` in prod; the only secret is `RESEND_API_KEY`), no committed credentials. **Note:** rate limiting and Nginx security headers were removed in the rewrite and are pending re-introduction (see AGENTS.md Known Issues).
+- **Maintainability**: TypeScript + ESLint/Prettier on the frontend; type-hinted Python + Pydantic on the backend. Frontend tests via Vitest + @testing-library/react; **no backend tests yet**.
 
 ## 7. Technical Architecture
 
 - **Frontend**: React 19 + Vite 8 + TypeScript 6, React Router 7, Tailwind CSS 4, three.js, framer-motion. Path aliases `@/`. Served by Nginx on port 16017.
-- **Backend**: Django 6 + Django Ninja, Gunicorn (port 17017), MySQL in production.
-- **Infra**: Docker Compose orchestration (frontend, backend, Redis cache); images in GHCR at `ghcr.io/forthfora/evp-website/<service>`; CI/CD on push to `main` (test → build-and-push → deploy) and on PRs (test + build only). GHA layer caching (type=gha) used for faster builds.
-- See `AGENTS.md` at the repo root for detailed developer/agent guidance.
+- **Backend**: FastAPI + Pydantic (single module), run by uvicorn/the FastAPI CLI. No database — Resend is the only external service.
+- **Infra**: Docker Compose orchestration (frontend, backend); images in GHCR at `ghcr.io/rorycondict/evp-website/<service>`; CI/CD on push to `main` (test → build-and-push → deploy) and on PRs (test + build only). GHA layer caching (type=gha) used for faster builds.
+- See `AGENTS.md` at the repo root for detailed developer/agent guidance (including known issues from the rewrite).
 
 ## 8. Success Metrics
 
 - Uptime on Tardis hosting.
 - Event page engagement (visits around announced events).
 - Contact/enquiry conversion through the Contact page.
-- Successful automated deployments with zero-downtime restarts.
+- Newsletter signups via the Subscribe page (once implemented).
+- Successful automated deployments.
 
 ## 9. Future Considerations
 
-- Password-based login as an additional auth mechanism (extension point open).
-- Elevated Committee permissions on the startup database (single-function change in `can_manage_entry`).
-- Resume-on-restart for interrupted admin update email sends (delivery is already async with job tracking, but a worker restart mid-send drops the tail of the send).
-- Event RSVP/ticketing integration.
-- Public startup directory surfacing `StartupEntry` data, with submissions via the API.
-- Member profile pages (avatars, bios) — would require adding an image field to the `User` model (one does not currently exist).
-- Unsubscribe/self-service email preference management on the frontend.
+- **Implement the Subscribe page UI** (next task) and **wire the frontend to the API** (contact form + subscribe), including a central API client with zod validation.
+- Reconcile the Nginx `/api/` proxy with the backend (path prefix and port — see AGENTS.md Known Issues) as part of the API wiring.
+- Re-introduce **rate limiting** (edge and/or app level) for the two POST endpoints.
+- Re-introduce **security headers** (HSTS, CSP, etc.) at the Nginx edge.
+- Add a **backend test suite** (pytest + FastAPI TestClient) and fix the stale CI backend test step.
+- Wire **`IMAGE_TAG` pinning** into the compose files for reliable rollbacks.
+- Move the hardcoded Resend segment/template IDs into configuration.
+- Event RSVP/ticketing integration; public startup directory — possible future features, currently out of scope.
