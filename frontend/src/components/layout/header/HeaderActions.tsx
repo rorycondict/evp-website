@@ -1,4 +1,4 @@
-import { AuthSection } from './AuthSection';
+import { SubscribeButton } from './SubscribeButton';
 import { ThemeToggle } from './ThemeToggle';
 
 /**
@@ -12,8 +12,7 @@ export function HeaderActions() {
 			<span className="text-foreground-muted hidden select-none md:inline" aria-hidden>
 				|
 			</span>
-			<div className="mx-auto w-max"></div>
-			<AuthSection />
+			<SubscribeButton />
 		</div>
 	);
 }

@@ -43,8 +43,8 @@ export default function Privacy() {
 					transition={{ duration: 0.5, ease: 'easeIn', delay: 0.25 }}
 					className="mx-auto max-w-2xl pb-5 text-center text-lg md:text-xl"
 				>
-					A privacy policy is a legal requirement for any website that allows members to sign up for
-					accounts.
+					A privacy policy is a legal requirement for any website that collects personal
+					information, such as names and email addresses.
 					<br />
 					<br />
 					This notice tells you what personal information we need from you, why we need it, and what
@@ -63,12 +63,17 @@ export default function Privacy() {
 				</PolicyDropdown>
 
 				<PolicyDropdown id="collect" title="What information we collect, use, and why">
-					<p>
-						We collect or use the following personal information for{' '}
-						<b>service updates or marketing purposes</b>:
-					</p>
-					<ul className="list-disc pl-6">
-						<li>Names and contact details (such as email)</li>
+					<p>We collect and use your personal information for two main reasons:</p>
+					<ul className="flex list-disc flex-col gap-2 pt-2 pl-6">
+						<li>
+							<b>Contact enquiries:</b> If you use our contact form, we collect your first name,
+							last name, email address, and the contents of your message so that we can read and
+							respond to your query.
+						</li>
+						<li>
+							<b>Newsletter:</b> If you sign up for our newsletter, we collect your first name, last
+							name, and email address to send you updates and marketing communications.
+						</li>
 					</ul>
 				</PolicyDropdown>
 
@@ -160,21 +165,36 @@ export default function Privacy() {
 					<h3 className="text-xl font-bold">
 						Our lawful bases for the collection and use of your data
 					</h3>
-					<p>
-						Our lawful bases for collecting or using personal information for{' '}
-						<b>service updates or marketing purposes</b> are:
-					</p>
-					<ul className="list-disc pl-6">
+					<p>Our lawful bases for collecting or using personal information are:</p>
+					<ul className="flex list-disc flex-col gap-2 py-2 pl-6">
 						<li>
-							<b>Legitimate interests</b> – we&rsquo;re collecting or using your information because
-							it benefits you, our organisation or someone else, without causing an undue risk of
-							harm to anyone. All of your data protection rights may apply, except the right to
-							portability.
+							<b>Consent (for our newsletter):</b> We rely on your active consent when you subscribe
+							to our mailing list. You have the right to withdraw this consent at any time by
+							clicking the "unsubscribe" link at the bottom of any email or by contacting us
+							directly.
+						</li>
+						<li>
+							<b>Legitimate interests (for contact forms):</b> We process your data to review and
+							respond to the queries you submit. It is in our legitimate interest to provide
+							customer service and communicate with users who reach out to us.
 						</li>
 					</ul>
 					<p>
 						For more information on our use of legitimate interests as a lawful basis you can
 						contact us using the contact details set out above.
+					</p>
+				</PolicyDropdown>
+
+				<PolicyDropdown id="sharing" title="Who we share your information with">
+					<p>
+						We do not sell your personal information. We only share your data with trusted
+						third-party service providers who assist us in operating our website and communications.
+					</p>
+					<p className="pt-2">
+						Specifically, we use <IcoLink to="https://resend.com/">Resend</IcoLink> to manage our
+						emails, deliver our newsletter, and route contact form submissions. Resend acts as a
+						data processor on our behalf and handles your information securely in compliance with
+						applicable data protection laws.
 					</p>
 				</PolicyDropdown>
 
@@ -185,10 +205,24 @@ export default function Privacy() {
 				</PolicyDropdown>
 
 				<PolicyDropdown id="retention" title="How long we keep information">
-					<p>We retain your information as long as you have an account.</p>
 					<p>
-						You can request account deletion at any time by reaching out to us. This will delete all
-						data associated with your account.
+						We only retain your personal data for as long as necessary to fulfil the purposes we
+						collected it for.
+					</p>
+					<ul className="flex list-disc flex-col gap-2 py-2 pl-6">
+						<li>
+							<b>Contact enquiries:</b> Retained until your query is fully resolved and for a short
+							administrative period afterwards in case of follow-up questions, after which it is
+							deleted.
+						</li>
+						<li>
+							<b>Newsletter subscriptions:</b> Retained actively until you unsubscribe or withdraw
+							your consent, at which point your email is removed from our active mailing list.
+						</li>
+					</ul>
+					<p>
+						You can request the erasure of your personal data at any time by reaching out to us via
+						the contact form.
 					</p>
 				</PolicyDropdown>
 

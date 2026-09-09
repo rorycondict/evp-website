@@ -24,7 +24,7 @@ export default function Terms() {
 					transition={{ duration: 0.5, ease: 'easeIn', delay: 0.15 }}
 					className="mx-auto max-w-4xl py-5 text-center text-2xl font-bold italic md:text-3xl"
 				>
-					Last updated: September 03, 2026
+					Last updated: September 09, 2026
 				</motion.p>
 				<motion.p
 					initial={{ opacity: 0, y: 30 }}
@@ -77,6 +77,7 @@ export default function Terms() {
 						a copy of these Legal Terms for your records.
 					</p>
 				</PolicyDropdown>
+
 				<PolicyDropdown id="services" title="1. Our services">
 					<p>
 						The information provided when using the Services is not intended for distribution to or
@@ -161,7 +162,7 @@ export default function Terms() {
 						<li>
 							<b>You are responsible for what you post or upload:</b> By sending us Submissions
 							through any part of the Services you:
-							<ul className="list-disc pl-6">
+							<ul className="list-disc pt-2 pl-6">
 								<li>
 									confirm that you have read and agree with our 'PROHIBITED ACTIVITIES' and will not
 									post, send, publish, upload, or transmit through the Services any Submission that
@@ -197,11 +198,8 @@ export default function Terms() {
 					<p>By using the Services, you represent and warrant that:</p>
 					<ol className="list-decimal pl-6">
 						<li>
-							All registration information you submit will be true, accurate, current, and complete.
-						</li>
-						<li>
-							You will maintain the accuracy of such information and promptly update such
-							registration information as necessary.
+							Any information you submit via our contact forms or newsletter sign-ups is true,
+							accurate, current, and complete.
 						</li>
 						<li>You have the legal capacity and you agree to comply with these Legal Terms.</li>
 						<li>You are not a minor in the jurisdiction in which you reside.</li>
@@ -210,205 +208,33 @@ export default function Terms() {
 							a bot, script, or otherwise.
 						</li>
 						<li>You will not use the Services for any illegal or unauthorised purpose.</li>
-						<li>Your use of the Services will not violate any applicable law or regulation.</li>
 					</ol>
-					<p>
-						If you provide any information that is untrue, inaccurate, not current, or incomplete,
-						we have the right to suspend or terminate your account and refuse any and all current or
-						future use of the Services (or any portion thereof).
-					</p>
 				</PolicyDropdown>
 
-				<PolicyDropdown id="user-registration" title="4. User registration">
-					<p>
-						You may be required to register to use the Services. You agree to keep your password
-						confidential and will be responsible for all use of your account and password. We
-						reserve the right to remove, reclaim, or change a username you select if we determine,
-						in our sole discretion, that such username is inappropriate, obscene, or otherwise
-						objectionable.
-					</p>
-				</PolicyDropdown>
-
-				<PolicyDropdown id="prohibited-activities" title="5. Prohibited activities">
+				<PolicyDropdown id="prohibited-activities" title="4. Prohibited activities">
 					<p>
 						You may not access or use the Services for any purpose other than that for which we make
-						the Services available. The Services may not be used in connection with any commercial
-						endeavours except those that are specifically endorsed or approved by us.
+						the Services available. As a user of the Services, you agree not to:
 					</p>
-					<p>As a user of the Services, you agree not to:</p>
-					<ul className="flex list-disc flex-col gap-2 pl-6">
+					<ul className="flex list-disc flex-col gap-2 pt-2 pl-6">
 						<li>
-							Systematically retrieve data or other content from the Services to create or compile,
-							directly or indirectly, a collection, compilation, database, or directory without
-							written permission from us.
-						</li>
-						<li>
-							Trick, defraud, or mislead us and other users, especially in any attempt to learn
-							sensitive account information such as user passwords.
+							Systematically retrieve data or other content from the Services to create or compile a
+							database or directory without our written permission.
 						</li>
 						<li>
 							Circumvent, disable, or otherwise interfere with security-related features of the
 							Services.
 						</li>
-						<li>Disparage, tarnish, or otherwise harm, in our opinion, us and/or the Services.</li>
+						<li>Upload or transmit viruses, Trojan horses, or other malicious material.</li>
 						<li>
-							Use any information obtained from the Services in order to harass, abuse, or harm
-							another person.
+							Use the Services, including our contact forms, to send unsolicited promotional
+							material (spam), harass, abuse, or harm another person.
 						</li>
-						<li>
-							Make improper use of our support services or submit false reports of abuse or
-							misconduct.
-						</li>
-						<li>
-							Use the Services in a manner inconsistent with any applicable laws or regulations.
-						</li>
-						<li>Engage in unauthorised framing of or linking to the Services.</li>
-						<li>
-							Upload or transmit (or attempt to upload or to transmit) viruses, Trojan horses, or
-							other material, including excessive use of capital letters and spamming, that
-							interferes with any party&rsquo;s uninterrupted use and enjoyment of the Services.
-						</li>
-						<li>
-							Engage in any automated use of the system, such as using scripts to send comments or
-							messages, or using any data mining, robots, or similar data gathering and extraction
-							tools.
-						</li>
-						<li>Delete the copyright or other proprietary rights notice from any Content.</li>
-						<li>
-							Attempt to impersonate another user or person or use the username of another user.
-						</li>
-						<li>
-							Upload or transmit (or attempt to upload or to transmit) any material that acts as a
-							passive or active information collection or transmission mechanism (e.g., 'gifs', 1×1
-							pixels, web bugs, cookies).
-						</li>
-						<li>
-							Interfere with, disrupt, or create an undue burden on the Services or the networks or
-							services connected to the Services.
-						</li>
-						<li>
-							Harass, annoy, intimidate, or threaten any of our employees or agents engaged in
-							providing any portion of the Services to you.
-						</li>
-						<li>
-							Attempt to bypass any measures of the Services designed to prevent or restrict access
-							to the Services.
-						</li>
-						<li>
-							Copy or adapt the Services' software, including but not limited to Flash, PHP, HTML,
-							JavaScript, or other code.
-						</li>
-						<li>
-							Except as permitted by applicable law, decipher, decompile, disassemble, or reverse
-							engineer any of the software comprising or in any way making up a part of the
-							Services.
-						</li>
-						<li>Use a buying agent or purchasing agent to make purchases on the Services.</li>
-						<li>
-							Make any unauthorised use of the Services, including collecting usernames and/or email
-							addresses of users by electronic or other means for the purpose of sending unsolicited
-							email.
-						</li>
-						<li>
-							Use the Services as part of any effort to compete with us or otherwise use the
-							Services and/or the Content for any revenue-generating endeavour or commercial
-							enterprise.
-						</li>
+						<li>Copy or adapt the Services' software or content without authorisation.</li>
 					</ul>
 				</PolicyDropdown>
 
-				<PolicyDropdown id="contributions" title="6. User generated contributions">
-					<p>
-						We may provide you with the opportunity to create, submit, post, display, transmit,
-						perform, publish, distribute, or broadcast content and materials to us or on the
-						Services, including but not limited to text, writings, video, audio, photographs,
-						graphics, comments, suggestions, or personal information or other material
-						(collectively, 'Contributions'). Contributions may be viewable by other users of the
-						Services and through third-party websites. As such, any Contributions you transmit may
-						be treated in accordance with the Services' Privacy Policy.
-					</p>
-					<p>
-						When you create or make available any Contributions, you thereby represent and warrant
-						that:
-					</p>
-					<ul className="flex list-disc flex-col gap-2 pl-6">
-						<li>
-							The creation, distribution, transmission, public display, or performance, and the
-							accessing, downloading, or copying of your Contributions do not and will not infringe
-							the proprietary rights of any third party.
-						</li>
-						<li>
-							You are the creator and owner of or have the necessary licences, rights, consents,
-							releases, and permissions to use and to authorise us, the Services, and other users of
-							the Services to use your Contributions.
-						</li>
-						<li>
-							You have the written consent, release, and/or permission of each and every
-							identifiable individual person in your Contributions to use their name or likeness.
-						</li>
-						<li>Your Contributions are not false, inaccurate, or misleading.</li>
-						<li>
-							Your Contributions are not unsolicited or unauthorised advertising, promotional
-							materials, pyramid schemes, chain letters, spam, mass mailings, or other forms of
-							solicitation.
-						</li>
-						<li>
-							Your Contributions are not obscene, lewd, lascivious, filthy, violent, harassing,
-							libellous, slanderous, or otherwise objectionable (as determined by us).
-						</li>
-						<li>
-							Your Contributions do not ridicule, mock, disparage, intimidate, or abuse anyone.
-						</li>
-						<li>
-							Your Contributions are not used to harass or threaten any other person and to promote
-							violence against a specific person or class of people.
-						</li>
-						<li>Your Contributions do not violate any applicable law, regulation, or rule.</li>
-						<li>
-							Your Contributions do not violate the privacy or publicity rights of any third party.
-						</li>
-						<li>
-							Your Contributions do not violate any applicable law concerning child pornography, or
-							otherwise intended to protect the health and well-being of minors.
-						</li>
-						<li>
-							Your Contributions do not include any offensive comments that are connected to race,
-							national origin, gender, sexual preference, or physical handicap.
-						</li>
-						<li>
-							Your Contributions do not otherwise violate, or link to material that violates, any
-							provision of these Legal Terms, or any applicable law or regulation.
-						</li>
-					</ul>
-					<p>
-						Any use of the Services in violation of the foregoing violates these Legal Terms and may
-						result in, among other things, termination or suspension of your rights to use the
-						Services.
-					</p>
-				</PolicyDropdown>
-
-				<PolicyDropdown id="contribution-licence" title="7. Contribution licence">
-					<p>
-						You and the Services agree that we may access, store, process, and use any information
-						and personal data that you provide following the terms of the Privacy Policy and your
-						choices (including settings).
-					</p>
-					<p>
-						By submitting suggestions or other feedback regarding the Services, you agree that we
-						can use and share such feedback for any purpose without compensation to you.
-					</p>
-					<p>
-						We do not assert any ownership over your Contributions. You retain full ownership of all
-						of your Contributions and any intellectual property rights or other proprietary rights
-						associated with your Contributions. We are not liable for any statements or
-						representations in your Contributions provided by you in any area on the Services. You
-						are solely responsible for your Contributions to the Services and you expressly agree to
-						exonerate us from any and all responsibility and to refrain from any legal action
-						against us regarding your Contributions.
-					</p>
-				</PolicyDropdown>
-
-				<PolicyDropdown id="third-party" title="8. Third-party websites and content">
+				<PolicyDropdown id="third-party" title="5. Third-party websites and content">
 					<p>
 						The Services may contain (or you may be sent via the Site) links to other websites
 						('Third-Party Websites') as well as articles, photographs, text, graphics, pictures,
@@ -430,7 +256,7 @@ export default function Terms() {
 					</p>
 				</PolicyDropdown>
 
-				<PolicyDropdown id="services-management" title="9. Services management">
+				<PolicyDropdown id="services-management" title="6. Services management">
 					<p>We reserve the right, but not the obligation, to:</p>
 					<ol className="list-decimal pl-6">
 						<li>Monitor the Services for violations of these Legal Terms.</li>
@@ -456,7 +282,7 @@ export default function Terms() {
 					</ol>
 				</PolicyDropdown>
 
-				<PolicyDropdown id="privacy-policy" title="10. Privacy policy">
+				<PolicyDropdown id="privacy-policy" title="7. Privacy policy">
 					<p>
 						We care about your data privacy and security. Please review our Privacy Policy:{' '}
 						<TextLink to="/privacy">www.edinburghventurepoint.com/privacy</TextLink>
@@ -472,29 +298,16 @@ export default function Terms() {
 					</p>
 				</PolicyDropdown>
 
-				<PolicyDropdown id="term-termination" title="11. Term and termination">
+				<PolicyDropdown id="term-termination" title="8. Term and termination">
 					<p>
 						These Legal Terms shall remain in full force and effect while you use the Services.
 						WITHOUT LIMITING ANY OTHER PROVISION OF THESE LEGAL TERMS, WE RESERVE THE RIGHT TO, IN
 						OUR SOLE DISCRETION AND WITHOUT NOTICE OR LIABILITY, DENY ACCESS TO AND USE OF THE
-						SERVICES (INCLUDING BLOCKING CERTAIN IP ADDRESSES), TO ANY PERSON FOR ANY REASON OR FOR
-						NO REASON, INCLUDING WITHOUT LIMITATION FOR BREACH OF ANY REPRESENTATION, WARRANTY, OR
-						COVENANT CONTAINED IN THESE LEGAL TERMS OR OF ANY APPLICABLE LAW OR REGULATION. WE MAY
-						TERMINATE YOUR USE OR PARTICIPATION IN THE SERVICES OR DELETE YOUR ACCOUNT AND ANY
-						CONTENT OR INFORMATION THAT YOU POSTED AT ANY TIME, WITHOUT WARNING, IN OUR SOLE
-						DISCRETION.
-					</p>
-					<p>
-						If we terminate or suspend your account for any reason, you are prohibited from
-						registering and creating a new account under your name, a fake or borrowed name, or the
-						name of any third party, even if you may be acting on behalf of the third party. In
-						addition to terminating or suspending your account, we reserve the right to take
-						appropriate legal action, including without limitation pursuing civil, criminal, and
-						injunctive redress.
+						SERVICES (INCLUDING BLOCKING CERTAIN IP ADDRESSES) TO ANY PERSON FOR ANY REASON.
 					</p>
 				</PolicyDropdown>
 
-				<PolicyDropdown id="modifications" title="12. Modifications and interruptions">
+				<PolicyDropdown id="modifications" title="9. Modifications and interruptions">
 					<p>
 						We reserve the right to change, modify, or remove the contents of the Services at any
 						time or for any reason at our sole discretion without notice. However, we have no
@@ -513,7 +326,7 @@ export default function Terms() {
 					</p>
 				</PolicyDropdown>
 
-				<PolicyDropdown id="governing-law" title="13. Governing law">
+				<PolicyDropdown id="governing-law" title="10. Governing law">
 					<p>
 						These Legal Terms are governed by and interpreted following the laws of the United
 						Kingdom, and the use of the United Nations Convention of Contracts for the International
@@ -526,62 +339,7 @@ export default function Terms() {
 					</p>
 				</PolicyDropdown>
 
-				<PolicyDropdown id="dispute-resolution" title="14. Dispute resolution">
-					<h3 className="text-xl font-bold">Informal negotiations</h3>
-					<p>
-						To expedite resolution and control the cost of any dispute, controversy, or claim
-						related to these Legal Terms (each a 'Dispute' and collectively, the 'Disputes') brought
-						by either you or us (individually, a 'Party' and collectively, the 'Parties'), the
-						Parties agree to first attempt to negotiate any Dispute (except those Disputes expressly
-						provided below) informally for at least thirty (30) days before initiating arbitration.
-						Such informal negotiations commence upon written notice from one Party to the other
-						Party.
-					</p>
-
-					<SectionDivider width="w-full" my="my-2" />
-
-					<h3 className="text-xl font-bold">Binding arbitration</h3>
-					<p>
-						Any dispute arising from the relationships between the Parties to these Legal Terms
-						shall be determined by one arbitrator who will be chosen in accordance with the
-						Arbitration and Internal Rules of the European Court of Arbitration being part of the
-						European Centre of Arbitration having its seat in Strasbourg, and which are in force at
-						the time the application for arbitration is filed, and of which adoption of this clause
-						constitutes acceptance. The seat of arbitration shall be Edinburgh, United Kingdom. The
-						language of the proceedings shall be English. Applicable rules of substantive law shall
-						be the law of the United Kingdom.
-					</p>
-
-					<SectionDivider width="w-full" my="my-2" />
-
-					<h3 className="text-xl font-bold">Restrictions</h3>
-					<p>
-						The Parties agree that any arbitration shall be limited to the Dispute between the
-						Parties individually. To the full extent permitted by law, (a) no arbitration shall be
-						joined with any other proceeding; (b) there is no right or authority for any Dispute to
-						be arbitrated on a class-action basis or to utilise class action procedures; and (c)
-						there is no right or authority for any Dispute to be brought in a purported
-						representative capacity on behalf of the general public or any other persons.
-					</p>
-
-					<SectionDivider width="w-full" my="my-2" />
-
-					<h3 className="text-xl font-bold">Exceptions to informal negotiations and arbitration</h3>
-					<p>
-						The Parties agree that the following Disputes are not subject to the above provisions
-						concerning informal negotiations binding arbitration: (a) any Disputes seeking to
-						enforce or protect, or concerning the validity of, any of the intellectual property
-						rights of a Party; (b) any Dispute related to, or arising from, allegations of theft,
-						piracy, invasion of privacy, or unauthorised use; and (c) any claim for injunctive
-						relief. If this provision is found to be illegal or unenforceable, then neither Party
-						will elect to arbitrate any Dispute falling within that portion of this provision found
-						to be illegal or unenforceable and such Dispute shall be decided by a court of competent
-						jurisdiction within the courts listed for jurisdiction above, and the Parties agree to
-						submit to the personal jurisdiction of that court.
-					</p>
-				</PolicyDropdown>
-
-				<PolicyDropdown id="corrections" title="15. Corrections">
+				<PolicyDropdown id="corrections" title="11. Corrections">
 					<p>
 						There may be information on the Services that contains typographical errors,
 						inaccuracies, or omissions, including descriptions, pricing, availability, and various
@@ -591,7 +349,7 @@ export default function Terms() {
 					</p>
 				</PolicyDropdown>
 
-				<PolicyDropdown id="disclaimer" title="16. Disclaimer">
+				<PolicyDropdown id="disclaimer" title="12. Disclaimer">
 					<p>
 						THE SERVICES ARE PROVIDED ON AN AS-IS AND AS-AVAILABLE BASIS. YOU AGREE THAT YOUR USE OF
 						THE SERVICES WILL BE AT YOUR SOLE RISK. TO THE FULLEST EXTENT PERMITTED BY LAW, WE
@@ -619,7 +377,7 @@ export default function Terms() {
 					</p>
 				</PolicyDropdown>
 
-				<PolicyDropdown id="liability" title="17. Limitations of liability">
+				<PolicyDropdown id="liability" title="13. Limitations of liability">
 					<p>
 						IN NO EVENT WILL WE OR OUR DIRECTORS, EMPLOYEES, OR AGENTS BE LIABLE TO YOU OR ANY THIRD
 						PARTY FOR ANY DIRECT, INDIRECT, CONSEQUENTIAL, EXEMPLARY, INCIDENTAL, SPECIAL, OR
@@ -634,7 +392,7 @@ export default function Terms() {
 					</p>
 				</PolicyDropdown>
 
-				<PolicyDropdown id="indemnification" title="18. Indemnification">
+				<PolicyDropdown id="indemnification" title="14. Indemnification">
 					<p>
 						You agree to defend, indemnify, and hold us harmless, including our subsidiaries,
 						affiliates, and all of our respective officers, agents, partners, and employees, from
@@ -655,7 +413,7 @@ export default function Terms() {
 					</p>
 				</PolicyDropdown>
 
-				<PolicyDropdown id="user-data" title="19. User data">
+				<PolicyDropdown id="user-data" title="15. User data">
 					<p>
 						We will maintain certain data that you transmit to the Services for the purpose of
 						managing the performance of the Services, as well as data relating to your use of the
@@ -669,7 +427,7 @@ export default function Terms() {
 
 				<PolicyDropdown
 					id="electronic-communications"
-					title="20. Electronic communications, transactions, and signatures"
+					title="16. Electronic communications, transactions, and signatures"
 				>
 					<p>
 						Visiting the Services, sending us emails, and completing online forms constitute
@@ -686,7 +444,7 @@ export default function Terms() {
 					</p>
 				</PolicyDropdown>
 
-				<PolicyDropdown id="miscellaneous" title="21. Miscellaneous">
+				<PolicyDropdown id="miscellaneous" title="17. Miscellaneous">
 					<p>
 						These Legal Terms and any policies or operating rules posted by us on the Services or in
 						respect to the Services constitute the entire agreement and understanding between you
@@ -707,7 +465,7 @@ export default function Terms() {
 					</p>
 				</PolicyDropdown>
 
-				<PolicyDropdown id="contact" title="22. Contact us">
+				<PolicyDropdown id="contact" title="18. Contact us">
 					<p>
 						In order to resolve a complaint regarding the Services or to receive further information
 						regarding use of the Services, please contact us at:

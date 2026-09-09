@@ -1,16 +1,11 @@
 import { Socials } from '@/components/ui';
 
-import { AuthSection } from './AuthSection';
 import { ShareButton } from './ShareButton';
 import { ThemeToggle } from './ThemeToggle';
+import { SubscribeButton } from './SubscribeButton';
 
 /**
- * Hero actions: `Socials (left) | AuthSection (centered, enlarged) | ThemeToggle (right)`.
- * Used in the home page hero. AuthSection is centered independent of the
- * width of the side items; Join EVP button is enlarged.
- *
- * On mobile the layout stacks instead: the Join EVP button (full width) on
- * top, with all icons (Socials, ThemeToggle, Share) on a single row below.
+ * Hero actions: `Socials (left) | Subscribe (centered, enlarged) | ThemeToggle (right)`.
  */
 export function HeroActions() {
 	return (
@@ -19,7 +14,7 @@ export function HeroActions() {
 				<span className="text-foreground-muted hidden select-none md:inline" aria-hidden>
 					|
 				</span>
-				<AuthSection size="large" className="w-full justify-center md:w-auto" />
+				<SubscribeButton size="large" className="w-full justify-center md:w-auto" />
 				<span className="text-foreground-muted hidden select-none md:inline" aria-hidden>
 					|
 				</span>

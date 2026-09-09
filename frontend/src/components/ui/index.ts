@@ -3,7 +3,6 @@ export * from './chip/Chip';
 export * from './chip/chip-variants';
 export * from './interactive/button/Button';
 export * from './interactive/button/button-variants';
-export * from './interactive/ConfirmDialog';
 export * from './interactive/FormField';
 export * from './interactive/input/Input';
 export * from './interactive/input/input-variants';

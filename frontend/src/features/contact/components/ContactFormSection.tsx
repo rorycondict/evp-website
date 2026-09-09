@@ -9,7 +9,6 @@ import {
 	PageMeta,
 	SectionDivider,
 } from '@/components/ui';
-import { sendContact } from '@/lib/api/contact';
 
 type FormState = 'idle' | 'submitting' | 'success' | 'error';
 
@@ -40,7 +39,7 @@ export function ContactFormSection() {
 		setStatus('submitting');
 
 		try {
-			await sendContact(fields);
+			// TODO
 			setStatus('success');
 			setFields({ name: '', email: '', message: '' });
 		} catch {
