@@ -3,7 +3,7 @@ import type { ReactNode } from 'react';
 
 import { InteractiveLinkButton, SectionDivider } from '@/components/ui';
 
-interface ContactSectionProps {
+interface ConnectSectionProps {
 	image: string;
 	imageAlt?: string;
 	/** Main heading text. */
@@ -19,7 +19,7 @@ interface ContactSectionProps {
 /**
  * Large contact section, features a background image, some specified lines of text, with an interactive contact button in the center.
  */
-export function ContactSection({
+export function ConnectSection({
 	image,
 	imageAlt = '',
 	heading,
@@ -27,7 +27,7 @@ export function ContactSection({
 	className = '',
 	buttonText = 'Get Involved',
 	to = '/connect',
-}: ContactSectionProps) {
+}: ConnectSectionProps) {
 	return (
 		<section className={`relative w-full pb-30 ${className}`}>
 			<div className="relative w-full">

@@ -3,7 +3,7 @@ import { motion } from 'framer-motion';
 import contactImg from '@/assets/homepage/events-banner/event-2.webp';
 
 import {
-	ContactSection,
+	ConnectSection,
 	EventsBanner,
 	PageMeta,
 	SectionHeading,
@@ -89,7 +89,7 @@ export default function Events() {
 			</section>
 
 			<section className="mx-auto mt-30 w-full px-4">
-				<ContactSection
+				<ConnectSection
 					image={contactImg}
 					imageAlt="Event photo"
 					heading="Never miss another event."

@@ -6,7 +6,7 @@ import aboutUsImg from '@/assets/homepage/promo-chairs.webp';
 import whatWeDoImg2 from '@/assets/homepage/promo-conf.webp';
 import whatWeDoImg1 from '@/assets/homepage/promo-present.webp';
 import contactImg from '@/assets/homepage/promo-tower.webp';
-import { ContactSection, EventsBanner, PageMeta, PromoCard, SectionDivider } from '@/components/ui';
+import { ConnectSection, EventsBanner, PageMeta, PromoCard, SectionDivider } from '@/components/ui';
 import { TextLink } from '@/components/ui/interactive/TextLink';
 import { MediaTextSection } from '@/components/ui/section/MediaTextSection';
 import { HomePageHero } from '@/features/homepage';
@@ -33,7 +33,7 @@ export default function Home() {
 				<AboutUsSection />
 				<WhatWeDoSection />
 				<EventsSection />
-				<ContactSection
+				<ConnectSection
 					image={contactImg}
 					imageAlt="The Scottish flag on a cathedral tower"
 					heading="Interested?"

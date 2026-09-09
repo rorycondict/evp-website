@@ -1,7 +1,7 @@
 import networkImg from '@/assets/contact/promo-network.webp';
 import scoutImg from '@/assets/contact/promo-scout.webp';
 import contactImg from '@/assets/contact/promo-scout.webp';
-import { ContactSection, SectionDivider, UnderlinedTitle } from '@/components/ui';
+import { ConnectSection, SectionDivider, UnderlinedTitle } from '@/components/ui';
 import { MediaTextSection } from '@/components/ui/section/MediaTextSection';
 import { ContactHero, OfferCardsSection } from '@/features/contact';
 
@@ -66,7 +66,7 @@ export default function Contact() {
 			</section>
 
 			<div className="mx-auto flex w-full flex-col gap-20 py-30">
-				<ContactSection
+				<ConnectSection
 					image={contactImg}
 					imageAlt="Event photo"
 					heading="Any Questions?"

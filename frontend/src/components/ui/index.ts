@@ -18,7 +18,7 @@ export * from './PageMeta';
 export * from './PromoCard';
 export * from './RadialGlowOverlay';
 export * from './ScrollingImageBanner';
-export * from './section/ContactSection';
+export * from './section/ConnectSection';
 export * from './section/glass-section/glass-section-variants';
 export * from './section/glass-section/GlassSection';
 export * from './section/HeroSection';

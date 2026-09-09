@@ -4,7 +4,7 @@ import aboutBkg from '@/assets/about/about-bkg.webp';
 import ideaImg from '@/assets/homepage/events-banner/event-2.webp';
 import contactImg from '@/assets/homepage/events-banner/event-2.webp';
 import {
-	ContactSection,
+	ConnectSection,
 	HeroSection,
 	PageMeta,
 	SectionDivider,
@@ -102,7 +102,7 @@ export default function About() {
 				<MemberYearSection key={yearData.year} year={yearData.year} members={yearData.members} />
 			))}
 
-			<ContactSection
+			<ConnectSection
 				image={contactImg}
 				imageAlt="Event photo"
 				heading="Want to get involved?"
