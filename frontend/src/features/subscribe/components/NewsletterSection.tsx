@@ -59,7 +59,7 @@ export function NewsletterSection() {
 	return (
 		<FormSection
 			id="newsletter"
-			title="Subscribe to Our Newsletter"
+			title="Our Newsletter"
 			subtitle="Get event announcements, start-up spotlights and scout news straight to your inbox."
 		>
 			<div className="flex w-full flex-col gap-4">

@@ -56,7 +56,7 @@ export function ContactFormSection() {
 	return (
 		<FormSection
 			id="contact"
-			title="Contact us"
+			title="Contact Us"
 			subtitle="Fill in the form below and we'll get back to you as soon as possible."
 		>
 			<div className="flex w-full flex-col gap-4">
