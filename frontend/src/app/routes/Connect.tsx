@@ -1,7 +1,11 @@
 import { PageMeta } from '@/components/ui';
-import { ConnectHero, ScoutApplicationsSection, ShareSection } from '@/features/connect';
+import {
+	ConnectHero,
+	ScoutApplicationsSection,
+	ShareSection,
+	NewsletterSection,
+} from '@/features/connect';
 import { ContactFormSection } from '@/features/contact';
-import { NewsletterSection } from '@/features/subscribe';
 
 export default function Connect() {
 	return (

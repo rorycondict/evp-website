@@ -145,7 +145,7 @@ export function NewsletterSection() {
 					<motion.p
 						initial={{ opacity: 0, y: 8 }}
 						animate={{ opacity: 1, y: 0 }}
-						className="text-lg-400 text-center text-sm md:text-left"
+						className="text-center text-lg md:text-left"
 					>
 						Something went wrong. Please try again later.
 					</motion.p>

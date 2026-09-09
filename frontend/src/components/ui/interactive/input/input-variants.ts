@@ -7,7 +7,6 @@ export const inputVariants = cva(
 			size: {
 				sm: 'px-4 py-2.5 text-sm',
 				md: 'px-4 py-3 text-base',
-				digit: 'h-14 w-12 text-center text-xl font-bold',
 			},
 		},
 		defaultVariants: {

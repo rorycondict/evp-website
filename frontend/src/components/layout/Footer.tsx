@@ -32,7 +32,7 @@ export function Footer() {
 							</a>
 							.
 						</p>
-						<p className="text-foreground-muted mt-4 text-sm">
+						<p className="text-foreground-muted mt-4 hidden text-sm md:block">
 							© {new Date().getFullYear()} Edinburgh VenturePoint. All rights reserved.
 						</p>
 					</div>
@@ -62,6 +62,10 @@ export function Footer() {
 							Terms of Service
 						</Link>
 					</div>
+
+					<p className="text-foreground-muted block text-sm md:hidden">
+						© {new Date().getFullYear()} Edinburgh VenturePoint. All rights reserved.
+					</p>
 				</div>
 			</div>
 		</footer>

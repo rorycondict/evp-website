@@ -57,7 +57,7 @@ If you wish to run this project locally for development or review, it is fully c
 
 The local development server will be available at: `http://localhost:16017`
 
-> **Note (mid-rewrite):** the backend was recently rewritten from Django to FastAPI and the Docker builds are still being brought up to date — see `AGENTS.md` (Known Issues) for the pending work, or use the standalone dev commands below.
+> **Note (mid-rewrite):** the backend was recently rewritten from Django to FastAPI. The frontend Docker build works, but the backend image build is still broken (stale Python base/version mismatch) — see `AGENTS.md` (Known Issues) for the pending work, or use the standalone dev commands below.
 
 <br/>
 
@@ -66,21 +66,22 @@ The local development server will be available at: `http://localhost:16017`
 ### Frontend
 * **React 19 + TypeScript 6:** UI library and type-safe component-driven interfaces.
 * **Vite 8:** Next-generation frontend tooling for rapid development and HMR.
-* **Tailwind CSS 4 + Sass:** Utility-first styling with CSS preprocessing.
+* **Tailwind CSS 4:** Utility-first styling (no Sass — removed in the rewrite).
 * **React Router 7:** Client-side routing (data router via `createBrowserRouter`).
-* **TanStack React Query + zod:** Installed for the upcoming API wiring (not yet used).
+* **zod:** Installed for the upcoming API wiring (not yet used).
 * **framer-motion + three.js:** Animations and 3D graphics.
+* **oxlint + Prettier:** Linting and formatting (no test framework yet — Vitest was removed).
 * **Node.js:** JavaScript runtime environment.
 
 ### Backend
-* **FastAPI + Pydantic:** Python web framework with request validation (single-module app in `backend/app/main.py`).
-* **Python ≥ 3.13:** Backend language (managed with **uv**).
+* **FastAPI + Pydantic:** Python web framework with request validation (single-module app in `backend/src/main.py`).
+* **Python ≥ 3.14:** Backend language (managed with **uv**).
 * **Resend:** Email delivery and contact management — the only external service (there is no database).
 * **Ruff:** Python linter.
 
 ### Infrastructure & Deployment
 * **Docker & Docker Compose:** Containerization of the frontend and backend environments.
-* **Nginx:** Serves the SPA, handles legacy URL redirects, and proxies API traffic (proxy wiring pending).
+* **Nginx:** Serves the SPA, handles legacy URL redirects, and proxies `/api/` traffic to the backend (the path prefix now matches the backend routes).
 * **GitHub Actions (CI/CD):** Automated test → build → push to GHCR → SSH deploy on push to `main`.
 * **GHCR:** Images published at `ghcr.io/rorycondict/evp-website/<service>`.
 
@@ -88,12 +89,14 @@ The local development server will be available at: `http://localhost:16017`
 
 # Key Features
 
-* **Public-facing pages:** Home, About, Startups showcase, Events, Contact form, Subscribe (stub), Privacy Policy, and Terms of Service.
-* **Contact form endpoint:** `POST /contact-submit` notifies the Resend "Contact Handler" segment of new enquiries.
-* **Newsletter subscribe endpoint:** `POST /newsletter-subscribe` creates a Resend contact.
+* **Public-facing pages:** Home, About, Startups showcase, Events, Contact, **Get Involved (`/connect`)** — newsletter sign-up, contact form, venture-scout applications, and a share section — Privacy Policy, and Terms of Service.
+* **Contact form endpoint:** `POST /api/contact-submit` notifies the Resend "Contact Handler" segment of new enquiries.
+* **Newsletter subscribe endpoint:** `POST /api/newsletter-subscribe` creates a Resend contact.
 * **Mock mode:** without a `RESEND_API_KEY`, the backend logs submissions instead of sending them.
 * **No accounts or authentication:** the site is fully public — member accounts, roles, the internal startup database, and the admin panel were removed in the FastAPI rewrite.
-* **Pending:** the Subscribe page UI and the frontend API wiring are the next tasks.
+* **Pending:** the frontend API wiring (contact + newsletter forms) is the next task — the form UIs are complete but not yet connected to the backend.
+
+> A full frontend code review (2026-09-10) is recorded in `AGENTS.md` — see "Frontend code review findings" for the dead code, bugs, and accessibility issues to address.
 
 <br/>
 
@@ -101,15 +104,17 @@ The local development server will be available at: `http://localhost:16017`
 
 To work on the frontend or backend outside Docker:
 
-**Frontend** (Node ≥ 22):
+**Frontend** (Node 24):
 ```sh
 cd frontend
 npm install
-npm run dev        # Vite dev server (proxies /api to http://127.0.0.1:16017)
-npm run test       # Vitest (run once)
-npm run lint       # ESLint
+npm run dev        # Vite dev server (no /api proxy — re-add it when wiring the API)
+npm run build      # tsc -b && vite build
+npm run lint       # oxlint
 npm run format     # Prettier
 ```
+
+> There is no frontend test suite yet (`npm run test` does not exist) — CI's test step fails until one is added or the step is removed.
 
 **Backend** (Python ≥ 3.13, managed with [uv](https://docs.astral.sh/uv/)):
 ```sh

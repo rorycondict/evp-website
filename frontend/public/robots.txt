@@ -1,7 +1,5 @@
 User-agent: *
 Disallow: /api/
-Disallow: /evp-dev/
-Disallow: /member
 
 User-agent: GPTBot
 Disallow: /

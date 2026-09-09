@@ -16,16 +16,6 @@ export default function Error() {
 				errorMessage = "We're sorry, the page you are looking for doesn't exist or has been moved.";
 				break;
 
-			case 401:
-				title = '401 - Unauthorized';
-				errorMessage = "We're sorry, you need to be logged in to access this page.";
-				break;
-
-			case 403:
-				title = '403 - Forbidden';
-				errorMessage = "We're sorry, you don't have permission to view this resource.";
-				break;
-
 			case 503:
 				title = '503 - Service Unavailable';
 				errorMessage = "We're sorry, looks like our API is down. Please try again later.";
