@@ -2,12 +2,12 @@ FROM python:3.14-slim
 
 COPY --from=ghcr.io/astral-sh/uv:latest /uv /uvx /bin/
 
-WORKDIR /code
+WORKDIR /app
 
 ENV UV_COMPILE_BYTECODE=1
 
-COPY . /code
+COPY . /app
 
-RUN uv sync --frozen --no-cache
+RUN uv sync --frozen --no-cache --no-dev
 
-CMD ["fastapi", "run", "app/main.py", "--port", "80", "--proxy-headers"]
+CMD ["uv", "run", "--no-dev", "uvicorn", "src.main:app", "--host", "0.0.0.0", "--port", "8000", "--proxy-headers"]

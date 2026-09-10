@@ -1,6 +1,6 @@
 services:
   frontend:
-    image: ghcr.io/rorycondict/evp-website/frontend:latest
+    image: ghcr.io/rorycondict/evp-website/frontend:${IMAGE_TAG:-latest}
     container_name: evp-frontend
     depends_on:
       - backend
@@ -14,7 +14,7 @@ services:
       dockerfile: Dockerfile
 
   backend:
-    image: ghcr.io/rorycondict/evp-website/backend:latest
+    image: ghcr.io/rorycondict/evp-website/backend:${IMAGE_TAG:-latest}
     container_name: evp-backend
     # dev specific
     command: uv run uvicorn src.main:app --reload --host 0.0.0.0 --port 8000

@@ -1,6 +1,6 @@
 import { defineConfig } from 'orval';
 export default defineConfig({
-	petstore: {
+	evp: {
 		output: {
 			mode: 'single',
 			target: './src/api/generated.ts',

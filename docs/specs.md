@@ -69,6 +69,8 @@ visitors subscribe to a newsletter via the Get Involved page.
   - `POST /api/newsletter-subscribe` — validates the submission (`email`, `first_name`,
     `last_name`) and creates a Resend contact. Returns `204` on success and `502`
     on failure.
+  - All form fields are length-limited (names ≤ 100 chars, email ≤ 254, message ≤
+    10 000); violations return `422`.
 - **Mock mode**: when `RESEND_API_KEY` is unset, submissions are logged and return
   `204` — the site works end-to-end locally without any keys.
 - **Auto-generated API docs** at `/docs` on the backend (FastAPI default; not
@@ -112,8 +114,8 @@ visitors subscribe to a newsletter via the Get Involved page.
 
 - **Performance**: static assets served via Nginx; frontend built and minified by Vite.
 - **SEO**: `robots.txt` and `sitemap.xml` served from `frontend/public/`.
-- **Reliability**: fully containerized (Docker Compose); production deploys automated via GitHub Actions (CI test job → matrix build → GHCR → SSH update). Images are tagged `latest` + commit SHA, but tag pinning is not yet wired into the compose files (see AGENTS.md Known Issues).
-- **Security**: environment-based secrets (`backend/.env` in dev; a root-level `.env` via compose `env_file` in prod; the only secret is `RESEND_API_KEY`), no committed credentials. Per-IP Nginx rate limiting on both POST endpoints has been restored (429 on excess); Nginx security headers (HSTS, CSP, etc.) are still pending (see AGENTS.md Known Issues).
+- **Reliability**: fully containerized (Docker Compose); production deploys automated via GitHub Actions (CI test job → matrix build → GHCR → SSH update). Images are tagged `latest` + commit SHA, and the compose files pin `${IMAGE_TAG:-latest}`, so deploys run the exact commit SHA and rollback-by-tag works.
+- **Security**: environment-based secrets (`backend/.env` in dev; a root-level `.env` via compose `env_file` in prod; the only secret is `RESEND_API_KEY`), no committed credentials. Pydantic field length limits are enforced (names ≤ 100, email ≤ 254, message ≤ 10 000). Per-IP Nginx rate limiting on both POST endpoints has been restored (429 on excess); Nginx security headers (HSTS, CSP, etc.) are still pending (see AGENTS.md Known Issues).
 - **Maintainability**: TypeScript + oxlint/Prettier on the frontend; type-hinted Python + Pydantic on the backend. **No frontend or backend test suites yet** (Vitest was removed; CI's frontend test step is commented out until a suite is added).
 
 ## 7. Technical Architecture
@@ -134,10 +136,8 @@ visitors subscribe to a newsletter via the Get Involved page.
 ## 9. Future Considerations
 
 - Re-add the **Vite dev proxy for `/api`** so the wired forms work under the standalone dev server (they 404 without it).
-- Fix the **backend Dockerfile** (Python 3.12 base vs required ≥ 3.14, wrong CMD path/port) and the ineffective dev compose volume mount.
 - Restore a **frontend test suite** (CI's `npm run test` step is commented out until then) and add a **backend test suite** (pytest + FastAPI TestClient).
 - Re-introduce **security headers** (HSTS, CSP, etc.) at the Nginx edge; consider app-level rate limiting if the backend is ever exposed directly.
-- Add **Pydantic field length limits** and reduce **PII written to logs** (form data is logged on failures and in mock mode).
-- Wire **`IMAGE_TAG` pinning** into the compose files for reliable rollbacks.
+- Reduce **PII written to logs** (form data is logged on failures and in mock mode).
 - Move the hardcoded Resend segment/template IDs into configuration.
 - Event RSVP/ticketing integration; public startup directory — possible future features, currently out of scope.

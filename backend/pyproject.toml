@@ -8,6 +8,10 @@ dependencies = [
     "fastapi[standard]>=0.141.1",
     "pydantic-settings>=2.15.0",    
     "resend>=2.43.0",
+]
+
+[dependency-groups]
+dev = [
     "ruff>=0.16.6",
 ]
 

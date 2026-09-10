@@ -57,7 +57,7 @@ If you wish to run this project locally for development or review, it is fully c
 
 The local development server will be available at: `http://localhost:16017`
 
-> **Note:** the backend was recently rewritten from Django to FastAPI, and the frontend is now wired to the API via an orval-generated React Query client. The frontend Docker build works, but the backend image build is still broken (stale Python base/version mismatch) — see `AGENTS.md` (Known Issues) for the pending work, or use the standalone dev commands below.
+> **Note:** the backend was recently rewritten from Django to FastAPI, and the frontend is now wired to the API via an orval-generated React Query client. Both Docker images build cleanly — see `AGENTS.md` (Known Issues) for the remaining pending work.
 
 <br/>
 

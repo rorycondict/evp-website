@@ -23,8 +23,8 @@ evp-website/
 │   ├── .env.example          # RESEND_API_KEY only
 │   ├── pyproject.toml        # Python deps (managed with uv); [tool.fastapi] entrypoint = src.main:app
 │   ├── uv.lock
-│   ├── README.md             # Empty — the root README is the source of truth
-│   └── Dockerfile            # python:3.12-slim base (currently broken — see Known Issues)
+│   ├── README.md             # Brief backend overview (root README is the source of truth)
+│   └── Dockerfile            # python:3.14-slim base; WORKDIR /app; uv sync --no-dev
 ├── frontend/                 # React 19 + Vite + TypeScript SPA
 │   ├── public/               # favicon.png, og-preview.png, robots.txt, sitemap.xml, theme-init.js, icons/
 │   ├── src/
@@ -59,11 +59,11 @@ evp-website/
 - **Python ≥ 3.14** (`pyproject.toml` `requires-python`; CI sets up 3.14; the Dockerfile's `python:3.12-slim` base is stale — see Known Issues), managed with **uv**
 - **FastAPI** (`fastapi[standard] >= 0.141.1`) with **Pydantic** validation and **pydantic-settings** for config — the entire app lives in `backend/src/main.py` (no router split yet)
 - **Resend Python SDK** — the only external service. **No database**: both endpoints talk directly to Resend
-- **Ruff** (linter; a project dependency)
+- **Ruff** (linter; a dev dependency via `[dependency-groups]`)
 - **Settings** (`Settings` in `main.py`): reads `backend/.env` via pydantic-settings; the only variable is `RESEND_API_KEY`. When unset, the app runs in **mock mode** — submissions are logged (`[MOCK RESEND]`) and return `204`
 - **Two endpoints** (mounted under `/api/`):
-  - `POST /api/contact-submit` → `204`. Body: `ContactForm {first_name, last_name, email: EmailStr, message}`. With Resend enabled: fetches the members of the hardcoded "Contact Handler" **segment** (`80b4d0a3-01f3-4ab6-ba24-2ba478ec2ea0`) and BCCs them a notification using the Resend template `contact-form-notification` (variables `SUBMITTER_FIRST_NAME`/`SUBMITTER_LAST_NAME`/`SUBMITTER_EMAIL`/`SUBMITTER_MESSAGE`), from `Edinburgh VenturePoint <noreply@mail.edinburghventurepoint.com>`. Returns `502` with a generic detail on any Resend failure; an empty segment logs the form and returns `204`
-  - `POST /api/newsletter-subscribe` → `204`. Body: `NewsletterForm {email: EmailStr, first_name, last_name}`. Creates a Resend contact (`resend.Contacts.create`); `502` on failure
+  - `POST /api/contact-submit` → `204`. Body: `ContactForm {first_name, last_name, email: EmailStr, message}` — all fields length-limited (names ≤ 100, email ≤ 254, message ≤ 10 000). With Resend enabled: fetches the members of the hardcoded "Contact Handler" **segment** (`80b4d0a3-01f3-4ab6-ba24-2ba478ec2ea0`) and BCCs them a notification using the Resend template `contact-form-notification` (variables `SUBMITTER_FIRST_NAME`/`SUBMITTER_LAST_NAME`/`SUBMITTER_EMAIL`/`SUBMITTER_MESSAGE`), from `Edinburgh VenturePoint <noreply@mail.edinburghventurepoint.com>`. Returns `502` with a generic detail on any Resend failure; an empty segment logs the form and returns `204`
+  - `POST /api/newsletter-subscribe` → `204`. Body: `NewsletterForm {email: EmailStr, first_name, last_name}` (same limits, no message). Creates a Resend contact (`resend.Contacts.create`); `502` on failure
 - FastAPI's auto-generated interactive docs are available at `/docs` on the backend directly (not proxied through Nginx)
 - **No auth, no accounts, no roles, no admin panel, no Redis, no tests** — all removed with the rewrite. Rate limiting is enforced at the Nginx edge (see Infrastructure), not in the app itself
 
@@ -89,10 +89,10 @@ evp-website/
 
 ### Infrastructure
 
-- Docker Compose: `frontend` (Nginx on port **16017**, repo-root `nginx.conf` mounted read-only) + `backend` (env_file: `backend/.env` in dev, root `.env` in prod). No Redis service anymore. Both compose files override the backend command to `uv run uvicorn src.main:app --port 8000` (module path now correct), so the backend listens on 8000 inside the compose network
+- Docker Compose: `frontend` (Nginx on port **16017**, repo-root `nginx.conf` mounted read-only) + `backend` (env_file: `backend/.env` in dev, root `.env` in prod). No Redis service anymore. Both compose files override the backend command to run uvicorn on `src.main:app` port 8000 (prod adds `--no-dev` so dev dependencies aren't installed at runtime), so the backend listens on 8000 inside the compose network
 - `nginx.conf` (repo root): SPA fallback (`try_files ... /index.html`), legacy URL redirects (`/investing` → `/contact#scout-programme`, `/meet-the-team` → `/about#meet-the-team`, `/partners` → `/contact#network`), and `/api/` proxying to `http://backend:8000` (path prefix and port both match the backend). **Rate limiting is configured**: per-client-IP `limit_req_zone` — newsletter `2r/m` (burst 3), contact `2r/10m` (burst 3), `nodelay`, status `429` — applied on the two exact endpoint locations. **No security headers** (HSTS, CSP, etc.) in the current config — still pending (see Known Issues)
-- Images pushed to GHCR (repo-scoped): `ghcr.io/rorycondict/evp-website/frontend`, `ghcr.io/rorycondict/evp-website/backend`
-- CI/CD (`.github/workflows/deploy.yml`): on push to `main` → matrix test (frontend lint + build — the `npm run test` step is **commented out** until a suite exists; backend `uv sync` on Python 3.14) → matrix build-and-push to GHCR (tagged `latest` + commit SHA) → SSH deploy. The deploy script starts the rootless Podman socket, sets `DOCKER_HOST`, logs into GHCR with the `GHCR_DEPLOY_TOKEN` PAT, exports `IMAGE_TAG` (the commit's short SHA — currently unused by the compose files, see Known Issues), runs `docker-compose pull` + `up -d --remove-orphans`, then `docker image prune -f`. On PRs: test + build only (no push/deploy). GHA layer caching (`type=gha`) used for faster builds
+- Images pushed to GHCR (repo-scoped): `ghcr.io/rorycondict/evp-website/frontend`, `ghcr.io/rorycondict/evp-website/backend`. Both compose files reference `...:${IMAGE_TAG:-latest}`, so the deploy script's `IMAGE_TAG` export pins the exact commit SHA (rollback by re-exporting an older SHA tag)
+- CI/CD (`.github/workflows/deploy.yml`): on push to `main` → matrix test (frontend lint + build — the `npm run test` step is **commented out** until a suite exists; backend `uv sync` on Python 3.14) → matrix build-and-push to GHCR (tagged `latest` + commit SHA) → SSH deploy. The deploy script starts the rootless Podman socket, sets `DOCKER_HOST`, logs into GHCR with the `GHCR_DEPLOY_TOKEN` PAT, exports `IMAGE_TAG` (the commit's short SHA, consumed by the compose files' `${IMAGE_TAG:-latest}` image references), runs `docker-compose pull` + `up -d --remove-orphans`, then `docker image prune -f`. On PRs: test + build only (no push/deploy). GHA layer caching (`type=gha`) used for faster builds
 - CI uses **Node 24** for frontend (matching the `node:24-alpine` Docker build; `frontend/package.json` no longer declares an `engines` field) and **Python 3.14** for backend
 - Deploy secrets: `SERVER_HOST`, `SERVER_USER`, `SERVER_SSH_KEY`, `GHCR_DEPLOY_TOKEN`
 
@@ -106,7 +106,7 @@ docker compose up --build
 ```
 
 - Site: http://localhost:16017
-- **Note:** the backend Docker build is currently broken mid-rewrite (the frontend image builds fine — see Known Issues) — prefer the standalone commands below until it's fixed
+- Both images build cleanly, and the dev compose mount (`./backend` → `/app`) now matches the image `WORKDIR`, so the backend `--reload` picks up source edits
 
 ### Backend (standalone)
 
@@ -159,16 +159,16 @@ Findings from the 2026-09 FastAPI rewrite review (2026-09-09), updated after the
 - **Frontend API wiring landed (2026-09-10)** — both forms call the API through an orval-generated React Query + axios client (`src/api/generated.ts`, generated from `backend/openapi.json` via `backend/scripts/export_openapi.py` + `frontend/orval.config.ts`; regenerate with `npm run codegen`). Forms show zod email errors, pending/success states, and a specific message for `429`.
 - **Nginx rate limiting restored** — per-IP `limit_req` on both POST endpoints (newsletter `2r/m`, contact `2r/10m`, burst 3 `nodelay`, `429`); the dead `proxy_set_header` lines in `location /` were removed.
 - **CI frontend test step disabled** — the failing `npm run test` step is commented out in `deploy.yml`; CI is green again (still no test suite — see Dead/stale code).
+- **Backend Dockerfile fixed (2026-09-10)** — `python:3.14-slim` base, `WORKDIR /app` (matching the dev compose mount, so `--reload` now takes effect), `uv sync --frozen --no-dev`, and a standalone-safe CMD (`uv run --no-dev uvicorn src.main:app --host 0.0.0.0 --port 8000 --proxy-headers`). Image build verified.
+- **`IMAGE_TAG` pinning wired (2026-09-10)** — both compose files now use `image: ...:${IMAGE_TAG:-latest}`, so deploys pull the exact commit SHA and rollback-by-tag works.
+- **`ruff` moved to a dev dependency** (`[dependency-groups]` in `backend/pyproject.toml`); the production image is built with `--no-dev` and the prod compose command runs `uv run --no-dev`.
+- **`backend/README.md` populated** with a brief backend overview (the root README remains the source of truth).
+- **Field length limits added (2026-09-10)** — Pydantic `Field` constraints on both forms (names ≤ 100, email ≤ 254, message ≤ 10 000); the OpenAPI spec and orval client were regenerated to match.
+- **Minor cleanups (2026-09-10)** — orval config key renamed `petstore` → `evp`; `frontend/Dockerfile` now declares `EXPOSE 16017` (matching the Nginx listener); both forms submit the trimmed, zod-validated email.
 
 ### Broken / pending wiring (the next tasks)
 
 - **Vite dev proxy for `/api` is still missing**: the wired forms POST to relative `/api/...` URLs, which work in production (same-origin behind Nginx) but **404 under the standalone Vite dev server**. Re-add a `server.proxy` entry for `/api` → `http://localhost:8000` (or develop via `docker compose up`).
-- **Backend Dockerfile is broken**: the base image is `python:3.12-slim` but `pyproject.toml` requires **Python ≥ 3.14** (so `uv sync --frozen` fails); the CMD references `app/main.py` (the app is `src/main.py`) and port **80** (compose overrides it to 8000, but standalone use breaks); and `WORKDIR /code` doesn't match the dev compose volume mount at `/app`.
-- **Compose dev backend volume mount is ineffective**: `docker-compose.yml` mounts `./backend` to `/app`, but the image's `WORKDIR` is `/code` (where the baked-in code lives) — the `--reload` mount never takes effect (the `/app/.venv` anonymous volume is equally mismatched). Align the mount with the WORKDIR (or vice versa).
-
-### CI/CD
-
-- **`IMAGE_TAG` pinning is not wired**: the deploy script exports `IMAGE_TAG` (commit short SHA), but both compose files hardcode `image: ...:latest` — the variable is unused, so deploys always pull `:latest` and rollback-by-tag doesn't work. Wire it in (e.g. `image: ghcr.io/rorycondict/evp-website/${SERVICE}:${IMAGE_TAG:-latest}`) or remove the export.
 
 ### Security (partially restored; remaining gaps)
 
@@ -176,17 +176,14 @@ Findings from the 2026-09 FastAPI rewrite review (2026-09-09), updated after the
 - **No security headers**: `nginx.conf` still sets no HSTS, CSP, `X-Frame-Options`, `X-Content-Type-Options`, `Referrer-Policy`, or `Permissions-Policy`.
 - **No CORS configuration** on the FastAPI app — fine while everything is same-origin behind the Nginx proxy, but needs thought if the backend is ever exposed directly.
 - **Hardcoded Resend IDs**: the Contact Handler segment ID and the `contact-form-notification` template ID are hardcoded in `src/main.py` — candidates for settings/env vars.
-- **No field length limits**: the Pydantic forms have no `max_length` constraints — request bodies are only bounded by Nginx's default 1 MB `client_max_body_size`, and the full `message` is forwarded into the Resend template. Add `Field(max_length=...)` constraints.
 - **PII in logs**: on Resend failures (and in mock mode) the full form (names, email, message) is written to the logs via `logger.error(form)` / `logger.info(...)` — consider logging less or redacting.
 
 ### Dead / stale code & tooling
 
-- **`backend/README.md` is empty** (yet referenced by `pyproject.toml`'s `readme`); the root README is the source of truth.
-- **`ruff` is a runtime dependency** in `backend/pyproject.toml` — it belongs in a dev dependency group so it isn't baked into the production image.
 - **GitHub Actions are pinned by major tag** (not commit SHA) — supply-chain hardening opportunity.
 - **`resend.api_key` is set at import time and re-assigned inside the contact handler** — harmless but redundant; initialise once.
 - **No test suites** — neither frontend (Vitest removed; CI step commented out) nor backend (pytest/TestClient) has any tests.
-- **Cosmetic**: the orval config key in `frontend/orval.config.ts` is still named `petstore` (template leftover); `frontend/Dockerfile` declares `EXPOSE 80` while Nginx listens on 16017 (informational only, but misleading); `ScoutApplicationsSection.tsx` carries an intentional `TODO: add URL when applications open`.
+- **Cosmetic**: `ScoutApplicationsSection.tsx` carries an intentional `TODO: add URL when applications open`.
 
 ## Frontend code review findings (2026-09-10) — RESOLVED
 

@@ -74,19 +74,26 @@
         "properties": {
           "first_name": {
             "type": "string",
+            "maxLength": 100,
+            "minLength": 1,
             "title": "First Name"
           },
           "last_name": {
             "type": "string",
+            "maxLength": 100,
+            "minLength": 1,
             "title": "Last Name"
           },
           "email": {
             "type": "string",
+            "maxLength": 254,
             "format": "email",
             "title": "Email"
           },
           "message": {
             "type": "string",
+            "maxLength": 10000,
+            "minLength": 1,
             "title": "Message"
           }
         },
@@ -116,14 +123,19 @@
         "properties": {
           "first_name": {
             "type": "string",
+            "maxLength": 100,
+            "minLength": 1,
             "title": "First Name"
           },
           "last_name": {
             "type": "string",
+            "maxLength": 100,
+            "minLength": 1,
             "title": "Last Name"
           },
           "email": {
             "type": "string",
+            "maxLength": 254,
             "format": "email",
             "title": "Email"
           }

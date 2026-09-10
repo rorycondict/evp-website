@@ -202,6 +202,10 @@ dependencies = [
     { name = "fastapi", extra = ["standard"] },
     { name = "pydantic-settings" },
     { name = "resend" },
+]
+
+[package.dev-dependencies]
+dev = [
     { name = "ruff" },
 ]
 
@@ -210,8 +214,10 @@ requires-dist = [
     { name = "fastapi", extras = ["standard"], specifier = ">=0.141.1" },
     { name = "pydantic-settings", specifier = ">=2.15.0" },
     { name = "resend", specifier = ">=2.43.0" },
-    { name = "ruff", specifier = ">=0.16.6" },
 ]
+
+[package.metadata.requires-dev]
+dev = [{ name = "ruff", specifier = ">=0.16.6" }]
 
 [[package]]
 name = "fastapi"

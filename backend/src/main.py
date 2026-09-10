@@ -2,7 +2,7 @@ import logging
 
 import resend
 from fastapi import FastAPI, HTTPException
-from pydantic import BaseModel, EmailStr
+from pydantic import BaseModel, EmailStr, Field
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 logger = logging.getLogger(__name__)
@@ -32,16 +32,16 @@ app = FastAPI()
 
 
 class ContactForm(BaseModel):
-    first_name: str
-    last_name: str
-    email: EmailStr
-    message: str
+    first_name: str = Field(min_length=1, max_length=100)
+    last_name: str = Field(min_length=1, max_length=100)
+    email: EmailStr = Field(max_length=254)
+    message: str = Field(min_length=1, max_length=10000)
 
 
 class NewsletterForm(BaseModel):
-    first_name: str
-    last_name: str
-    email: EmailStr
+    first_name: str = Field(min_length=1, max_length=100)
+    last_name: str = Field(min_length=1, max_length=100)
+    email: EmailStr = Field(max_length=254)
 
 
 @app.post("/api/contact-submit", status_code=204, operation_id="submitContactForm")

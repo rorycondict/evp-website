@@ -66,7 +66,7 @@ export function NewsletterSection() {
 			data: {
 				first_name: firstName,
 				last_name: lastName,
-				email,
+				email: parsedEmail.data,
 			},
 		});
 	}

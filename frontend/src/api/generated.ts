@@ -22,9 +22,22 @@ import type {
 } from 'axios';
 
 export interface ContactForm {
+  /**
+     * @minLength 1
+     * @maxLength 100
+     */
   first_name: string;
+  /**
+     * @minLength 1
+     * @maxLength 100
+     */
   last_name: string;
+  /** @maxLength 254 */
   email: string;
+  /**
+     * @minLength 1
+     * @maxLength 10000
+     */
   message: string;
 }
 
@@ -43,8 +56,17 @@ export interface HTTPValidationError {
 }
 
 export interface NewsletterForm {
+  /**
+     * @minLength 1
+     * @maxLength 100
+     */
   first_name: string;
+  /**
+     * @minLength 1
+     * @maxLength 100
+     */
   last_name: string;
+  /** @maxLength 254 */
   email: string;
 }
 
