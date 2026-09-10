@@ -108,7 +108,7 @@ visitors subscribe to a newsletter via the Get Involved page.
    `429` rate-limit responses surface a friendly message).
 7. `robots.txt` and `sitemap.xml` shall be served from `frontend/public/`.
 8. The two POST endpoints shall be rate-limited at the Nginx edge, per client IP
-   (**implemented** — newsletter `2r/m`, contact `2r/10m`, burst 3, `429` on excess).
+   (**implemented** — both endpoints `2r/m`, burst 3, `429` on excess).
 
 ## 6. Non-Functional Requirements
 
