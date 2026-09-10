@@ -2,6 +2,8 @@ import { motion } from 'framer-motion';
 import { useState } from 'react';
 import { z } from 'zod';
 
+import { useSubscribeToNewsletter } from '@/api/generated';
+
 import {
 	AnimatedCheckbox,
 	buttonVariants,
@@ -10,8 +12,6 @@ import {
 	Input,
 	TextLink,
 } from '@/components/ui';
-
-type FormState = 'idle' | 'submitting' | 'success' | 'error';
 
 interface FormFields {
 	firstName: string;
@@ -23,51 +23,55 @@ const INITIAL_FIELDS: FormFields = { firstName: '', lastName: '', email: '' };
 
 const emailSchema = z.email({ message: 'Please enter a valid email address.' });
 
-/**
- * Newsletter sign-up section: optional first/last name, required email and a
- * consent checkbox linking to the privacy policy and terms of service. Will
- * post to /newsletter-subscribe once the API layer lands (see TODO in
- * handleSubmit).
- */
 export function NewsletterSection() {
 	const [fields, setFields] = useState<FormFields>(INITIAL_FIELDS);
 	const [consent, setConsent] = useState(false);
-	const [status, setStatus] = useState<FormState>('idle');
 	const [emailError, setEmailError] = useState<string | null>(null);
+
+	const {
+		mutate,
+		isPending,
+		isSuccess,
+		isError,
+		reset: resetMutation,
+	} = useSubscribeToNewsletter({
+		mutation: {
+			onSuccess: () => {
+				setFields(INITIAL_FIELDS);
+			},
+		},
+	});
 
 	function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
 		setFields((prev) => ({ ...prev, [e.target.name]: e.target.value }));
 		if (e.target.name === 'email') setEmailError(null);
-		// Any edit after a successful submit returns the form to its idle state.
-		if (status === 'success') setStatus('idle');
+
+		if (isSuccess || isError) resetMutation();
 	}
 
 	async function handleSubmit(e: React.SubmitEvent<HTMLFormElement>) {
 		e.preventDefault();
 
-		if (!fields.email.trim() || !consent) return;
+		const { firstName, lastName, email } = fields;
+		if (!firstName.trim() || !lastName.trim() || !email.trim() || !consent) return;
 
-		const email = emailSchema.safeParse(fields.email.trim());
-		if (!email.success) {
-			setEmailError(email.error.issues[0]?.message ?? 'Please enter a valid email address.');
+		const parsedEmail = emailSchema.safeParse(email.trim());
+		if (!parsedEmail.success) {
+			setEmailError(parsedEmail.error.issues[0]?.message ?? 'Please enter a valid email address.');
 			return;
 		}
 
-		setStatus('submitting');
-
-		try {
-			// TODO: POST to /newsletter-subscribe once the API layer lands.
-			setStatus('success');
-			setFields(INITIAL_FIELDS);
-			setConsent(false);
-		} catch {
-			setStatus('error');
-		}
+		mutate({
+			data: {
+				first_name: firstName,
+				last_name: lastName,
+				email,
+			},
+		});
 	}
 
-	const isSubmitting = status === 'submitting';
-	const isSuccess = status === 'success';
-	const canSubmit = !!fields.email.trim() && consent;
+	const canSubmit =
+		!!fields.firstName.trim() && !!fields.lastName.trim() && !!fields.email.trim() && consent;
 
 	return (
 		<FormSection
@@ -86,7 +90,7 @@ export function NewsletterSection() {
 							value={fields.firstName}
 							onChange={handleChange}
 							placeholder="John"
-							disabled={isSubmitting}
+							disabled={isPending}
 							size="md"
 						/>
 					</FormField>
@@ -99,7 +103,7 @@ export function NewsletterSection() {
 							value={fields.lastName}
 							onChange={handleChange}
 							placeholder="Doe"
-							disabled={isSubmitting}
+							disabled={isPending}
 							size="md"
 						/>
 					</FormField>
@@ -116,7 +120,7 @@ export function NewsletterSection() {
 							value={fields.email}
 							onChange={handleChange}
 							placeholder="you@example.com"
-							disabled={isSubmitting}
+							disabled={isPending}
 							size="md"
 						/>
 						{emailError && (
@@ -134,7 +138,7 @@ export function NewsletterSection() {
 						ariaLabel="Consent to receiving emails from EVP"
 						checked={consent}
 						onChange={setConsent}
-						disabled={isSubmitting}
+						disabled={isPending}
 					/>
 					<p className="text-sm leading-relaxed">
 						I have read and agree to the <TextLink to="/privacy">privacy policy</TextLink> and{' '}
@@ -146,10 +150,10 @@ export function NewsletterSection() {
 				{/* Submit */}
 				<button
 					type="submit"
-					disabled={isSubmitting || !canSubmit}
+					disabled={isPending || !canSubmit}
 					className={buttonVariants({ intent: 'primary', size: 'md', className: 'mt-2 w-full' })}
 				>
-					{isSubmitting ? 'subscribing...' : isSuccess ? 'subscribed!' : 'subscribe'}
+					{isPending ? 'subscribing...' : isSuccess ? 'subscribed!' : 'subscribe'}
 				</button>
 
 				{/* Feedback messages */}
@@ -162,7 +166,7 @@ export function NewsletterSection() {
 						You're on the list - keep an eye on your inbox.
 					</motion.p>
 				)}
-				{status === 'error' && (
+				{isError && (
 					<motion.p
 						initial={{ opacity: 0, y: 8 }}
 						animate={{ opacity: 1, y: 0 }}

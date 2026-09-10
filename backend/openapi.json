@@ -8,7 +8,7 @@
     "/api/contact-submit": {
       "post": {
         "summary": "Submit Contact Form",
-        "operationId": "submit_contact_form_api_contact_submit_post",
+        "operationId": "submitContactForm",
         "requestBody": {
           "content": {
             "application/json": {
@@ -39,7 +39,7 @@
     "/api/newsletter-subscribe": {
       "post": {
         "summary": "Subscribe To Newsletter",
-        "operationId": "subscribe_to_newsletter_api_newsletter_subscribe_post",
+        "operationId": "subscribeToNewsletter",
         "requestBody": {
           "content": {
             "application/json": {

@@ -44,7 +44,7 @@ class NewsletterForm(BaseModel):
     email: EmailStr
 
 
-@app.post("/api/contact-submit", status_code=204)
+@app.post("/api/contact-submit", status_code=204, operation_id="submitContactForm")
 async def submit_contact_form(form: ContactForm):
     if not settings.resend_api_key:
         logger.info(f"[MOCK RESEND] Contact form submitted: {form}")
@@ -104,7 +104,9 @@ async def submit_contact_form(form: ContactForm):
         )
 
 
-@app.post("/api/newsletter-subscribe", status_code=204)
+@app.post(
+    "/api/newsletter-subscribe", status_code=204, operation_id="subscribeToNewsletter"
+)
 async def subscribe_to_newsletter(form: NewsletterForm):
     if not settings.resend_api_key:
         logger.info(f"[MOCK RESEND] New subscriber: {form}")

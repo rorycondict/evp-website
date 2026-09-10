@@ -5,7 +5,7 @@ export default defineConfig({
 			mode: 'single',
 			target: './src/api/generated.ts',
 			client: 'react-query',
-			httpClient: 'fetch',
+			httpClient: 'axios',
 		},
 		input: {
 			target: '../backend/openapi.json',

@@ -4,8 +4,7 @@ import { z } from 'zod';
 
 import { buttonVariants, FormField, FormSection, Input, inputVariants } from '@/components/ui';
 import { cn } from '@/utils/cn';
-
-type FormState = 'idle' | 'submitting' | 'success' | 'error';
+import { useSubmitContactForm } from '@/api/generated';
 
 interface FormFields {
 	firstName: string;
@@ -18,24 +17,33 @@ const INITIAL_FIELDS: FormFields = { firstName: '', lastName: '', email: '', mes
 
 const emailSchema = z.email({ message: 'Please enter a valid email address.' });
 
-/**
- * Contact form section: first/last name, email and message fields in a
- * centered glass-box section. Rendered on the Connect page; posts to
- * /contact-submit once the API layer lands (see TODO in handleSubmit).
- */
 export function ContactFormSection() {
 	const [fields, setFields] = useState<FormFields>(INITIAL_FIELDS);
-	const [status, setStatus] = useState<FormState>('idle');
 	const [emailError, setEmailError] = useState<string | null>(null);
+
+	const {
+		mutate,
+		isPending,
+		isSuccess,
+		isError,
+		reset: resetMutation,
+	} = useSubmitContactForm({
+		mutation: {
+			onSuccess: () => {
+				setFields(INITIAL_FIELDS);
+			},
+		},
+	});
 
 	function handleChange(e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) {
 		setFields((prev) => ({ ...prev, [e.target.name]: e.target.value }));
 		if (e.target.name === 'email') setEmailError(null);
-		// Any edit after a successful submit returns the form to its idle state.
-		if (status === 'success') setStatus('idle');
+
+		// If the user starts typing after a previous submission, reset the mutation state
+		if (isSuccess || isError) resetMutation();
 	}
 
-	async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+	function handleSubmit(e: React.SubmitEvent<HTMLFormElement>) {
 		e.preventDefault();
 
 		const { firstName, lastName, email, message } = fields;
@@ -47,19 +55,16 @@ export function ContactFormSection() {
 			return;
 		}
 
-		setStatus('submitting');
-
-		try {
-			// TODO: POST to /contact-submit once the API layer lands.
-			setStatus('success');
-			setFields(INITIAL_FIELDS);
-		} catch {
-			setStatus('error');
-		}
+		mutate({
+			data: {
+				first_name: firstName,
+				last_name: lastName,
+				email,
+				message,
+			},
+		});
 	}
 
-	const isSubmitting = status === 'submitting';
-	const isSuccess = status === 'success';
 	const isComplete =
 		!!fields.firstName.trim() &&
 		!!fields.lastName.trim() &&
@@ -73,7 +78,6 @@ export function ContactFormSection() {
 			subtitle="Fill in the form below and we'll get back to you as soon as possible."
 		>
 			<form onSubmit={handleSubmit} noValidate className="flex w-full flex-col gap-4">
-				{/* Name — first and last side by side */}
 				<div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
 					<FormField id="first-name-field" label="first name">
 						<Input
@@ -84,7 +88,7 @@ export function ContactFormSection() {
 							value={fields.firstName}
 							onChange={handleChange}
 							placeholder="Jane"
-							disabled={isSubmitting}
+							disabled={isPending}
 							size="md"
 						/>
 					</FormField>
@@ -97,7 +101,7 @@ export function ContactFormSection() {
 							value={fields.lastName}
 							onChange={handleChange}
 							placeholder="Doe"
-							disabled={isSubmitting}
+							disabled={isPending}
 							size="md"
 						/>
 					</FormField>
@@ -114,7 +118,7 @@ export function ContactFormSection() {
 							value={fields.email}
 							onChange={handleChange}
 							placeholder="you@example.com"
-							disabled={isSubmitting}
+							disabled={isPending}
 							size="md"
 						/>
 						{emailError && (
@@ -133,17 +137,17 @@ export function ContactFormSection() {
 						value={fields.message}
 						onChange={handleChange}
 						placeholder="What can EVP do for you?"
-						disabled={isSubmitting}
+						disabled={isPending}
 						className={cn(inputVariants({ size: 'md' }), 'resize-none')}
 					/>
 				</FormField>
 				{/* Submit */}
 				<button
 					type="submit"
-					disabled={isSubmitting || !isComplete}
+					disabled={isPending || !isComplete}
 					className={buttonVariants({ intent: 'primary', size: 'md', className: 'mt-2 w-full' })}
 				>
-					{isSubmitting ? 'sending...' : isSuccess ? 'sent!' : 'send message'}
+					{isPending ? 'sending...' : isSuccess ? 'sent!' : 'send message'}
 				</button>
 
 				{/* Feedback messages */}
@@ -156,13 +160,13 @@ export function ContactFormSection() {
 						Thanks for reaching out - we'll be in touch soon.
 					</motion.p>
 				)}
-				{status === 'error' && (
+				{isError && (
 					<motion.p
 						initial={{ opacity: 0, y: 8 }}
 						animate={{ opacity: 1, y: 0 }}
 						className="text-error text-center text-lg md:text-left"
 					>
-						Something went wrong. Please try again or email us directly.
+						Something went wrong. Please try again later.
 					</motion.p>
 				)}
 			</form>

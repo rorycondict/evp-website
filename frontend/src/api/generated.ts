@@ -9,9 +9,17 @@ import {
 } from '@tanstack/react-query';
 import type {
   MutationFunction,
+  QueryClient,
   UseMutationOptions,
   UseMutationResult
 } from '@tanstack/react-query';
+
+import * as axios from 'axios';
+import type {
+  AxiosError,
+  AxiosRequestConfig,
+  AxiosResponse
+} from 'axios';
 
 export interface ContactForm {
   first_name: string;
@@ -40,92 +48,43 @@ export interface NewsletterForm {
   email: string;
 }
 
-export type submitContactFormApiContactSubmitPostResponse204 = {
-  data: void
-  status: 204
-}
-
-export type submitContactFormApiContactSubmitPostResponse422 = {
-  data: HTTPValidationError
-  status: 422
-}
-
-export type submitContactFormApiContactSubmitPostResponseSuccess = (submitContactFormApiContactSubmitPostResponse204) & {
-  headers: Headers;
-};
-export type submitContactFormApiContactSubmitPostResponseError = (submitContactFormApiContactSubmitPostResponse422) & {
-  headers: Headers;
-};
-
-export type submitContactFormApiContactSubmitPostResponse = (submitContactFormApiContactSubmitPostResponseSuccess | submitContactFormApiContactSubmitPostResponseError)
-
-export const getSubmitContactFormApiContactSubmitPostUrl = () => {
-
-
-
-
-  return `/api/contact-submit`
-}
-
 /**
  * @summary Submit Contact Form
  */
-export const submitContactFormApiContactSubmitPost = async (contactForm: ContactForm, options?: RequestInit): Promise<submitContactFormApiContactSubmitPostResponse> => {
+export const submitContactForm = (
+    contactForm: ContactForm, options?: AxiosRequestConfig
+ ): Promise<AxiosResponse<void>> => {
 
-    const getHeaders = (h?: NonNullable<RequestInit['headers']>): Record<string, string | readonly string[]> => {
-    if (!h) return {};
-    if (h instanceof Headers) return Object.fromEntries(h.entries());
-    if (Symbol.iterator in h) {
-      return Object.fromEntries(
-        Array.from(h as Iterable<Iterable<string>>, (entry) => Array.from(entry) as [string, string]),
-      );
-    }
-    const headers: Record<string, string | readonly string[]> = {};
-    for (const [name, value] of Object.entries<string | readonly string[] | undefined>(h)) {
-      if (value !== undefined) headers[name] = value;
-    }
-    return headers;
-  };
-const res = await fetch(getSubmitContactFormApiContactSubmitPostUrl(),
-  {
-    ...options,
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json', ...getHeaders(options?.headers) },
-    body: JSON.stringify(contactForm)
+
+    return axios.default.post(
+      `/api/contact-submit`,
+      contactForm,options
+    );
   }
-)
-
-
-  const body = [204, 205, 304].includes(res.status) ? null : await res.text();
-
-  const data: submitContactFormApiContactSubmitPostResponse['data'] = body ? JSON.parse(body) : undefined
-  return { data, status: res.status, headers: res.headers } as submitContactFormApiContactSubmitPostResponse
-}
 
 
 
 
+export const getSubmitContactFormMutationKey = () => ['submitContactForm'] as const;
 
-export const getSubmitContactFormApiContactSubmitPostMutationKey = () => ['submitContactFormApiContactSubmitPost'] as const;
+export const getSubmitContactFormMutationOptions = <TError = AxiosError<HTTPValidationError>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof submitContactForm>>, TError,SubmitContactFormMutationVariables, TContext>, axios?: AxiosRequestConfig}
+): UseMutationOptions<Awaited<ReturnType<typeof submitContactForm>>, TError,SubmitContactFormMutationVariables, TContext> => {
 
-export const getSubmitContactFormApiContactSubmitPostMutationOptions = <TError = HTTPValidationError,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof submitContactFormApiContactSubmitPost>>, TError,SubmitContactFormApiContactSubmitPostMutationVariables, TContext>, fetch?: RequestInit}
-): UseMutationOptions<Awaited<ReturnType<typeof submitContactFormApiContactSubmitPost>>, TError,SubmitContactFormApiContactSubmitPostMutationVariables, TContext> => {
-
-const mutationKey = getSubmitContactFormApiContactSubmitPostMutationKey();
-const {mutation: mutationOptions, fetch: fetchOptions} = options ?
+const mutationKey = getSubmitContactFormMutationKey();
+const {mutation: mutationOptions, axios: axiosOptions} = options ?
       options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
       options
       : {...options, mutation: {...options.mutation, mutationKey}}
-      : {mutation: { mutationKey, }, fetch: undefined};
+      : {mutation: { mutationKey, }, axios: undefined};
 
 
 
 
-      const mutationFn: MutationFunction<Awaited<ReturnType<typeof submitContactFormApiContactSubmitPost>>, SubmitContactFormApiContactSubmitPostMutationVariables> = (props) => {
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof submitContactForm>>, SubmitContactFormMutationVariables> = (props) => {
           const {data} = props ?? {};
 
-          return  submitContactFormApiContactSubmitPost(data,fetchOptions)
+          return  submitContactForm(data,axiosOptions)
         }
 
 
@@ -135,111 +94,62 @@ const {mutation: mutationOptions, fetch: fetchOptions} = options ?
 
   return  { mutationFn, ...mutationOptions }}
 
-    export type SubmitContactFormApiContactSubmitPostMutationResult = NonNullable<Awaited<ReturnType<typeof submitContactFormApiContactSubmitPost>>>
-    export type SubmitContactFormApiContactSubmitPostMutationBody = ContactForm
-    export type SubmitContactFormApiContactSubmitPostMutationError = HTTPValidationError
-    export type SubmitContactFormApiContactSubmitPostMutationVariables = {data: ContactForm}
+    export type SubmitContactFormMutationResult = NonNullable<Awaited<ReturnType<typeof submitContactForm>>>
+    export type SubmitContactFormMutationBody = ContactForm
+    export type SubmitContactFormMutationError = AxiosError<HTTPValidationError>
+    export type SubmitContactFormMutationVariables = {data: ContactForm}
 
     /**
  * @summary Submit Contact Form
  */
-export const useSubmitContactFormApiContactSubmitPost = <TError = HTTPValidationError,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof submitContactFormApiContactSubmitPost>>, TError,SubmitContactFormApiContactSubmitPostMutationVariables, TContext>, fetch?: RequestInit}
- ): UseMutationResult<
-        Awaited<ReturnType<typeof submitContactFormApiContactSubmitPost>>,
+export const useSubmitContactForm = <TError = AxiosError<HTTPValidationError>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof submitContactForm>>, TError,SubmitContactFormMutationVariables, TContext>, axios?: AxiosRequestConfig}
+ , queryClient?: QueryClient): UseMutationResult<
+        Awaited<ReturnType<typeof submitContactForm>>,
         TError,
-        SubmitContactFormApiContactSubmitPostMutationVariables,
+        SubmitContactFormMutationVariables,
         TContext
       > => {
-      return useMutation(getSubmitContactFormApiContactSubmitPostMutationOptions(options));
+      return useMutation(getSubmitContactFormMutationOptions(options), queryClient);
     }
-
-export type subscribeToNewsletterApiNewsletterSubscribePostResponse204 = {
-  data: void
-  status: 204
-}
-
-export type subscribeToNewsletterApiNewsletterSubscribePostResponse422 = {
-  data: HTTPValidationError
-  status: 422
-}
-
-export type subscribeToNewsletterApiNewsletterSubscribePostResponseSuccess = (subscribeToNewsletterApiNewsletterSubscribePostResponse204) & {
-  headers: Headers;
-};
-export type subscribeToNewsletterApiNewsletterSubscribePostResponseError = (subscribeToNewsletterApiNewsletterSubscribePostResponse422) & {
-  headers: Headers;
-};
-
-export type subscribeToNewsletterApiNewsletterSubscribePostResponse = (subscribeToNewsletterApiNewsletterSubscribePostResponseSuccess | subscribeToNewsletterApiNewsletterSubscribePostResponseError)
-
-export const getSubscribeToNewsletterApiNewsletterSubscribePostUrl = () => {
-
-
-
-
-  return `/api/newsletter-subscribe`
-}
 
 /**
  * @summary Subscribe To Newsletter
  */
-export const subscribeToNewsletterApiNewsletterSubscribePost = async (newsletterForm: NewsletterForm, options?: RequestInit): Promise<subscribeToNewsletterApiNewsletterSubscribePostResponse> => {
+export const subscribeToNewsletter = (
+    newsletterForm: NewsletterForm, options?: AxiosRequestConfig
+ ): Promise<AxiosResponse<void>> => {
 
-    const getHeaders = (h?: NonNullable<RequestInit['headers']>): Record<string, string | readonly string[]> => {
-    if (!h) return {};
-    if (h instanceof Headers) return Object.fromEntries(h.entries());
-    if (Symbol.iterator in h) {
-      return Object.fromEntries(
-        Array.from(h as Iterable<Iterable<string>>, (entry) => Array.from(entry) as [string, string]),
-      );
-    }
-    const headers: Record<string, string | readonly string[]> = {};
-    for (const [name, value] of Object.entries<string | readonly string[] | undefined>(h)) {
-      if (value !== undefined) headers[name] = value;
-    }
-    return headers;
-  };
-const res = await fetch(getSubscribeToNewsletterApiNewsletterSubscribePostUrl(),
-  {
-    ...options,
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json', ...getHeaders(options?.headers) },
-    body: JSON.stringify(newsletterForm)
+
+    return axios.default.post(
+      `/api/newsletter-subscribe`,
+      newsletterForm,options
+    );
   }
-)
-
-
-  const body = [204, 205, 304].includes(res.status) ? null : await res.text();
-
-  const data: subscribeToNewsletterApiNewsletterSubscribePostResponse['data'] = body ? JSON.parse(body) : undefined
-  return { data, status: res.status, headers: res.headers } as subscribeToNewsletterApiNewsletterSubscribePostResponse
-}
 
 
 
 
+export const getSubscribeToNewsletterMutationKey = () => ['subscribeToNewsletter'] as const;
 
-export const getSubscribeToNewsletterApiNewsletterSubscribePostMutationKey = () => ['subscribeToNewsletterApiNewsletterSubscribePost'] as const;
+export const getSubscribeToNewsletterMutationOptions = <TError = AxiosError<HTTPValidationError>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof subscribeToNewsletter>>, TError,SubscribeToNewsletterMutationVariables, TContext>, axios?: AxiosRequestConfig}
+): UseMutationOptions<Awaited<ReturnType<typeof subscribeToNewsletter>>, TError,SubscribeToNewsletterMutationVariables, TContext> => {
 
-export const getSubscribeToNewsletterApiNewsletterSubscribePostMutationOptions = <TError = HTTPValidationError,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof subscribeToNewsletterApiNewsletterSubscribePost>>, TError,SubscribeToNewsletterApiNewsletterSubscribePostMutationVariables, TContext>, fetch?: RequestInit}
-): UseMutationOptions<Awaited<ReturnType<typeof subscribeToNewsletterApiNewsletterSubscribePost>>, TError,SubscribeToNewsletterApiNewsletterSubscribePostMutationVariables, TContext> => {
-
-const mutationKey = getSubscribeToNewsletterApiNewsletterSubscribePostMutationKey();
-const {mutation: mutationOptions, fetch: fetchOptions} = options ?
+const mutationKey = getSubscribeToNewsletterMutationKey();
+const {mutation: mutationOptions, axios: axiosOptions} = options ?
       options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
       options
       : {...options, mutation: {...options.mutation, mutationKey}}
-      : {mutation: { mutationKey, }, fetch: undefined};
+      : {mutation: { mutationKey, }, axios: undefined};
 
 
 
 
-      const mutationFn: MutationFunction<Awaited<ReturnType<typeof subscribeToNewsletterApiNewsletterSubscribePost>>, SubscribeToNewsletterApiNewsletterSubscribePostMutationVariables> = (props) => {
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof subscribeToNewsletter>>, SubscribeToNewsletterMutationVariables> = (props) => {
           const {data} = props ?? {};
 
-          return  subscribeToNewsletterApiNewsletterSubscribePost(data,fetchOptions)
+          return  subscribeToNewsletter(data,axiosOptions)
         }
 
 
@@ -249,21 +159,21 @@ const {mutation: mutationOptions, fetch: fetchOptions} = options ?
 
   return  { mutationFn, ...mutationOptions }}
 
-    export type SubscribeToNewsletterApiNewsletterSubscribePostMutationResult = NonNullable<Awaited<ReturnType<typeof subscribeToNewsletterApiNewsletterSubscribePost>>>
-    export type SubscribeToNewsletterApiNewsletterSubscribePostMutationBody = NewsletterForm
-    export type SubscribeToNewsletterApiNewsletterSubscribePostMutationError = HTTPValidationError
-    export type SubscribeToNewsletterApiNewsletterSubscribePostMutationVariables = {data: NewsletterForm}
+    export type SubscribeToNewsletterMutationResult = NonNullable<Awaited<ReturnType<typeof subscribeToNewsletter>>>
+    export type SubscribeToNewsletterMutationBody = NewsletterForm
+    export type SubscribeToNewsletterMutationError = AxiosError<HTTPValidationError>
+    export type SubscribeToNewsletterMutationVariables = {data: NewsletterForm}
 
     /**
  * @summary Subscribe To Newsletter
  */
-export const useSubscribeToNewsletterApiNewsletterSubscribePost = <TError = HTTPValidationError,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof subscribeToNewsletterApiNewsletterSubscribePost>>, TError,SubscribeToNewsletterApiNewsletterSubscribePostMutationVariables, TContext>, fetch?: RequestInit}
- ): UseMutationResult<
-        Awaited<ReturnType<typeof subscribeToNewsletterApiNewsletterSubscribePost>>,
+export const useSubscribeToNewsletter = <TError = AxiosError<HTTPValidationError>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof subscribeToNewsletter>>, TError,SubscribeToNewsletterMutationVariables, TContext>, axios?: AxiosRequestConfig}
+ , queryClient?: QueryClient): UseMutationResult<
+        Awaited<ReturnType<typeof subscribeToNewsletter>>,
         TError,
-        SubscribeToNewsletterApiNewsletterSubscribePostMutationVariables,
+        SubscribeToNewsletterMutationVariables,
         TContext
       > => {
-      return useMutation(getSubscribeToNewsletterApiNewsletterSubscribePostMutationOptions(options));
+      return useMutation(getSubscribeToNewsletterMutationOptions(options), queryClient);
     }
