@@ -19,8 +19,7 @@ export function ContactHero() {
 				transition={{ duration: 0.5, ease: 'easeIn', delay: 0.15 }}
 				className="mx-auto max-w-4xl py-5 text-center text-3xl font-bold italic"
 			>
-				Whether you're a founder, investor or just curious about what EVP can offer - we'd love to
-				hear from you.
+				Founder, investor or student - we'd love to hear from you.
 			</motion.div>
 
 			<motion.div

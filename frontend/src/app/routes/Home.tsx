@@ -30,7 +30,7 @@ export default function Home() {
 				<div className="bg-background/40 absolute inset-0" />
 			</div>
 
-			<div className="mx-auto flex w-full flex-col gap-20 py-30">
+			<div className="mx-auto flex w-full flex-col py-10 md:gap-20 md:py-30">
 				<AboutUsSection />
 				<WhatWeDoSection />
 				<EventsSection />
@@ -48,11 +48,9 @@ export default function Home() {
 	);
 }
 
-// Sections
-
 function AboutUsSection() {
 	return (
-		<section className="glass-box w-full overflow-hidden py-25 md:py-50">
+		<section className="glass-box w-full overflow-hidden py-10 md:py-50">
 			<MediaTextSection
 				image={aboutUsImg}
 				imageAlt="A group photo with several members of EVP's committee"
@@ -119,7 +117,7 @@ function WhatWeDoSection() {
 
 function EventsSection() {
 	return (
-		<section className="glass-box w-full overflow-hidden py-25 md:py-35">
+		<section className="glass-box w-full overflow-hidden py-15 md:py-35">
 			<motion.div
 				initial={{ opacity: 0, x: 25 }}
 				whileInView={{ opacity: 1, x: 0 }}
@@ -133,7 +131,7 @@ function EventsSection() {
 				<h2
 					id="events"
 					data-nav-label="Our Events"
-					className="pt-10 pb-5 text-center text-5xl font-bold"
+					className="px-10 pt-10 pb-5 text-center text-5xl font-bold"
 				>
 					Join us at our next event!
 				</h2>

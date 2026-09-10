@@ -12,7 +12,7 @@ export default function Contact() {
 
 			<ContactHero />
 
-			<section className="py-10 pt-50">
+			<section className="py-10 pt-20 md:pt-50">
 				<UnderlinedTitle title="What we offer" delay={0.5} level={2} />
 
 				<div className="glass-box my-20 w-full overflow-hidden py-25 md:py-40">
@@ -40,7 +40,7 @@ export default function Contact() {
 					</MediaTextSection>
 				</div>
 
-				<div className="glass-box my-10 mt-40 w-full overflow-hidden py-25 md:py-40">
+				<div className="glass-box my-10 w-full overflow-hidden py-25 md:mt-40 md:py-40">
 					<MediaTextSection
 						image={networkImg}
 						imageAlt="A group photo with several members of EVP's committee"
@@ -67,7 +67,7 @@ export default function Contact() {
 				<OfferCardsSection />
 			</section>
 
-			<div className="mx-auto flex w-full flex-col gap-20 py-30">
+			<div className="mx-auto flex w-full flex-col gap-20 py-10 md:py-30">
 				<ConnectSection
 					image={contactImg}
 					imageAlt="Event photo"

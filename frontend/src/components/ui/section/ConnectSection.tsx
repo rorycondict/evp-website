@@ -79,7 +79,7 @@ export function ConnectSection({
 					>
 						<InteractiveLinkButton
 							to={to}
-							className="px-30 py-4 text-2xl tracking-widest uppercase md:text-2xl"
+							className="px-20 py-4 text-2xl tracking-widest uppercase md:px-30 md:text-2xl"
 							ariaLabel={buttonText}
 						>
 							{buttonText}

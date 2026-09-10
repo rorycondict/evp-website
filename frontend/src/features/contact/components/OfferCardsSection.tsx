@@ -44,7 +44,7 @@ export function OfferCardsSection() {
 	];
 
 	return (
-		<section className="w-full pt-25">
+		<section className="w-full md:pt-25">
 			<div className="mx-auto flex max-w-7xl flex-col items-center gap-10 overflow-x-hidden p-4 md:flex-row md:items-start">
 				{cards.map(({ img, title, body }, i) => (
 					<PromoCard
@@ -53,7 +53,7 @@ export function OfferCardsSection() {
 						title={title}
 						body={body}
 						index={i}
-						className="min-h-200"
+						className="md:min-h-200"
 					/>
 				))}
 			</div>

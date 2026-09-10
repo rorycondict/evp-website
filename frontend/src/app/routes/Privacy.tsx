@@ -58,7 +58,7 @@ export default function Privacy() {
 					<h3 className="text-xl font-bold">Email</h3>
 					<p>
 						You can reach us through the email contact form on the website:{' '}
-						<TextLink to="/contact#email">www.edinburghventurepoint.com/contact#email</TextLink>
+						<TextLink to="/connect#contact">www.edinburghventurepoint.com/connect#contact</TextLink>
 					</p>
 				</PolicyDropdown>
 
@@ -233,7 +233,7 @@ export default function Privacy() {
 					</p>
 					<p>
 						<b>Online:</b>{' '}
-						<TextLink to="/contact#email">www.edinburghventurepoint.com/contact#email</TextLink>
+						<TextLink to="/connect#contact">www.edinburghventurepoint.com/connect#contact</TextLink>
 					</p>
 					<p>
 						If you remain unhappy with how we&rsquo;ve used your data after raising a complaint with

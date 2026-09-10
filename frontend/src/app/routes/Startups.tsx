@@ -42,7 +42,7 @@ export default function Startups() {
 
 			<PartnersSection />
 
-			<div className="mx-auto mt-10 flex w-full flex-col gap-12 py-40">
+			<div className="mx-auto mt-10 flex w-full flex-col gap-12 py-15 md:py-40">
 				<motion.div
 					initial={{ opacity: 0, y: -10 }}
 					whileInView={{ opacity: 1, y: 0 }}
@@ -82,7 +82,7 @@ export default function Startups() {
 					</div>
 				</div>
 
-				<div className="relative mt-30 flex w-full items-center justify-center">
+				<div className="relative mt-10 mb-10 flex w-full items-center justify-center md:mt-30">
 					<motion.div
 						initial={{ opacity: 0, y: 40 }}
 						whileInView={{ opacity: 1, y: 0 }}

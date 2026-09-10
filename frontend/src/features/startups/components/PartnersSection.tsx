@@ -7,7 +7,7 @@ import { PartnerBlock } from './PartnerBlock';
 
 export function PartnersSection() {
 	return (
-		<section className="mx-auto mt-10 flex w-full flex-col gap-12 pt-30">
+		<section className="mx-auto mt-10 flex w-full flex-col gap-12 pt-10 md:pt-30">
 			<motion.div
 				initial={{ opacity: 0, y: -50 }}
 				whileInView={{ opacity: 1, y: 0 }}

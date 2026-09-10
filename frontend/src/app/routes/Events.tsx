@@ -14,12 +14,17 @@ import {
 
 export default function Events() {
 	return (
-		<div className="mx-auto flex w-full flex-col py-50">
+		<div className="mx-auto flex w-full flex-col py-30 md:py-50">
 			<PageMeta
 				title="Our Events"
 				description="See what's coming up, and how you can get involved."
 			/>
-			<UnderlinedTitle id="our-events" title="Our Events" className="mb-10" />
+			<UnderlinedTitle
+				size="text-6xl md:text-7xl"
+				id="our-events"
+				title="Our Events"
+				className="mb-10"
+			/>
 			<div className="glass-box py-20">
 				<EventsBanner />
 
@@ -88,19 +93,13 @@ export default function Events() {
 					image={contactImg}
 					imageAlt="Event photo"
 					heading="Never miss another event."
-					body={[
-						<p>
-							Subscribe to our newsletter and be the first to know
-							<br />
-							when our next event is.
-						</p>,
-					]}
+					body={['Subscribe to our newsletter and be the first to know when our next event is.']}
 					buttonText="Subscribe"
 					to="/connect#newsletter"
 				/>
 			</section>
 
-			<section className="mx-auto mt-10 w-full max-w-6xl px-4 pb-20">
+			<section className="mx-auto w-full max-w-6xl px-4 md:mt-10 md:pb-20">
 				<SectionHeading
 					id="past-events"
 					title="Past Events"

@@ -474,7 +474,7 @@ export default function Terms() {
 						<b>Edinburgh VenturePoint</b>
 						<br />
 						Email:{' '}
-						<TextLink to="/contact#email">www.edinburghventurepoint.com/contact#email</TextLink>
+						<TextLink to="/connect#contact">www.edinburghventurepoint.com/connect#contact</TextLink>
 					</p>
 				</PolicyDropdown>
 			</div>

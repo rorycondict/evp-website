@@ -8,12 +8,9 @@ export function ScoutApplicationsSection() {
 		<FormSection
 			id="scout-applications"
 			title="Venture Scout Applications"
-			subtitle={
-				<p>
+			subtitle="
 					Each semester, EVP handpicks a few student 'venture scouts' following a vetted application
-					process.
-				</p>
-			}
+					process."
 		>
 			{SCOUT_APPLICATION_URL ? (
 				<InteractiveLinkButton
