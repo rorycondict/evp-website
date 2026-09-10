@@ -5,7 +5,7 @@ import {
 	ShareSection,
 	NewsletterSection,
 } from '@/features/connect';
-import { ContactFormSection } from '@/features/contact';
+import { ContactFormSection } from '@/features/connect';
 
 export default function Connect() {
 	return (

@@ -10,7 +10,7 @@ import { ConnectSection, PageMeta, PromoCard, SectionDivider } from '@/component
 import { TextLink } from '@/components/ui/interactive/TextLink';
 import { MediaTextSection } from '@/components/ui/section/MediaTextSection';
 import { EventsBanner } from '@/features/events';
-import { HomePageHero } from '@/features/homepage';
+import { HomePageHero } from '@/features/home';
 import { fadeUp } from '@/utils/motion';
 
 export default function Home() {
