@@ -41,6 +41,7 @@ evp-website/
 │   ├── orval.config.ts       # orval codegen config (backend/openapi.json → src/api/generated.ts)
 │   ├── package.json          # scripts: dev, build, lint (oxlint), format (prettier), codegen — no test script
 │   ├── vite.config.ts        # @/ path alias only — no /api dev proxy (see Known Issues)
+│   ├── README.md             # Brief frontend overview (root README is the source of truth)
 │   └── Dockerfile            # node:24-alpine build stage → nginx:alpine-slim (working)
 ├── docs/                     # Documentation (specs.md PRD)
 ├── .github/workflows/deploy.yml  # CI/CD: test → build → GHCR → SSH deploy
