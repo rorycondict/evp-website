@@ -7,11 +7,16 @@
 		"dev": "vite",
 		"build": "tsc -b && vite build",
 		"lint": "oxlint",
+		"lint:fix": "oxlint --fix",
 		"preview": "vite preview",
-		"format": "prettier --write \"src/**/*.{ts,tsx,css,md}\""
+		"format": "prettier --write \"src/**/*.{ts,tsx,css,md}\"",
+		"fetch:openapi": "cd ../backend && uv run scripts/export_openapi.py",
+		"generate:api": "orval --config ./orval.config.ts",
+		"codegen": "npm run fetch:openapi && npm run generate:api"
 	},
 	"dependencies": {
 		"@tailwindcss/vite": "^4.3.0",
+		"@tanstack/react-query": "^5.102.8",
 		"class-variance-authority": "^0.7.1",
 		"clsx": "^2.1.1",
 		"framer-motion": "^12.40.0",
@@ -26,15 +31,20 @@
 		"zod": "^4.4.3"
 	},
 	"devDependencies": {
+		"@tanstack/eslint-plugin-query": "^5.102.8",
 		"@types/node": "^24.12.3",
 		"@types/react": "^19.2.14",
 		"@types/react-dom": "^19.2.3",
 		"@types/three": "^0.184.1",
 		"@vitejs/plugin-react": "^6.0.1",
+		"orval": "^8.30.0",
 		"oxlint": "^1.82.0",
 		"prettier": "^3.8.3",
 		"prettier-plugin-tailwindcss": "^0.8.0",
 		"typescript": "~6.0.2",
 		"vite": "^8.0.12"
+	},
+	"overrides": {
+		"js-yaml": "^4.3.2"
 	}
 }

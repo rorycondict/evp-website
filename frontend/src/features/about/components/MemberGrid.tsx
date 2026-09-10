@@ -89,7 +89,7 @@ export function MemberYearSection({ year, members }: { year: string; members: Me
 				<h3 className="text-foreground mb-4 text-center text-3xl font-bold md:mb-6 md:text-left md:text-4xl">
 					{year}
 				</h3>
-				<div className="bg-foreground/20 mx-auto my-4 mb-8 h-px w-2/3 max-w-[200px] md:mx-0 md:mb-10 md:w-150 md:max-w-none" />
+				<div className="bg-foreground/20 mx-auto my-4 mb-8 h-px w-2/3 max-w-50 md:mx-0 md:mb-10 md:w-150 md:max-w-none" />
 
 				<motion.div
 					className="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5"

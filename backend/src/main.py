@@ -39,9 +39,9 @@ class ContactForm(BaseModel):
 
 
 class NewsletterForm(BaseModel):
-    email: EmailStr
     first_name: str
     last_name: str
+    email: EmailStr
 
 
 @app.post("/api/contact-submit", status_code=204)

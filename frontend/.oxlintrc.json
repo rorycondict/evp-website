@@ -1,0 +1,16 @@
+{
+	"$schema": "./node_modules/oxlint/configuration_schema.json",
+	"plugins": ["typescript", "unicorn", "oxc"],
+	"jsPlugins": ["@tanstack/eslint-plugin-query"],
+	"categories": {
+		"correctness": "error"
+	},
+	"rules": {
+		"@tanstack/query/exhaustive-deps": "error",
+		"@tanstack/query/stable-query-client": "error",
+		"@tanstack/query/no-rest-destructuring": "warn"
+	},
+	"env": {
+		"builtin": true
+	}
+}
