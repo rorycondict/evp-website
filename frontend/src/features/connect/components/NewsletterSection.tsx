@@ -33,6 +33,7 @@ export function NewsletterSection() {
 		isPending,
 		isSuccess,
 		isError,
+		error,
 		reset: resetMutation,
 	} = useSubscribeToNewsletter({
 		mutation: {
@@ -172,7 +173,9 @@ export function NewsletterSection() {
 						animate={{ opacity: 1, y: 0 }}
 						className="text-error text-center text-lg md:text-left"
 					>
-						Something went wrong. Please try again later.
+						{error.response?.status === 429
+							? 'Too many requests - please wait a few minutes and try again.'
+							: 'Something went wrong. Please try again later.'}
 					</motion.p>
 				)}
 			</form>

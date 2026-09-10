@@ -7,7 +7,7 @@ Guidance for autonomous code agents working in this repository.
 Official website for **Edinburgh VenturePoint (EVP)**, an entrepreneurship society at the University of Edinburgh.
 Live site: https://edinburghventurepoint.com — hosted on Tardis servers (https://tardisproject.uk).
 
-**Current state (2026-09-10): mid-rewrite; frontend code-reviewed.** The backend was rewritten from Django to **FastAPI** (single module at `backend/src/main.py`) and exposes exactly **two endpoints** (`POST /api/contact-submit`, `POST /api/newsletter-subscribe`). On the frontend, the old `/subscribe` stub was replaced by a **`/connect` ("Get Involved") page** hosting the newsletter sign-up (`NewsletterSection`), the contact form (`ContactFormSection`), venture-scout applications, and a share section. The form UIs are complete but **not yet wired to the API** — building the API client layer and wiring both forms is the next planned task. A full frontend code review was performed on 2026-09-10; its findings (dead code, bugs, a11y issues) are recorded in the "Frontend code review findings (2026-09-10)" section below.
+**Current state (2026-09-10): rewrite complete; API wiring landed; frontend code-reviewed.** The backend was rewritten from Django to **FastAPI** (single module at `backend/src/main.py`) and exposes exactly **two endpoints** (`POST /api/contact-submit`, `POST /api/newsletter-subscribe`). On the frontend, the old `/subscribe` stub was replaced by a **`/connect` ("Get Involved") page** hosting the newsletter sign-up (`NewsletterSection`), the contact form (`ContactFormSection`), venture-scout applications, and a share section. Both forms are **wired to the API** through an orval-generated **React Query + axios** client (`src/api/generated.ts`, regenerated with `npm run codegen`), and **Nginx rate limiting** for the two POST endpoints has been restored. A full frontend code review was performed on 2026-09-10 (all findings resolved); a follow-up full-stack review the same day found no new dead code, with lint/build/ruff all green. Remaining issues are recorded under "Known Issues & Discrepancies" below.
 
 ## Repository Layout
 
@@ -17,22 +17,30 @@ evp-website/
 │   ├── src/
 │   │   ├── main.py           # FastAPI app, settings, both endpoints
 │   │   └── __init__.py
+│   ├── scripts/
+│   │   └── export_openapi.py # Exports the OpenAPI spec to backend/openapi.json (codegen input)
+│   ├── openapi.json          # Committed OpenAPI spec — input to the frontend orval codegen
 │   ├── .env.example          # RESEND_API_KEY only
 │   ├── pyproject.toml        # Python deps (managed with uv); [tool.fastapi] entrypoint = src.main:app
 │   ├── uv.lock
+│   ├── README.md             # Empty — the root README is the source of truth
 │   └── Dockerfile            # python:3.12-slim base (currently broken — see Known Issues)
 ├── frontend/                 # React 19 + Vite + TypeScript SPA
 │   ├── public/               # favicon.png, og-preview.png, robots.txt, sitemap.xml, theme-init.js, icons/
 │   ├── src/
 │   │   ├── main.tsx
 │   │   ├── index.css         # Tailwind 4 theme tokens, custom utilities & keyframes
-│   │   ├── app/              # App shell: App.tsx, AppLayout.tsx, provider.tsx, router.tsx, routes/
+│   │   ├── api/
+│   │   │   └── generated.ts  # orval-generated API client (React Query hooks + axios fetchers) — do not edit by hand
+│   │   ├── app/              # App shell: App.tsx, AppLayout.tsx, provider.tsx (QueryClientProvider), router.tsx, routes/
 │   │   ├── components/       # layout/ (header, footer, scroll), theme/, three/ (3D background), ui/ (shared UI)
 │   │   ├── features/         # about, connect, contact, events, homepage, privacy, startups
 │   │   ├── utils/            # cn.ts, motion.ts
 │   │   └── assets/
-│   ├── package.json          # scripts: dev, build, lint (oxlint), format (prettier) — no test script
-│   ├── vite.config.ts        # @/ path alias only — the old /api dev proxy was removed
+│   ├── .oxlintrc.json        # oxlint config; loads @tanstack/eslint-plugin-query rules via jsPlugins
+│   ├── orval.config.ts       # orval codegen config (backend/openapi.json → src/api/generated.ts)
+│   ├── package.json          # scripts: dev, build, lint (oxlint), format (prettier), codegen — no test script
+│   ├── vite.config.ts        # @/ path alias only — no /api dev proxy (see Known Issues)
 │   └── Dockerfile            # node:24-alpine build stage → nginx:alpine-slim (working)
 ├── docs/                     # Documentation (specs.md PRD)
 ├── .github/workflows/deploy.yml  # CI/CD: test → build → GHCR → SSH deploy
@@ -57,14 +65,15 @@ evp-website/
   - `POST /api/contact-submit` → `204`. Body: `ContactForm {first_name, last_name, email: EmailStr, message}`. With Resend enabled: fetches the members of the hardcoded "Contact Handler" **segment** (`80b4d0a3-01f3-4ab6-ba24-2ba478ec2ea0`) and BCCs them a notification using the Resend template `contact-form-notification` (variables `SUBMITTER_FIRST_NAME`/`SUBMITTER_LAST_NAME`/`SUBMITTER_EMAIL`/`SUBMITTER_MESSAGE`), from `Edinburgh VenturePoint <noreply@mail.edinburghventurepoint.com>`. Returns `502` with a generic detail on any Resend failure; an empty segment logs the form and returns `204`
   - `POST /api/newsletter-subscribe` → `204`. Body: `NewsletterForm {email: EmailStr, first_name, last_name}`. Creates a Resend contact (`resend.Contacts.create`); `502` on failure
 - FastAPI's auto-generated interactive docs are available at `/docs` on the backend directly (not proxied through Nginx)
-- **No auth, no accounts, no roles, no admin panel, no rate limiting, no Redis, no tests** — all removed with the rewrite
+- **No auth, no accounts, no roles, no admin panel, no Redis, no tests** — all removed with the rewrite. Rate limiting is enforced at the Nginx edge (see Infrastructure), not in the app itself
 
 ### Frontend
 
 - **React 19**, **TypeScript 6**, **Vite 8**, **React Router 7** (data router via `createBrowserRouter`)
 - **Tailwind CSS 4** (via `@tailwindcss/vite`), **framer-motion**, **three.js**, **lucide-react**, **react-icons**
-- **Lint/format: oxlint + Prettier** (ESLint and Sass are gone). **No test framework** — Vitest was removed and `npm run test` does not exist (this breaks CI — see Known Issues)
-- **zod** is used for client-side email validation in the forms and will be reused for the upcoming API wiring
+- **TanStack React Query + axios** — the API client layer is **orval-generated** from `backend/openapi.json` into `src/api/generated.ts` (React Query hooks + axios fetchers; regenerate with `npm run codegen` after backend changes). A module-level `QueryClient` is provided via `QueryClientProvider` in `src/app/provider.tsx`
+- **Lint/format: oxlint + Prettier** (ESLint and Sass are gone; oxlint loads `@tanstack/eslint-plugin-query` rules via `jsPlugins` in `.oxlintrc.json`). **No test framework** — Vitest was removed, `npm run test` does not exist, and CI's test step is commented out (see Known Issues)
+- **zod** is used for client-side email validation in the forms
 - Path aliases `@/` → `src/`
 - **Routes** (defined in `src/app/router.tsx`; thin page wrappers in `src/app/routes/`, feature code in `src/features/`):
   - `/` — Home (landing page, hero, highlights)
@@ -76,14 +85,14 @@ evp-website/
   - `/privacy` — Privacy Policy (static legal copy, collapsible sections)
   - `/terms` — Terms of Service (static legal copy)
   - `*` — 404 error page (catch-all loader throws a 404 `Response`)
-- **No auth flow, no member dashboard, no API layer** — `src/lib/` was removed along with the Django-era clients and not yet replaced
+- **No auth flow, no member dashboard** — the old `src/lib/` Django-era clients were removed; the API layer now lives in the orval-generated `src/api/generated.ts`
 
 ### Infrastructure
 
 - Docker Compose: `frontend` (Nginx on port **16017**, repo-root `nginx.conf` mounted read-only) + `backend` (env_file: `backend/.env` in dev, root `.env` in prod). No Redis service anymore. Both compose files override the backend command to `uv run uvicorn src.main:app --port 8000` (module path now correct), so the backend listens on 8000 inside the compose network
-- `nginx.conf` (repo root): SPA fallback (`try_files ... /index.html`), legacy URL redirects (`/investing` → `/contact#scout-programme`, `/meet-the-team` → `/about#meet-the-team`, `/partners` → `/contact#network`), and an `/api/` proxy to `http://backend:8000`. The **path prefix now matches the backend** (routes are mounted under `/api/`) and the port matches the compose command — the old path/port mismatch is resolved. The `location /` block still contains leftover `proxy_set_header` lines that do nothing (no proxy there). **No rate limiting and no security headers** in the current config
+- `nginx.conf` (repo root): SPA fallback (`try_files ... /index.html`), legacy URL redirects (`/investing` → `/contact#scout-programme`, `/meet-the-team` → `/about#meet-the-team`, `/partners` → `/contact#network`), and `/api/` proxying to `http://backend:8000` (path prefix and port both match the backend). **Rate limiting is configured**: per-client-IP `limit_req_zone` — newsletter `2r/m` (burst 3), contact `2r/10m` (burst 3), `nodelay`, status `429` — applied on the two exact endpoint locations. **No security headers** (HSTS, CSP, etc.) in the current config — still pending (see Known Issues)
 - Images pushed to GHCR (repo-scoped): `ghcr.io/rorycondict/evp-website/frontend`, `ghcr.io/rorycondict/evp-website/backend`
-- CI/CD (`.github/workflows/deploy.yml`): on push to `main` → matrix test (frontend lint + **test — currently fails, there is no `test` script** + build; backend `uv sync` on Python 3.14) → matrix build-and-push to GHCR (tagged `latest` + commit SHA) → SSH deploy. The deploy script starts the rootless Podman socket, sets `DOCKER_HOST`, logs into GHCR with the `GHCR_DEPLOY_TOKEN` PAT, exports `IMAGE_TAG` (the commit's short SHA — currently unused by the compose files, see Known Issues), runs `docker-compose pull` + `up -d --remove-orphans`, then `docker image prune -f`. On PRs: test + build only (no push/deploy). GHA layer caching (`type=gha`) used for faster builds
+- CI/CD (`.github/workflows/deploy.yml`): on push to `main` → matrix test (frontend lint + build — the `npm run test` step is **commented out** until a suite exists; backend `uv sync` on Python 3.14) → matrix build-and-push to GHCR (tagged `latest` + commit SHA) → SSH deploy. The deploy script starts the rootless Podman socket, sets `DOCKER_HOST`, logs into GHCR with the `GHCR_DEPLOY_TOKEN` PAT, exports `IMAGE_TAG` (the commit's short SHA — currently unused by the compose files, see Known Issues), runs `docker-compose pull` + `up -d --remove-orphans`, then `docker image prune -f`. On PRs: test + build only (no push/deploy). GHA layer caching (`type=gha`) used for faster builds
 - CI uses **Node 24** for frontend (matching the `node:24-alpine` Docker build; `frontend/package.json` no longer declares an `engines` field) and **Python 3.14** for backend
 - Deploy secrets: `SERVER_HOST`, `SERVER_USER`, `SERVER_SSH_KEY`, `GHCR_DEPLOY_TOKEN`
 
@@ -116,28 +125,29 @@ uv run ruff check --fix  # lint + auto-fix
 ```sh
 cd frontend
 npm install
-npm run dev        # Vite dev server (no /api proxy — it was removed; re-add when wiring the API)
+npm run dev        # Vite dev server (no /api proxy — form submissions 404 in standalone dev; see Known Issues)
 npm run build      # tsc -b && vite build
 npm run lint       # oxlint
 npm run format     # Prettier
+npm run codegen    # re-export backend/openapi.json + regenerate src/api/generated.ts (requires uv)
 ```
 
-- **No test script** — there is no frontend test suite (Vitest was removed). CI's `npm run test` step fails until a suite is added or the step is removed
+- **No test script** — there is no frontend test suite (Vitest was removed). CI's `npm run test` step is commented out until a suite is added
 
 ## Conventions & Gotchas
 
 - **Run backend commands with `uv run`**: always prefix Python commands with `uv run`. Never invoke `python` or `.venv\Scripts\python.exe` directly — `uv run` resolves the correct venv automatically.
 - **Backend code style**: type hints everywhere; linted with **Ruff** — run `uv run ruff check` before committing. The app is a single module (`src/main.py`); when it grows, split into routers under `src/` and keep Pydantic schemas next to them.
 - **Env vars**: the backend reads `backend/.env` in dev (pydantic-settings `env_file=".env"`, relative to the backend working directory). In production, `docker-compose.prod.yml` uses `env_file: .env` at the **repo root** on the server. The only variable is `RESEND_API_KEY`. Never commit `.env` (the root `.gitignore` ignores the root-level one; `backend/.gitignore` covers the rest).
-- **API error shapes** (for the upcoming wiring): FastAPI validation failures return `422` with `{"detail": [...]}` (an array of `{loc, msg, type}` objects); the endpoints' explicit failures return `502` with `{"detail": "<generic message>"}`. Success responses are `204 No Content` — the frontend client must handle empty bodies. Normalise both error shapes in the future API layer. The backend routes are now under `/api/` (`/api/contact-submit`, `/api/newsletter-subscribe`), matching the Nginx proxy; the Vite dev proxy for `/api` was removed and needs re-adding when wiring.
+- **API error shapes**: FastAPI validation failures return `422` with `{"detail": [...]}` (an array of `{loc, msg, type}` objects); the endpoints' explicit failures return `502` with `{"detail": "<generic message>"}`; Nginx rate limiting returns `429`. Success responses are `204 No Content` (empty body). The orval-generated client types these as `AxiosError<HTTPValidationError>`; the forms surface a specific message for `429` and a generic one otherwise. The backend routes are under `/api/` (`/api/contact-submit`, `/api/newsletter-subscribe`), matching the Nginx proxy; the Vite dev proxy for `/api` is still missing (see Known Issues).
 - **Frontend features**: each feature lives in `src/features/<name>/` (components, hooks, API clients); thin route wrappers live in `src/app/routes/` and are registered in `src/app/router.tsx` under `AppLayout`; unknown paths throw a 404 `Response` from the catch-all loader.
 - **Styling**: Tailwind utility classes preferred; merge classes with `clsx` + `tailwind-merge` via the `cn()` utility at `src/utils/cn.ts`. Use `cva` (class-variance-authority) for component variants. No new CSS files — extract repeated Tailwind patterns into React components in `src/components/ui/`. No `@apply` in CSS. Route files should contain only composition and data assembly, not inline component definitions.
 - **Lint/format before committing**: `npm run lint` (oxlint) and `npm run format` must pass.
-- **Upcoming API wiring**: when wiring the frontend to the backend, follow the pattern of runtime-validated fetches (zod is already installed; React Query is not — add it or use plain fetch). The URL scheme is now consistent (`/api/` on both the backend and the Nginx proxy); re-add the Vite dev proxy for `/api` when wiring.
+- **API client regeneration**: the client in `src/api/generated.ts` is orval-generated — never edit it by hand. After changing backend endpoints, run `npm run codegen` (re-exports `backend/openapi.json` via `uv run scripts/export_openapi.py`, then regenerates) and commit both the spec and the generated file. The generated fetchers use relative `/api/...` URLs (same-origin behind Nginx).
 
 ## Known Issues & Discrepancies
 
-Findings from the 2026-09 FastAPI rewrite review (2026-09-09), updated after the 2026-09-10 frontend code review. The previous Django-era issue list is obsolete — everything accounts/auth/startupdb/admin-related was removed with the rewrite.
+Findings from the 2026-09 FastAPI rewrite review (2026-09-09), updated after the 2026-09-10 frontend code review and the 2026-09-10 full-stack review (which verified lint/build/ruff green and no new dead code). The previous Django-era issue list is obsolete — everything accounts/auth/startupdb/admin-related was removed with the rewrite.
 
 ### Resolved since the 2026-09-09 review
 
@@ -146,36 +156,41 @@ Findings from the 2026-09 FastAPI rewrite review (2026-09-09), updated after the
 - **Compose backend command fixed** — both compose files now run `uv run uvicorn src.main:app` (correct module path).
 - **CI backend test step fixed** — the stale `manage.py test` step was removed; backend CI is now `uv sync` on Python 3.14.
 - **Subscribe page implemented** — the `/subscribe` stub was replaced by the `/connect` "Get Involved" page (newsletter + contact form + scout applications + share).
+- **Frontend API wiring landed (2026-09-10)** — both forms call the API through an orval-generated React Query + axios client (`src/api/generated.ts`, generated from `backend/openapi.json` via `backend/scripts/export_openapi.py` + `frontend/orval.config.ts`; regenerate with `npm run codegen`). Forms show zod email errors, pending/success states, and a specific message for `429`.
+- **Nginx rate limiting restored** — per-IP `limit_req` on both POST endpoints (newsletter `2r/m`, contact `2r/10m`, burst 3 `nodelay`, `429`); the dead `proxy_set_header` lines in `location /` were removed.
+- **CI frontend test step disabled** — the failing `npm run test` step is commented out in `deploy.yml`; CI is green again (still no test suite — see Dead/stale code).
 
 ### Broken / pending wiring (the next tasks)
 
-- **No frontend API wiring**: the contact form and newsletter form UIs are complete (`src/features/contact/components/ContactFormSection.tsx`, `src/features/connect/components/NewsletterSection.tsx`) but their `handleSubmit` functions contain TODO placeholders and never call the API — the old `src/lib/` API layer was removed and not yet replaced. zod is installed for this; React Query is not (add it or use plain fetch). The Vite dev proxy for `/api` was also removed and needs re-adding.
+- **Vite dev proxy for `/api` is still missing**: the wired forms POST to relative `/api/...` URLs, which work in production (same-origin behind Nginx) but **404 under the standalone Vite dev server**. Re-add a `server.proxy` entry for `/api` → `http://localhost:8000` (or develop via `docker compose up`).
 - **Backend Dockerfile is broken**: the base image is `python:3.12-slim` but `pyproject.toml` requires **Python ≥ 3.14** (so `uv sync --frozen` fails); the CMD references `app/main.py` (the app is `src/main.py`) and port **80** (compose overrides it to 8000, but standalone use breaks); and `WORKDIR /code` doesn't match the dev compose volume mount at `/app`.
-- **Compose dev backend volume mount is ineffective**: `docker-compose.yml` mounts `./backend` to `/app`, but the image's `WORKDIR` is `/code` (where the baked-in code lives) — the `--reload` mount never takes effect. Align the mount with the WORKDIR (or vice versa).
-- **Frontend CI test step fails**: CI runs `npm run test`, but `frontend/package.json` has **no test script** (Vitest was removed). Add a test suite or drop the step.
+- **Compose dev backend volume mount is ineffective**: `docker-compose.yml` mounts `./backend` to `/app`, but the image's `WORKDIR` is `/code` (where the baked-in code lives) — the `--reload` mount never takes effect (the `/app/.venv` anonymous volume is equally mismatched). Align the mount with the WORKDIR (or vice versa).
 
 ### CI/CD
 
 - **`IMAGE_TAG` pinning is not wired**: the deploy script exports `IMAGE_TAG` (commit short SHA), but both compose files hardcode `image: ...:latest` — the variable is unused, so deploys always pull `:latest` and rollback-by-tag doesn't work. Wire it in (e.g. `image: ghcr.io/rorycondict/evp-website/${SERVICE}:${IMAGE_TAG:-latest}`) or remove the export.
 
-### Security regressions (removed with the rewrite, pending re-introduction)
+### Security (partially restored; remaining gaps)
 
-- **No rate limiting anywhere**: the old `django-ratelimit` + Nginx `limit_req_zone` layers are gone. The two POST endpoints are currently unthrottled.
-- **No security headers**: `nginx.conf` no longer sets HSTS, CSP, `X-Frame-Options`, `X-Content-Type-Options`, `Referrer-Policy`, or `Permissions-Policy`.
-- **No CORS configuration** on the FastAPI app — fine once everything is same-origin behind the Nginx proxy, but needs thought if the backend is ever exposed directly.
+- **Rate limiting is restored at the Nginx edge** (per-IP `limit_req` on both POST endpoints, `429`). The FastAPI app itself is still unthrottled — fine inside the compose network, but the backend must not be exposed directly.
+- **No security headers**: `nginx.conf` still sets no HSTS, CSP, `X-Frame-Options`, `X-Content-Type-Options`, `Referrer-Policy`, or `Permissions-Policy`.
+- **No CORS configuration** on the FastAPI app — fine while everything is same-origin behind the Nginx proxy, but needs thought if the backend is ever exposed directly.
 - **Hardcoded Resend IDs**: the Contact Handler segment ID and the `contact-form-notification` template ID are hardcoded in `src/main.py` — candidates for settings/env vars.
+- **No field length limits**: the Pydantic forms have no `max_length` constraints — request bodies are only bounded by Nginx's default 1 MB `client_max_body_size`, and the full `message` is forwarded into the Resend template. Add `Field(max_length=...)` constraints.
+- **PII in logs**: on Resend failures (and in mock mode) the full form (names, email, message) is written to the logs via `logger.error(form)` / `logger.info(...)` — consider logging less or redacting.
 
 ### Dead / stale code & tooling
 
-- **`zod`** is now used for client-side email validation and will be reused for the API wiring.
-- **`backend/README.md` is empty**; the root README is the source of truth.
+- **`backend/README.md` is empty** (yet referenced by `pyproject.toml`'s `readme`); the root README is the source of truth.
+- **`ruff` is a runtime dependency** in `backend/pyproject.toml` — it belongs in a dev dependency group so it isn't baked into the production image.
 - **GitHub Actions are pinned by major tag** (not commit SHA) — supply-chain hardening opportunity.
 - **`resend.api_key` is set at import time and re-assigned inside the contact handler** — harmless but redundant; initialise once.
-- **`nginx.conf` `location /` block** contains `proxy_set_header` lines that do nothing (no proxy is configured there).
+- **No test suites** — neither frontend (Vitest removed; CI step commented out) nor backend (pytest/TestClient) has any tests.
+- **Cosmetic**: the orval config key in `frontend/orval.config.ts` is still named `petstore` (template leftover); `frontend/Dockerfile` declares `EXPOSE 80` while Nginx listens on 16017 (informational only, but misleading); `ScoutApplicationsSection.tsx` carries an intentional `TODO: add URL when applications open`.
 
 ## Frontend code review findings (2026-09-10) — RESOLVED
 
-A full review of `frontend/src` was performed on 2026-09-10 (build and lint both passed; the findings were dead code, bugs, and accessibility issues the tooling doesn't catch). **All findings were resolved the same day.** The missing API wiring is intentionally excluded (it's the next task). Record of the fixes:
+A full review of `frontend/src` was performed on 2026-09-10 (build and lint both passed; the findings were dead code, bugs, and accessibility issues the tooling doesn't catch). **All findings were resolved the same day.** The API wiring (excluded from that review as future work) has since landed — see "Resolved" above. Record of the fixes:
 
 ### Dead code (removed)
 
@@ -209,7 +224,7 @@ A full review of `frontend/src` was performed on 2026-09-10 (build and lint both
 
 ### Vulnerabilities
 
-None were found: there is no `dangerouslySetInnerHTML` anywhere, external links consistently use `rel="noopener noreferrer"`, no secrets live client-side, and the error page's developer details are gated behind `import.meta.env.DEV` (no stack traces in production). The remaining security gaps are infrastructure-level (no rate limiting, no security headers — see above).
+None were found: there is no `dangerouslySetInnerHTML` anywhere, external links consistently use `rel="noopener noreferrer"`, no secrets live client-side, and the error page's developer details are gated behind `import.meta.env.DEV` (no stack traces in production). The remaining security gaps are infrastructure-level (no security headers; no app-level rate limiting — see above). A follow-up full-stack review on 2026-09-10 re-confirmed: no new dead code (all `ui/` barrel exports are used), lint/build/ruff all green, and no client-side secrets.
 
 ## Common Gotchas & Fixes
 

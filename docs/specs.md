@@ -3,7 +3,7 @@
 |                  |                                           |
 | ---------------- | ----------------------------------------- |
 | **Product**      | Edinburgh VenturePoint (EVP) Website      |
-| **Status**       | In transition — FastAPI rewrite landed; Get Involved page built; frontend API wiring pending |
+| **Status**       | FastAPI rewrite complete; Get Involved page built; frontend API wiring landed; edge rate limiting restored |
 | **Hosting**      | Tardis servers (https://tardisproject.uk) |
 | **Last updated** | 2026-09-10                                |
 
@@ -20,10 +20,10 @@ visitors subscribe to a newsletter via the Get Involved page.
 > **removed**. The site is now fully public; the backend exposes exactly two endpoints
 > (contact form + newsletter subscribe), both mounted under `/api/`. The old `/subscribe`
 > stub was replaced by a **`/connect` ("Get Involved") page** hosting the newsletter
-> sign-up, contact form, venture-scout applications, and a share section. The form UIs
-> are complete but the frontend is not yet wired to the API — that is the next task.
-> A full frontend code review was completed on 2026-09-10; its findings are recorded in
-> `AGENTS.md` ("Frontend code review findings").
+> sign-up, contact form, venture-scout applications, and a share section. Both forms are
+> wired to the API via an orval-generated React Query + axios client, and Nginx rate
+> limiting on the two POST endpoints has been restored. A full frontend code review was
+> completed on 2026-09-10 (all findings resolved) — see `AGENTS.md`.
 
 ## 2. Goals & Objectives
 
@@ -32,7 +32,7 @@ visitors subscribe to a newsletter via the Get Involved page.
 - Showcase member/alumni **startups**.
 - Provide clear **contact** channels for enquiries and sponsorship.
 - Communicate the society's mission, team, and history (**About**).
-- Let visitors **subscribe to the newsletter** (UI live on the Get Involved page; backend endpoint live; API wiring pending).
+- Let visitors **subscribe to the newsletter** (UI live on the Get Involved page and wired to the backend endpoint).
 
 ## 3. Target Audience
 
@@ -72,7 +72,9 @@ visitors subscribe to a newsletter via the Get Involved page.
 - **Mock mode**: when `RESEND_API_KEY` is unset, submissions are logged and return
   `204` — the site works end-to-end locally without any keys.
 - **Auto-generated API docs** at `/docs` on the backend (FastAPI default; not
-  currently proxied through Nginx).
+  currently proxied through Nginx). The OpenAPI spec is exported to
+  `backend/openapi.json` (`backend/scripts/export_openapi.py`) and consumed by the
+  frontend orval codegen (`npm run codegen`).
 
 ### 4.3 Out of Scope / Removed
 
@@ -94,27 +96,29 @@ visitors subscribe to a newsletter via the Get Involved page.
    with Pydantic validation, returning `204` on success and `502` on email-service
    failure (and logging instead of sending when no API key is configured).
 4. The contact form (on the Get Involved page, `/connect#contact`) shall submit to
-   `/api/contact-submit` (**wiring pending** — the form UI exists but does not yet
-   call the API).
+   `/api/contact-submit` (**implemented** — wired via the generated React Query client).
 5. The newsletter sign-up (on the Get Involved page, `/connect#newsletter`) shall
-   let visitors subscribe via `/api/newsletter-subscribe` (**wiring pending** — the
-   UI exists but does not yet call the API).
-6. The frontend shall call the API through a central, runtime-validated (zod)
-   client layer (**pending** — zod is installed, the layer is not yet built; React
-   Query is not installed — plain fetch or React Query to be decided).
+   let visitors subscribe via `/api/newsletter-subscribe` (**implemented** — wired via
+   the generated React Query client, with an explicit consent checkbox).
+6. The frontend shall call the API through a central, typed client layer
+   (**implemented** — orval-generated from the backend OpenAPI spec into
+   `src/api/generated.ts`, React Query + axios; zod validates emails client-side;
+   `429` rate-limit responses surface a friendly message).
 7. `robots.txt` and `sitemap.xml` shall be served from `frontend/public/`.
+8. The two POST endpoints shall be rate-limited at the Nginx edge, per client IP
+   (**implemented** — newsletter `2r/m`, contact `2r/10m`, burst 3, `429` on excess).
 
 ## 6. Non-Functional Requirements
 
 - **Performance**: static assets served via Nginx; frontend built and minified by Vite.
 - **SEO**: `robots.txt` and `sitemap.xml` served from `frontend/public/`.
 - **Reliability**: fully containerized (Docker Compose); production deploys automated via GitHub Actions (CI test job → matrix build → GHCR → SSH update). Images are tagged `latest` + commit SHA, but tag pinning is not yet wired into the compose files (see AGENTS.md Known Issues).
-- **Security**: environment-based secrets (`backend/.env` in dev; a root-level `.env` via compose `env_file` in prod; the only secret is `RESEND_API_KEY`), no committed credentials. **Note:** rate limiting and Nginx security headers were removed in the rewrite and are pending re-introduction (see AGENTS.md Known Issues).
-- **Maintainability**: TypeScript + oxlint/Prettier on the frontend; type-hinted Python + Pydantic on the backend. **No frontend or backend test suites yet** (Vitest was removed; CI's frontend test step fails until a suite is added or the step is dropped).
+- **Security**: environment-based secrets (`backend/.env` in dev; a root-level `.env` via compose `env_file` in prod; the only secret is `RESEND_API_KEY`), no committed credentials. Per-IP Nginx rate limiting on both POST endpoints has been restored (429 on excess); Nginx security headers (HSTS, CSP, etc.) are still pending (see AGENTS.md Known Issues).
+- **Maintainability**: TypeScript + oxlint/Prettier on the frontend; type-hinted Python + Pydantic on the backend. **No frontend or backend test suites yet** (Vitest was removed; CI's frontend test step is commented out until a suite is added).
 
 ## 7. Technical Architecture
 
-- **Frontend**: React 19 + Vite 8 + TypeScript 6, React Router 7, Tailwind CSS 4, three.js, framer-motion, lucide-react/react-icons. Path aliases `@/`. Served by Nginx on port 16017.
+- **Frontend**: React 19 + Vite 8 + TypeScript 6, React Router 7, Tailwind CSS 4, three.js, framer-motion, lucide-react/react-icons, TanStack React Query + axios (orval-generated client). Path aliases `@/`. Served by Nginx on port 16017.
 - **Backend**: FastAPI + Pydantic (single module at `backend/src/main.py`, Python ≥ 3.14 managed with uv), run by uvicorn/the FastAPI CLI. No database — Resend is the only external service.
 - **Infra**: Docker Compose orchestration (frontend, backend); images in GHCR at `ghcr.io/rorycondict/evp-website/<service>`; CI/CD on push to `main` (test → build-and-push → deploy) and on PRs (test + build only). GHA layer caching (type=gha) used for faster builds.
 - See `AGENTS.md` at the repo root for detailed developer/agent guidance (including known issues from the rewrite).
@@ -124,17 +128,16 @@ visitors subscribe to a newsletter via the Get Involved page.
 - Uptime on Tardis hosting.
 - Event page engagement (visits around announced events).
 - Contact/enquiry conversion through the Contact page.
-- Newsletter signups via the Subscribe page (once implemented).
+- Newsletter signups via the Get Involved page.
 - Successful automated deployments.
 
 ## 9. Future Considerations
 
-- **Wire the frontend to the API** (contact form + newsletter), including a central API client with zod validation and a re-added Vite dev proxy for `/api` — the next task.
-- Address the **frontend code review findings (2026-09-10)** — dead code, bugs, and accessibility issues recorded in `AGENTS.md`.
+- Re-add the **Vite dev proxy for `/api`** so the wired forms work under the standalone dev server (they 404 without it).
 - Fix the **backend Dockerfile** (Python 3.12 base vs required ≥ 3.14, wrong CMD path/port) and the ineffective dev compose volume mount.
-- Restore a **frontend test suite** (or drop CI's `npm run test` step) and add a **backend test suite** (pytest + FastAPI TestClient).
-- Re-introduce **rate limiting** (edge and/or app level) for the two POST endpoints.
-- Re-introduce **security headers** (HSTS, CSP, etc.) at the Nginx edge.
+- Restore a **frontend test suite** (CI's `npm run test` step is commented out until then) and add a **backend test suite** (pytest + FastAPI TestClient).
+- Re-introduce **security headers** (HSTS, CSP, etc.) at the Nginx edge; consider app-level rate limiting if the backend is ever exposed directly.
+- Add **Pydantic field length limits** and reduce **PII written to logs** (form data is logged on failures and in mock mode).
 - Wire **`IMAGE_TAG` pinning** into the compose files for reliable rollbacks.
 - Move the hardcoded Resend segment/template IDs into configuration.
 - Event RSVP/ticketing integration; public startup directory — possible future features, currently out of scope.
