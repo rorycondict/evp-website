@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 import { Check, Copy } from 'lucide-react';
 
@@ -6,10 +6,25 @@ import websiteQrImg from '@/assets/website-qr.webp';
 
 import { Button, FormSection } from '@/components/ui';
 
-const WEBSITE_URL = 'edinburghventurepoint.com';
+const WEBSITE_URL = 'https://www.edinburghventurepoint.com';
+const WEBSITE_LABEL = 'edinburghventurepoint.com';
 
 export function ShareSection() {
 	const [copied, setCopied] = useState(false);
+	const copyTimeoutRef = useRef<number | null>(null);
+
+	// Clear any pending copy-feedback timer when the section unmounts.
+	useEffect(() => {
+		return () => {
+			if (copyTimeoutRef.current !== null) clearTimeout(copyTimeoutRef.current);
+		};
+	}, []);
+
+	function showCopiedFeedback() {
+		setCopied(true);
+		if (copyTimeoutRef.current !== null) clearTimeout(copyTimeoutRef.current);
+		copyTimeoutRef.current = setTimeout(() => setCopied(false), 2000);
+	}
 
 	async function handleShare() {
 		if (navigator.share) {
@@ -18,16 +33,19 @@ export function ShareSection() {
 					title: 'Edinburgh VenturePoint | Get Involved',
 					url: WEBSITE_URL,
 				});
-			} catch {}
-			return;
+				return;
+			} catch {
+				// Fall back to the clipboard if the user cancels the native share.
+			}
 		}
+
+		await handleCopyUrl();
 	}
 
 	async function handleCopyUrl() {
 		try {
 			await navigator.clipboard.writeText(WEBSITE_URL);
-			setCopied(true);
-			setTimeout(() => setCopied(false), 2000);
+			showCopiedFeedback();
 		} catch (err) {
 			console.error('Failed to copy link:', err);
 		}
@@ -38,10 +56,12 @@ export function ShareSection() {
 			id="share"
 			title="Share Our Website"
 			subtitle={
-				<p>
-					<p className="mb-5 text-2xl">Know someone who should get involved with EVP?</p>
+				<>
+					<span className="mb-5 block text-2xl">
+						Know someone who should get involved with EVP?
+					</span>
 					<strong>Share this website and send them our way.</strong>
-				</p>
+				</>
 			}
 		>
 			<div className="flex w-full flex-col items-center gap-4">
@@ -66,11 +86,11 @@ export function ShareSection() {
 					type="button"
 					onClick={handleCopyUrl}
 					className="button-underline flex cursor-pointer items-center gap-1.5 border-none bg-transparent p-0 text-lg break-all opacity-70 transition-opacity hover:opacity-100"
-					aria-label={`Copy ${WEBSITE_URL} to clipboard`}
+					aria-label={`Copy ${WEBSITE_LABEL} to clipboard`}
 					title={copied ? 'Copied!' : 'Copy link'}
 				>
 					{copied ? <Check className="h-4 w-4 shrink-0" /> : <Copy className="h-4 w-4 shrink-0" />}
-					<span>{WEBSITE_URL}</span>
+					<span>{WEBSITE_LABEL}</span>
 				</button>
 			</div>
 		</FormSection>

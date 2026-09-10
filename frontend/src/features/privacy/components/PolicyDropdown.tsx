@@ -24,22 +24,24 @@ export function PolicyDropdown({ id, title, children, defaultOpen = false }: Pol
 
 	return (
 		<section id={id} className="glass-box w-full overflow-hidden">
-			<button
-				type="button"
-				onClick={() => setOpen((prev) => !prev)}
-				aria-expanded={open}
-				aria-controls={`${id}-body`}
-				className="flex w-full cursor-pointer items-center justify-between gap-4 p-6 text-left md:p-8"
-			>
-				<h2 className="text-2xl font-bold md:text-3xl">{title}</h2>
-				<motion.span
-					animate={{ rotate: open ? 180 : 0 }}
-					transition={{ duration: 0.3, ease: 'easeInOut' }}
-					className="shrink-0"
+			<h2 className="text-2xl font-bold md:text-3xl">
+				<button
+					type="button"
+					onClick={() => setOpen((prev) => !prev)}
+					aria-expanded={open}
+					aria-controls={`${id}-body`}
+					className="flex w-full cursor-pointer items-center justify-between gap-4 p-6 text-left md:p-8"
 				>
-					<ChevronDown className="size-7 md:size-8" aria-hidden />
-				</motion.span>
-			</button>
+					{title}
+					<motion.span
+						animate={{ rotate: open ? 180 : 0 }}
+						transition={{ duration: 0.3, ease: 'easeInOut' }}
+						className="shrink-0"
+					>
+						<ChevronDown className="size-7 md:size-8" aria-hidden />
+					</motion.span>
+				</button>
+			</h2>
 
 			<AnimatePresence initial={false}>
 				{open && (

@@ -29,7 +29,7 @@ export function StartupBlock({ startup }: StartupBlockProps) {
 					setIsRevealed(!isRevealed);
 				}
 			}}
-			className="group relative max-h-60 max-w-full min-w-full shrink-0 cursor-pointer overflow-hidden rounded-xl bg-gray-300 md:max-h-none md:min-w-0 md:cursor-auto"
+			className="group bg-background-muted relative max-h-60 max-w-full min-w-full shrink-0 cursor-pointer overflow-hidden rounded-xl md:max-h-none md:min-w-0 md:cursor-auto"
 			style={
 				{
 					width,
@@ -69,7 +69,7 @@ export function StartupBlock({ startup }: StartupBlockProps) {
 					>
 						{name}
 					</h2>
-					<b className="mt-1 text-xl text-gray-800 italic lg:text-2xl">{tagline}</b>
+					<b className="text-foreground mt-1 text-xl italic lg:text-2xl">{tagline}</b>
 				</div>
 			</div>
 
@@ -82,7 +82,7 @@ export function StartupBlock({ startup }: StartupBlockProps) {
 				}`}
 			>
 				<div
-					className="absolute inset-0 -z-10 rounded-xl border-4 bg-white/15 backdrop-blur-sm"
+					className="bg-foreground/10 absolute inset-0 -z-10 rounded-xl border-4 backdrop-blur-sm"
 					style={{ borderColor: accent }}
 				/>
 				<h3
@@ -91,7 +91,7 @@ export function StartupBlock({ startup }: StartupBlockProps) {
 				>
 					{name}
 				</h3>
-				<p className="max-w-lg text-lg leading-relaxed text-black lg:text-xl">{description}</p>
+				<p className="text-foreground max-w-lg text-lg leading-relaxed lg:text-xl">{description}</p>
 
 				{links.length > 0 && (
 					<div className="flex flex-wrap justify-center gap-2" onClick={(e) => e.stopPropagation()}>

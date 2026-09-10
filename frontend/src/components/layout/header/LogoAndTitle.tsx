@@ -36,6 +36,10 @@ export function LogoAndTitle({ isLarge }: LogoAndTitleProps) {
 }
 
 function content(isLarge: boolean) {
+	// The site title is the page's single <h1> in the home hero; in the header
+	// (rendered on every page) it stays a plain span so pages keep one <h1>.
+	const TitleTag = isLarge ? 'h1' : 'span';
+
 	return (
 		<>
 			<div className="logo-container">
@@ -48,7 +52,7 @@ function content(isLarge: boolean) {
 					)}
 				/>
 			</div>
-			<h1
+			<TitleTag
 				className={cn(
 					'font-title bg-[linear-gradient(135deg,var(--color-highlight)_35%,var(--color-highlight-inverted)_50%,var(--color-highlight)_65%)] bg-size-[300%_300%] bg-clip-text leading-tight text-transparent md:whitespace-nowrap',
 					isLarge
@@ -59,7 +63,7 @@ function content(isLarge: boolean) {
 				Edinburgh
 				<br />
 				VenturePoint
-			</h1>
+			</TitleTag>
 		</>
 	);
 }

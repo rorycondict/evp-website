@@ -1,4 +1,3 @@
-export * from '../../features/events/components/EventsBanner';
 export * from './chip/Chip';
 export * from './chip/chip-variants';
 export * from './interactive/AnimatedCheckbox';

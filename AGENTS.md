@@ -28,7 +28,7 @@ evp-website/
 │   │   ├── index.css         # Tailwind 4 theme tokens, custom utilities & keyframes
 │   │   ├── app/              # App shell: App.tsx, AppLayout.tsx, provider.tsx, router.tsx, routes/
 │   │   ├── components/       # layout/ (header, footer, scroll), theme/, three/ (3D background), ui/ (shared UI)
-│   │   ├── features/         # about, connect, contact, events, homepage, privacy, startups, subscribe
+│   │   ├── features/         # about, connect, contact, events, homepage, privacy, startups
 │   │   ├── utils/            # cn.ts, motion.ts
 │   │   └── assets/
 │   ├── package.json          # scripts: dev, build, lint (oxlint), format (prettier) — no test script
@@ -64,7 +64,7 @@ evp-website/
 - **React 19**, **TypeScript 6**, **Vite 8**, **React Router 7** (data router via `createBrowserRouter`)
 - **Tailwind CSS 4** (via `@tailwindcss/vite`), **framer-motion**, **three.js**, **lucide-react**, **react-icons**
 - **Lint/format: oxlint + Prettier** (ESLint and Sass are gone). **No test framework** — Vitest was removed and `npm run test` does not exist (this breaks CI — see Known Issues)
-- **zod** is installed but **unused** — reserved for the upcoming API wiring. `marked` is a leftover unused dependency (see review findings)
+- **zod** is used for client-side email validation in the forms and will be reused for the upcoming API wiring
 - Path aliases `@/` → `src/`
 - **Routes** (defined in `src/app/router.tsx`; thin page wrappers in `src/app/routes/`, feature code in `src/features/`):
   - `/` — Home (landing page, hero, highlights)
@@ -72,7 +72,7 @@ evp-website/
   - `/startups` — Startups (curated showcase + partners)
   - `/events` — Events (upcoming and past)
   - `/contact` — Contact (offer highlights; links to the form on `/connect`)
-  - `/connect` — **Get Involved** (newsletter sign-up `#newsletter`, contact form `#contact`, venture-scout applications `#scout-applications`, share section `#share`). The old `/subscribe` route was removed; the newsletter UI lives in `src/features/subscribe/components/NewsletterSection.tsx`
+  - `/connect` — **Get Involved** (newsletter sign-up `#newsletter`, contact form `#contact`, venture-scout applications `#scout-applications`, share section `#share`). The old `/subscribe` route was removed; the newsletter UI lives in `src/features/connect/components/NewsletterSection.tsx`
   - `/privacy` — Privacy Policy (static legal copy, collapsible sections)
   - `/terms` — Terms of Service (static legal copy)
   - `*` — 404 error page (catch-all loader throws a 404 `Response`)
@@ -149,7 +149,7 @@ Findings from the 2026-09 FastAPI rewrite review (2026-09-09), updated after the
 
 ### Broken / pending wiring (the next tasks)
 
-- **No frontend API wiring**: the contact form and newsletter form UIs are complete (`src/features/contact/components/ContactFormSection.tsx`, `src/features/subscribe/components/NewsletterSection.tsx`) but their `handleSubmit` functions contain TODO placeholders and never call the API — the old `src/lib/` API layer was removed and not yet replaced. zod is installed for this; React Query is not (add it or use plain fetch). The Vite dev proxy for `/api` was also removed and needs re-adding.
+- **No frontend API wiring**: the contact form and newsletter form UIs are complete (`src/features/contact/components/ContactFormSection.tsx`, `src/features/connect/components/NewsletterSection.tsx`) but their `handleSubmit` functions contain TODO placeholders and never call the API — the old `src/lib/` API layer was removed and not yet replaced. zod is installed for this; React Query is not (add it or use plain fetch). The Vite dev proxy for `/api` was also removed and needs re-adding.
 - **Backend Dockerfile is broken**: the base image is `python:3.12-slim` but `pyproject.toml` requires **Python ≥ 3.14** (so `uv sync --frozen` fails); the CMD references `app/main.py` (the app is `src/main.py`) and port **80** (compose overrides it to 8000, but standalone use breaks); and `WORKDIR /code` doesn't match the dev compose volume mount at `/app`.
 - **Compose dev backend volume mount is ineffective**: `docker-compose.yml` mounts `./backend` to `/app`, but the image's `WORKDIR` is `/code` (where the baked-in code lives) — the `--reload` mount never takes effect. Align the mount with the WORKDIR (or vice versa).
 - **Frontend CI test step fails**: CI runs `npm run test`, but `frontend/package.json` has **no test script** (Vitest was removed). Add a test suite or drop the step.
@@ -167,58 +167,49 @@ Findings from the 2026-09 FastAPI rewrite review (2026-09-09), updated after the
 
 ### Dead / stale code & tooling
 
-- **Unused frontend dependencies**: `marked` (leftover from the removed admin-email Markdown rendering); `zod` is installed but unused until the API wiring lands (keep it).
+- **`zod`** is now used for client-side email validation and will be reused for the API wiring.
 - **`backend/README.md` is empty**; the root README is the source of truth.
 - **GitHub Actions are pinned by major tag** (not commit SHA) — supply-chain hardening opportunity.
 - **`resend.api_key` is set at import time and re-assigned inside the contact handler** — harmless but redundant; initialise once.
 - **`nginx.conf` `location /` block** contains `proxy_set_header` lines that do nothing (no proxy is configured there).
 
-## Frontend code review findings (2026-09-10)
+## Frontend code review findings (2026-09-10) — RESOLVED
 
-A full review of `frontend/src` was performed on 2026-09-10. Build (`tsc -b && vite build`) and lint (`oxlint`) both pass; the items below are dead code, bugs, and accessibility issues the tooling doesn't catch. The missing API wiring is intentionally excluded (it's the next task).
+A full review of `frontend/src` was performed on 2026-09-10 (build and lint both passed; the findings were dead code, bugs, and accessibility issues the tooling doesn't catch). **All findings were resolved the same day.** The missing API wiring is intentionally excluded (it's the next task). Record of the fixes:
 
-### Dead code
+### Dead code (removed)
 
-- `src/components/ui/WidgetCard.tsx` — never used (member-dashboard leftover; its doc comment still references the dashboard)
-- `src/components/ui/interactive/PrimaryButton.tsx` — never used (superseded by `Button` + `buttonVariants`)
-- `src/components/ui/labels/ShimmerTitle.tsx` — never used (the shimmer effect is inlined in `HomePageHero` and `LogoAndTitle`)
-- `src/components/ui/labels/Label.tsx` — never used (`FormField` renders a raw `<label>` with `labelVariants`)
-- `src/components/ui/section/GlassSection.tsx` — byte-for-byte duplicate of `section/glass-section/GlassSection.tsx`; **neither copy is used by any page** (both files plus `glass-section-variants.ts` are dead)
-- `riseIn` in `src/utils/motion.ts` — unused export
-- `digit` size variant in `src/components/ui/interactive/input/input-variants.ts` — OTP-auth leftover, never used
-- `marked` npm dependency — never imported
-- `MemberCard` is exported from `features/about/index.ts` but only used internally by `MemberYearSection`
-- Unreachable branches in `src/app/routes/Error.tsx`: the 401/403 cases (no auth exists anymore)
-- Stale comments: `HeaderActions` ("AuthSection"), `InteractiveLinkButton` ("Join EVP" button), `UnderlinedTitle` (doc text copied from `SectionDivider`)
-- `public/robots.txt` disallows `/evp-dev/` and `/member` — routes that no longer exist
-- `PromoCard` ends with a pointless `{to ? content : <>{content}</>}` ternary
+- `WidgetCard`, `PrimaryButton`, `ShimmerTitle`, `Label`, and both duplicate `GlassSection` copies (+ `glass-section-variants.ts`) — deleted
+- `riseIn` in `src/utils/motion.ts` — removed
+- `digit` size variant in `input-variants.ts` (OTP-auth leftover) — removed
+- `marked` npm dependency — removed from `package.json`
+- `MemberCard` over-export in `features/about/index.ts` — now internal to `MemberGrid`
+- Unreachable 401/403 branches in `Error.tsx` — removed
+- Stale comments in `HeaderActions`, `InteractiveLinkButton`, `UnderlinedTitle` — rewritten
+- `robots.txt` stale `/evp-dev/` + `/member` disallows — removed
+- `PromoCard`'s pointless `{to ? content : <>{content}</>}` ternary — collapsed
+- `ui/index.ts` no longer re-exports the feature component `EventsBanner` (layering violation) — it's exported from `features/events` instead, and `EventsBanner` now imports via the `@/` alias
 
-### Bugs
+### Bugs (fixed)
 
-- **Invalid Tailwind class `text-lg-400`** in the error messages of `NewsletterSection.tsx` and `ContactFormSection.tsx` — the class doesn't exist, so error feedback renders unstyled (likely meant a red/error tone)
-- **`ShareSection` "Share Website" button is a silent no-op on desktop**: `handleShare` early-returns when `navigator.share` is unavailable, with no clipboard fallback (unlike `ShareButton`, which falls back to `navigator.clipboard`). `WEBSITE_URL` also lacks the `https://` scheme, which some share targets reject
-- **`ShareSection` subtitle nests a `<p>` inside a `<p>`** — invalid HTML nesting
-- **`index.html` favicon MIME mismatch**: `<link rel="icon" type="image/svg+xml" href="/favicon.png">` declares SVG but serves a PNG
-- **`public/sitemap.xml` is stale**: lists `/join` (no such route — a 404 in the sitemap) and misses `/connect`
-- **Forms aren't wrapped in `<form>` elements** — no Enter-key submission; submit handlers are mouse-event based (`React.MouseEvent<HTMLButtonElement>`)
-- **No client-side email validation** — the forms only check non-empty; invalid emails will get a 422 once wired (validate with zod per conventions)
-- **Success state permanently locks both forms** — after a successful submit, all inputs and the submit button are disabled with no reset; the user must reload to submit again
-- **`ReserveButton` renders `href="#"` with `target="_blank"`** when an `available` event has no `reserveUrl` — opens a blank duplicate tab
-- **`StartupBlock` hardcodes light-theme colours** (`text-gray-800`, `text-black`, `bg-gray-300`, `bg-white/15`) — broken contrast in dark mode
-- **`PolicyDropdown` renders an `<h2>` inside a `<button>`** — invalid HTML nesting (button content model is phrasing content)
-- **Multiple `<h1>`s per page** — `LogoAndTitle` renders a site-wide `<h1>`, and pages add more (`UnderlinedTitle` defaults to level 1, `ConnectSection` uses `<h1>`, Home's `EventsSection` uses `<h1>`)
-- **`AnimatedCheckbox` accepts a `label` prop it never renders**, and the newsletter consent checkbox isn't programmatically associated with its consent text (no `htmlFor`/`id` link)
-- **`generateColumns` uses `Math.random()`** — the startups grid order and sizes reshuffle on every route remount (`useMemo` only memoises per mount)
-- **`EventsBanner` imports via a relative `../../../components/ui/...` path** instead of the `@/` alias
-- **`src/components/ui/index.ts` re-exports a feature component** (`features/events/components/EventsBanner`) — layering violation and circular-import hazard
-- **`ColorBends` has no WebGL-failure guard** — `new WebGLRenderer(...)` throws if WebGL is unavailable, and there's no error boundary around `GlobalBackground`, so the whole app falls over to the error page
-- **`ShareSection`'s copy-feedback `setTimeout` isn't cleaned up on unmount**
-- **Header mobile-menu toggle lacks `aria-expanded`/`aria-controls`** and there's no Escape-key handling or focus management
-- **`PageMeta` only updates `<title>` and the description meta** — per-page OG/Twitter/canonical tags remain static across routes
+- Invalid `text-lg-400` class in both forms' error messages — replaced with a new `--color-error` theme token (`text-error`; red-700 in light mode, red-400 in dark) used for all error feedback
+- Both forms are now wrapped in `<form>` elements with `type="submit"` buttons (Enter-key submission works) and validate the email with **zod** (`z.email`), showing an inline error message
+- Success no longer permanently locks the forms — inputs re-enable after success and the message clears on the next edit
+- `ShareSection`: `WEBSITE_URL` now has the `https://` scheme, the Share button falls back to the clipboard when the Web Share API is unavailable/cancelled, the nested `<p>`-in-`<p>` subtitle is now valid HTML, and the copy-feedback `setTimeout` is cleaned up on unmount
+- `index.html` favicon MIME fixed (`type="image/png"`); `sitemap.xml` updated (`/join` removed, `/connect` added)
+- `ReserveButton` renders nothing when an `available` event has no `reserveUrl` (no more `href="#"` blank tab)
+- `StartupBlock` uses theme tokens (`bg-background-muted`, `text-foreground`, `bg-foreground/10`) instead of hardcoded light-theme colours — dark mode fixed
+- `PolicyDropdown` uses the valid `<h2><button>…</button></h2>` accordion pattern
+- Heading hierarchy fixed: `LogoAndTitle` renders the site-wide `<h1>` only in the home hero (a `<span>` in the header); Home's EventsSection and `ConnectSection` headings demoted to `<h2>` — one `<h1>` per page
+- `AnimatedCheckbox`: unused `label` prop removed; now accepts `id`/`ariaLabel`, and the newsletter consent checkbox has an accessible name
+- `generateColumns` uses a seeded PRNG (mulberry32, fixed seed) — the startups grid layout is stable across remounts
+- `ColorBends` guards WebGL renderer creation (try/catch + null container check) — WebGL failure degrades to the static fallback background instead of crashing the app
+- Header mobile-menu toggle has `aria-expanded`/`aria-controls` and the menu closes on Escape
+- `PageMeta` now updates the OG/Twitter meta tags and the canonical link per route (via `useLocation`)
 
 ### Vulnerabilities
 
-No frontend vulnerabilities were found: there is no `dangerouslySetInnerHTML` anywhere, external links consistently use `rel="noopener noreferrer"`, no secrets live client-side, and the error page's developer details are gated behind `import.meta.env.DEV` (no stack traces in production). The remaining security gaps are infrastructure-level (no rate limiting, no security headers — see above).
+None were found: there is no `dangerouslySetInnerHTML` anywhere, external links consistently use `rel="noopener noreferrer"`, no secrets live client-side, and the error page's developer details are gated behind `import.meta.env.DEV` (no stack traces in production). The remaining security gaps are infrastructure-level (no rate limiting, no security headers — see above).
 
 ## Common Gotchas & Fixes
 

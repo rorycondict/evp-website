@@ -59,9 +59,9 @@ export function ConnectSection({
 						transition={{ duration: 0.5, ease: 'easeIn' }}
 						className="text-center"
 					>
-						<h1 id="connect" data-nav-label={buttonText} className="pt-10 pb-5 text-5xl font-bold">
+						<h2 id="connect" data-nav-label={buttonText} className="pt-10 pb-5 text-5xl font-bold">
 							{heading}
-						</h1>
+						</h2>
 						{body.map((line, i) => (
 							<p key={i} className="mx-auto max-w-sm py-3 text-xl md:max-w-2xl">
 								{line}

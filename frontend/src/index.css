@@ -19,6 +19,7 @@
 	--color-highlight-inverted: var(--highlight-inverted);
 
 	--color-accent: #433aeb;
+	--color-error: var(--error);
 
 	--font-title: 'Playfair Display', 'Georgia', serif;
 	--font-heading: 'Inter', system-ui, sans-serif;
@@ -162,6 +163,7 @@ body,
 	--foreground-muted: #636363;
 	--highlight: #000000;
 	--highlight-inverted: #ffffff;
+	--error: #b91c1c;
 }
 
 /* Dark mode */
@@ -172,6 +174,7 @@ body,
 	--foreground-muted: #86868b;
 	--highlight: #ffffff;
 	--highlight-inverted: #3c3c3c;
+	--error: #f87171;
 }
 
 ::view-transition-old(root) {

@@ -23,7 +23,8 @@ interface UnderlinedTitleProps {
 }
 
 /**
- * Thin horizontal rule used between headings and body throughout the site.
+ * Centered title with a divider underneath, used for page and section
+ * headings throughout the site.
  */
 export function UnderlinedTitle({
 	title,

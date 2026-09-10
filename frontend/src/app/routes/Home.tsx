@@ -6,9 +6,10 @@ import aboutUsImg from '@/assets/homepage/promo-chairs.webp';
 import whatWeDoImg2 from '@/assets/homepage/promo-conf.webp';
 import whatWeDoImg1 from '@/assets/homepage/promo-present.webp';
 import contactImg from '@/assets/homepage/promo-tower.webp';
-import { ConnectSection, EventsBanner, PageMeta, PromoCard, SectionDivider } from '@/components/ui';
+import { ConnectSection, PageMeta, PromoCard, SectionDivider } from '@/components/ui';
 import { TextLink } from '@/components/ui/interactive/TextLink';
 import { MediaTextSection } from '@/components/ui/section/MediaTextSection';
+import { EventsBanner } from '@/features/events';
 import { HomePageHero } from '@/features/homepage';
 import { fadeUp } from '@/utils/motion';
 
@@ -129,13 +130,13 @@ function EventsSection() {
 			</motion.div>
 
 			<motion.div {...fadeUp()} className="flex flex-col items-center">
-				<h1
+				<h2
 					id="events"
 					data-nav-label="Our Events"
 					className="pt-10 pb-5 text-center text-5xl font-bold"
 				>
 					Join us at our next event!
-				</h1>
+				</h2>
 				<SectionDivider />
 				<p className="mx-auto max-w-2xl py-5 text-center text-lg md:text-2xl">
 					From exclusive investor meet-ups to the most promising start-ups, we've got something to

@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion';
 import { useState } from 'react';
+import { z } from 'zod';
 
 import { buttonVariants, FormField, FormSection, Input, inputVariants } from '@/components/ui';
 import { cn } from '@/utils/cn';
@@ -15,6 +16,8 @@ interface FormFields {
 
 const INITIAL_FIELDS: FormFields = { firstName: '', lastName: '', email: '', message: '' };
 
+const emailSchema = z.email({ message: 'Please enter a valid email address.' });
+
 /**
  * Contact form section: first/last name, email and message fields in a
  * centered glass-box section. Rendered on the Connect page; posts to
@@ -23,16 +26,26 @@ const INITIAL_FIELDS: FormFields = { firstName: '', lastName: '', email: '', mes
 export function ContactFormSection() {
 	const [fields, setFields] = useState<FormFields>(INITIAL_FIELDS);
 	const [status, setStatus] = useState<FormState>('idle');
+	const [emailError, setEmailError] = useState<string | null>(null);
 
 	function handleChange(e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) {
 		setFields((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+		if (e.target.name === 'email') setEmailError(null);
+		// Any edit after a successful submit returns the form to its idle state.
+		if (status === 'success') setStatus('idle');
 	}
 
-	async function handleSubmit(e: React.MouseEvent<HTMLButtonElement>) {
+	async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
 		e.preventDefault();
 
 		const { firstName, lastName, email, message } = fields;
 		if (!firstName.trim() || !lastName.trim() || !email.trim() || !message.trim()) return;
+
+		const parsedEmail = emailSchema.safeParse(email.trim());
+		if (!parsedEmail.success) {
+			setEmailError(parsedEmail.error.issues[0]?.message ?? 'Please enter a valid email address.');
+			return;
+		}
 
 		setStatus('submitting');
 
@@ -59,7 +72,7 @@ export function ContactFormSection() {
 			title="Contact Us"
 			subtitle="Fill in the form below and we'll get back to you as soon as possible."
 		>
-			<div className="flex w-full flex-col gap-4">
+			<form onSubmit={handleSubmit} noValidate className="flex w-full flex-col gap-4">
 				{/* Name — first and last side by side */}
 				<div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
 					<FormField id="first-name-field" label="first name">
@@ -71,7 +84,7 @@ export function ContactFormSection() {
 							value={fields.firstName}
 							onChange={handleChange}
 							placeholder="Jane"
-							disabled={isSubmitting || isSuccess}
+							disabled={isSubmitting}
 							size="md"
 						/>
 					</FormField>
@@ -84,7 +97,7 @@ export function ContactFormSection() {
 							value={fields.lastName}
 							onChange={handleChange}
 							placeholder="Doe"
-							disabled={isSubmitting || isSuccess}
+							disabled={isSubmitting}
 							size="md"
 						/>
 					</FormField>
@@ -92,17 +105,24 @@ export function ContactFormSection() {
 
 				{/* Email */}
 				<FormField id="email-field" label="email">
-					<Input
-						id="email-field"
-						name="email"
-						type="email"
-						autoComplete="email"
-						value={fields.email}
-						onChange={handleChange}
-						placeholder="you@example.com"
-						disabled={isSubmitting || isSuccess}
-						size="md"
-					/>
+					<>
+						<Input
+							id="email-field"
+							name="email"
+							type="email"
+							autoComplete="email"
+							value={fields.email}
+							onChange={handleChange}
+							placeholder="you@example.com"
+							disabled={isSubmitting}
+							size="md"
+						/>
+						{emailError && (
+							<p role="alert" className="text-error text-center text-sm md:text-left">
+								{emailError}
+							</p>
+						)}
+					</>
 				</FormField>
 				{/* Message */}
 				<FormField id="message-field" label="message">
@@ -113,15 +133,14 @@ export function ContactFormSection() {
 						value={fields.message}
 						onChange={handleChange}
 						placeholder="What can EVP do for you?"
-						disabled={isSubmitting || isSuccess}
+						disabled={isSubmitting}
 						className={cn(inputVariants({ size: 'md' }), 'resize-none')}
 					/>
 				</FormField>
 				{/* Submit */}
 				<button
-					type="button"
-					onClick={handleSubmit}
-					disabled={isSubmitting || isSuccess || !isComplete}
+					type="submit"
+					disabled={isSubmitting || !isComplete}
 					className={buttonVariants({ intent: 'primary', size: 'md', className: 'mt-2 w-full' })}
 				>
 					{isSubmitting ? 'sending...' : isSuccess ? 'sent!' : 'send message'}
@@ -141,12 +160,12 @@ export function ContactFormSection() {
 					<motion.p
 						initial={{ opacity: 0, y: 8 }}
 						animate={{ opacity: 1, y: 0 }}
-						className="text-center text-lg md:text-left"
+						className="text-error text-center text-lg md:text-left"
 					>
 						Something went wrong. Please try again or email us directly.
 					</motion.p>
 				)}
-			</div>
+			</form>
 		</FormSection>
 	);
 }

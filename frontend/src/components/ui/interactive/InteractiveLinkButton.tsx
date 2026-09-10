@@ -18,7 +18,7 @@ interface InteractiveLinkButtonProps {
 /**
  * Interactive pill-shaped link button: a cursor-tracking spotlight, animated
  * gradient blobs, and an underline-on-hover label. Shared by the "Reach out"
- * contact button and the header "Join EVP" button.
+ * contact button and the header "Get Involved" button.
  */
 export function InteractiveLinkButton({
 	to,

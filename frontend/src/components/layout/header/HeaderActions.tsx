@@ -2,7 +2,7 @@ import { InteractiveLinkButton } from '@/components/ui';
 import { ThemeToggle } from './ThemeToggle';
 
 /**
- * Header actions: `ThemeToggle | separator | AuthSection`.
+ * Header actions: `ThemeToggle | separator | Get Involved link`.
  * Used in the fixed header (desktop and mobile menu).
  */
 export function HeaderActions() {

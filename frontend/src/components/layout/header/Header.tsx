@@ -1,6 +1,6 @@
 import { AnimatePresence, motion } from 'framer-motion';
 import { Menu, X } from 'lucide-react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useLocation } from 'react-router';
 
 import { useScrollVisibility } from '@/components/layout/scroll/use-scroll-visibility';
@@ -29,6 +29,16 @@ export function Header({ transitionDuration = 600, slideDistance = 100 }: Header
 		setTrackedPathname(location.pathname);
 		setMobileMenuOpen(false);
 	}
+
+	// Close the mobile menu with the Escape key.
+	useEffect(() => {
+		if (!mobileMenuOpen) return;
+		const handleKeyDown = (e: KeyboardEvent) => {
+			if (e.key === 'Escape') setMobileMenuOpen(false);
+		};
+		window.addEventListener('keydown', handleKeyDown);
+		return () => window.removeEventListener('keydown', handleKeyDown);
+	}, [mobileMenuOpen]);
 
 	const visible = !isHomePage || isScrolledPast;
 	const transition = `opacity ${transitionDuration}ms ${EASING}, transform ${transitionDuration}ms ${EASING}`;
@@ -63,6 +73,8 @@ export function Header({ transitionDuration = 600, slideDistance = 100 }: Header
 						className="text-foreground p-2 md:hidden"
 						onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
 						aria-label="Toggle mobile menu"
+						aria-expanded={mobileMenuOpen}
+						aria-controls="mobile-menu"
 					>
 						{mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
 					</button>
@@ -72,6 +84,7 @@ export function Header({ transitionDuration = 600, slideDistance = 100 }: Header
 			<AnimatePresence>
 				{mobileMenuOpen && (
 					<motion.div
+						id="mobile-menu"
 						initial={{ height: 0, opacity: 0 }}
 						animate={{ height: 'auto', opacity: 1 }}
 						exit={{ height: 0, opacity: 0 }}

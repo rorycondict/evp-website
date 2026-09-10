@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion';
 import { useState } from 'react';
+import { z } from 'zod';
 
 import {
 	AnimatedCheckbox,
@@ -20,6 +21,8 @@ interface FormFields {
 
 const INITIAL_FIELDS: FormFields = { firstName: '', lastName: '', email: '' };
 
+const emailSchema = z.email({ message: 'Please enter a valid email address.' });
+
 /**
  * Newsletter sign-up section: optional first/last name, required email and a
  * consent checkbox linking to the privacy policy and terms of service. Will
@@ -30,15 +33,25 @@ export function NewsletterSection() {
 	const [fields, setFields] = useState<FormFields>(INITIAL_FIELDS);
 	const [consent, setConsent] = useState(false);
 	const [status, setStatus] = useState<FormState>('idle');
+	const [emailError, setEmailError] = useState<string | null>(null);
 
 	function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
 		setFields((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+		if (e.target.name === 'email') setEmailError(null);
+		// Any edit after a successful submit returns the form to its idle state.
+		if (status === 'success') setStatus('idle');
 	}
 
-	async function handleSubmit(e: React.MouseEvent<HTMLButtonElement>) {
+	async function handleSubmit(e: React.SubmitEvent<HTMLFormElement>) {
 		e.preventDefault();
 
 		if (!fields.email.trim() || !consent) return;
+
+		const email = emailSchema.safeParse(fields.email.trim());
+		if (!email.success) {
+			setEmailError(email.error.issues[0]?.message ?? 'Please enter a valid email address.');
+			return;
+		}
 
 		setStatus('submitting');
 
@@ -62,7 +75,7 @@ export function NewsletterSection() {
 			title="Our Newsletter"
 			subtitle="Get event announcements, start-up spotlights and scout news straight to your inbox."
 		>
-			<div className="flex w-full flex-col gap-4">
+			<form onSubmit={handleSubmit} noValidate className="flex w-full flex-col gap-4">
 				<div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
 					<FormField id="newsletter-first-name-field" label="first name">
 						<Input
@@ -73,7 +86,7 @@ export function NewsletterSection() {
 							value={fields.firstName}
 							onChange={handleChange}
 							placeholder="John"
-							disabled={isSubmitting || isSuccess}
+							disabled={isSubmitting}
 							size="md"
 						/>
 					</FormField>
@@ -86,7 +99,7 @@ export function NewsletterSection() {
 							value={fields.lastName}
 							onChange={handleChange}
 							placeholder="Doe"
-							disabled={isSubmitting || isSuccess}
+							disabled={isSubmitting}
 							size="md"
 						/>
 					</FormField>
@@ -94,25 +107,34 @@ export function NewsletterSection() {
 
 				{/* Email */}
 				<FormField id="newsletter-email-field" label="email">
-					<Input
-						id="newsletter-email-field"
-						name="email"
-						type="email"
-						autoComplete="email"
-						value={fields.email}
-						onChange={handleChange}
-						placeholder="you@example.com"
-						disabled={isSubmitting || isSuccess}
-						size="md"
-					/>
+					<>
+						<Input
+							id="newsletter-email-field"
+							name="email"
+							type="email"
+							autoComplete="email"
+							value={fields.email}
+							onChange={handleChange}
+							placeholder="you@example.com"
+							disabled={isSubmitting}
+							size="md"
+						/>
+						{emailError && (
+							<p role="alert" className="text-error text-center text-sm md:text-left">
+								{emailError}
+							</p>
+						)}
+					</>
 				</FormField>
 
 				{/* Consent */}
 				<div className="flex items-start gap-3 pt-1 text-left">
 					<AnimatedCheckbox
+						id="newsletter-consent"
+						ariaLabel="Consent to receiving emails from EVP"
 						checked={consent}
 						onChange={setConsent}
-						disabled={isSubmitting || isSuccess}
+						disabled={isSubmitting}
 					/>
 					<p className="text-sm leading-relaxed">
 						I have read and agree to the <TextLink to="/privacy">privacy policy</TextLink> and{' '}
@@ -123,9 +145,8 @@ export function NewsletterSection() {
 
 				{/* Submit */}
 				<button
-					type="button"
-					onClick={handleSubmit}
-					disabled={isSubmitting || isSuccess || !canSubmit}
+					type="submit"
+					disabled={isSubmitting || !canSubmit}
 					className={buttonVariants({ intent: 'primary', size: 'md', className: 'mt-2 w-full' })}
 				>
 					{isSubmitting ? 'subscribing...' : isSuccess ? 'subscribed!' : 'subscribe'}
@@ -145,12 +166,12 @@ export function NewsletterSection() {
 					<motion.p
 						initial={{ opacity: 0, y: 8 }}
 						animate={{ opacity: 1, y: 0 }}
-						className="text-center text-lg md:text-left"
+						className="text-error text-center text-lg md:text-left"
 					>
 						Something went wrong. Please try again later.
 					</motion.p>
 				)}
-			</div>
+			</form>
 		</FormSection>
 	);
 }

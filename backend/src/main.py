@@ -70,26 +70,31 @@ async def submit_contact_form(form: ContactForm):
         return
 
     try:
-        params: resend.Emails.SendParams = {
-            "from": "Edinburgh VenturePoint <noreply@mail.edinburghventurepoint.com>",
-            "to": "noreply@edinburghventurepoint.com",
-            "bcc": recipient_emails,
-            "subject": f"New contact form from {form.first_name} {form.last_name}",
-            "template": {
-                "id": "contact-form-notification",
-                "variables": {
-                    "SUBMITTER_FIRST_NAME": form.first_name,
-                    "SUBMITTER_LAST_NAME": form.last_name,
-                    "SUBMITTER_EMAIL": form.email,
-                    "SUBMITTER_MESSAGE": form.message,
+        params: list[resend.Emails.SendParams] = [
+            {
+                "from": "Edinburgh VenturePoint <noreply@mail.edinburghventurepoint.com>",
+                "to": email,
+                "subject": f"New contact form from {form.first_name} {form.last_name}",
+                "template": {
+                    "id": "contact-form-notification",
+                    "variables": {
+                        "SUBMITTER_FIRST_NAME": form.first_name,
+                        "SUBMITTER_LAST_NAME": form.last_name,
+                        "SUBMITTER_EMAIL": form.email,
+                        "SUBMITTER_MESSAGE": form.message,
+                    },
                 },
-            },
-        }
-        result = resend.Emails.send(params)
+            }
+            for email in recipient_emails
+        ]
+
+        result = resend.Batch.send(params)
+
         if getattr(result, "error", None) or (
             isinstance(result, dict) and result.get("error")
         ):
             raise RuntimeError(f"Resend returned an error: {result}")
+
     except Exception:
         logger.exception("Failed to send contact form notification email.")
         logger.error(form)

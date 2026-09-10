@@ -1,21 +1,32 @@
 import { motion } from 'framer-motion';
 
 type AnimatedCheckboxProps = {
+	/** Applied to the underlying input; pair with a <label htmlFor> or ariaLabel. */
+	id?: string;
+	/** Accessible name for the checkbox when no visible label is linked. */
+	ariaLabel?: string;
 	checked: boolean;
 	onChange: (checked: boolean) => void;
-	label?: string;
 	disabled?: boolean;
 };
 
-export function AnimatedCheckbox({ checked, onChange, disabled }: AnimatedCheckboxProps) {
+export function AnimatedCheckbox({
+	id,
+	ariaLabel,
+	checked,
+	onChange,
+	disabled,
+}: AnimatedCheckboxProps) {
 	return (
 		<label
 			className={`inline-flex items-center gap-2 ${disabled ? 'cursor-not-allowed opacity-50' : 'cursor-pointer'}`}
 		>
 			<input
+				id={id}
 				type="checkbox"
 				checked={checked}
 				disabled={disabled}
+				aria-label={ariaLabel}
 				onChange={(e) => onChange(e.target.checked)}
 				className="peer sr-only"
 			/>

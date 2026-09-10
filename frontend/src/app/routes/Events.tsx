@@ -2,16 +2,11 @@ import { motion } from 'framer-motion';
 
 import contactImg from '@/assets/homepage/events-banner/event-2.webp';
 
-import {
-	ConnectSection,
-	EventsBanner,
-	PageMeta,
-	SectionHeading,
-	UnderlinedTitle,
-} from '@/components/ui';
+import { ConnectSection, PageMeta, SectionHeading, UnderlinedTitle } from '@/components/ui';
 import {
 	AnimatedCounter,
 	EventCard,
+	EventsBanner,
 	EVENTS_STATS,
 	PAST_EVENTS,
 	UPCOMING_EVENTS,

@@ -1,13 +1,15 @@
 import networkImg from '@/assets/contact/promo-network.webp';
 import scoutImg from '@/assets/contact/promo-scout.webp';
 import contactImg from '@/assets/homepage/homepage-bkg.webp';
-import { ConnectSection, SectionDivider, UnderlinedTitle } from '@/components/ui';
+import { ConnectSection, PageMeta, SectionDivider, UnderlinedTitle } from '@/components/ui';
 import { MediaTextSection } from '@/components/ui/section/MediaTextSection';
 import { ContactHero, OfferCardsSection } from '@/features/contact';
 
 export default function Contact() {
 	return (
 		<div className="flex w-full flex-col">
+			<PageMeta title="Contact Us" description="Reach out and discover what EVP can do for you." />
+
 			<ContactHero />
 
 			<section className="py-10 pt-50">

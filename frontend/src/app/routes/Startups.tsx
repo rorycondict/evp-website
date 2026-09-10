@@ -11,7 +11,7 @@ export default function Startups() {
 	return (
 		<div className="w-full overflow-hidden">
 			<PageMeta
-				title="Start-ups"
+				title="Our Start-ups"
 				description="Learn about the partners & start-ups EVP has worked with."
 			/>
 			{/* Hero */}

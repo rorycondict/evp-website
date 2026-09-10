@@ -25,9 +25,12 @@ export function ReserveButton({ status, url }: { status: EventSpotStatus; url?: 
 		);
 	}
 
+	// An available event with no reserve URL has nowhere to link to.
+	if (!url) return null;
+
 	return (
 		<a
-			href={url ?? '#'}
+			href={url}
 			target="_blank"
 			rel="noopener noreferrer"
 			className="group bg-accent hover:shadow-accent/40 relative inline-flex items-center gap-2 overflow-hidden rounded-full px-6 py-2.5 text-sm font-bold tracking-widest text-white uppercase shadow-lg transition-all duration-300 hover:shadow-xl"

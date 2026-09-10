@@ -48,7 +48,7 @@ export function PromoCard({ image, title, body, to, index = 0, className }: Prom
 			transition={{ duration: 0.6, ease: 'easeOut' as const, delay: index * 0.2 }}
 			className={cn('glass-box flex w-full flex-col gap-10 pb-15 text-center', className)}
 		>
-			{to ? content : <>{content}</>}
+			{content}
 		</motion.div>
 	);
 }

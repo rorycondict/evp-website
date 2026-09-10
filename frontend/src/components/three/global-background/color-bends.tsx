@@ -175,7 +175,9 @@ export default function ColorBends({
 	const readyRef = useRef(false);
 
 	useEffect(() => {
-		const container = containerRef.current!;
+		const container = containerRef.current;
+		if (!container) return;
+
 		const scene = new Scene();
 		const camera = new OrthographicCamera(-1, 1, 1, -1, 0, 1);
 
@@ -211,11 +213,22 @@ export default function ColorBends({
 		const mesh = new Mesh(geometry, material);
 		scene.add(mesh);
 
-		const renderer = new WebGLRenderer({
-			antialias: false,
-			powerPreference: 'high-performance',
-			alpha: true,
-		});
+		let renderer: WebGLRenderer;
+		try {
+			renderer = new WebGLRenderer({
+				antialias: false,
+				powerPreference: 'high-performance',
+				alpha: true,
+			});
+		} catch (err) {
+			// WebGL is unavailable (disabled, no GPU, or context creation
+			// failed). Dispose what we created and fall back to the parent
+			// GlobalBackground's solid background.
+			geometry.dispose();
+			material.dispose();
+			console.warn('WebGL unavailable — skipping the animated background.', err);
+			return;
+		}
 		rendererRef.current = renderer;
 
 		renderer.outputColorSpace = SRGBColorSpace;
