@@ -1,73 +1,36 @@
-# React + TypeScript + Vite
+# EVP Website: Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+React SPA for the [Edinburgh VenturePoint website](../README.md).
 
-Currently, two official plugins are available:
+The root `README.md` is the source of truth for full project documentation; `AGENTS.md` covers developer/agent guidance and known issues.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## Stack
 
-## React Compiler
+- **React 19 + TypeScript 6 + Vite 8**, React Router 7 (data router), Tailwind CSS 4
+- **TanStack React Query + axios** — the API client is **orval-generated** into `src/api/generated.ts` (never edit by hand; regenerate with `npm run codegen`)
+- **zod** (client-side email validation), **framer-motion**, **three.js**, **lucide-react**/**react-icons**
+- Lint/format: **oxlint + Prettier** (no test suite yet)
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## Commands
 
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
-
-```js
-export default defineConfig([
-	globalIgnores(['dist']),
-	{
-		files: ['**/*.{ts,tsx}'],
-		extends: [
-			// Other configs...
-
-			// Remove tseslint.configs.recommended and replace with this
-			tseslint.configs.recommendedTypeChecked,
-			// Alternatively, use this for stricter rules
-			tseslint.configs.strictTypeChecked,
-			// Optionally, add this for stylistic rules
-			tseslint.configs.stylisticTypeChecked,
-
-			// Other configs...
-		],
-		languageOptions: {
-			parserOptions: {
-				project: ['./tsconfig.node.json', './tsconfig.app.json'],
-				tsconfigRootDir: import.meta.dirname,
-			},
-			// other options...
-		},
-	},
-]);
+```sh
+npm install
+npm run dev        # Vite dev server (no /api proxy — form submissions 404 in standalone dev; use docker compose, or re-add the proxy)
+npm run build      # tsc -b && vite build
+npm run lint       # oxlint
+npm run format     # Prettier
+npm run codegen    # re-export the backend OpenAPI spec and regenerate src/api/generated.ts (requires uv)
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+## Structure
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x';
-import reactDom from 'eslint-plugin-react-dom';
-
-export default defineConfig([
-	globalIgnores(['dist']),
-	{
-		files: ['**/*.{ts,tsx}'],
-		extends: [
-			// Other configs...
-			// Enable lint rules for React
-			reactX.configs['recommended-typescript'],
-			// Enable lint rules for React DOM
-			reactDom.configs.recommended,
-		],
-		languageOptions: {
-			parserOptions: {
-				project: ['./tsconfig.node.json', './tsconfig.app.json'],
-				tsconfigRootDir: import.meta.dirname,
-			},
-			// other options...
-		},
-	},
-]);
 ```
+src/
+├── api/          # generated.ts — orval-generated API client (do not edit)
+├── app/          # App shell: router, layout, providers (QueryClientProvider, theme, scroll)
+├── components/   # layout (header/footer), theme, three/ (3D background), ui/ (shared UI)
+├── features/     # about, connect, contact, events, home, privacy, startups
+└── utils/        # cn(), motion helpers
+```
+
+Path alias: `@/` → `src/`. Styling is Tailwind utilities only (no new CSS files, no `@apply`); shared patterns live in `src/components/ui/`.

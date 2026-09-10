@@ -22,9 +22,7 @@
 		"noFallthroughCasesInSwitch": true,
 
 		"paths": {
-			"@/*": ["./src/*"],
-			"@assets/*": ["./src/shared/assets/*"],
-			"@common": ["./src/shared/ui/common/index.ts"],
+			"@/*": ["./src/*"]
 		}
 	},
 	"include": ["src"]

@@ -1,0 +1,92 @@
+import { motion } from 'framer-motion';
+import type { ReactNode } from 'react';
+
+import { InteractiveLinkButton, SectionDivider } from '@/components/ui';
+
+interface ConnectSectionProps {
+	image: string;
+	imageAlt?: string;
+	/** Main heading text. */
+	heading: string;
+	/** One or two lines of body copy rendered as <p> tags. */
+	body: ReactNode[];
+	/** Extra Tailwind classes on the outer <section>. */
+	className?: string;
+	buttonText?: string;
+	to?: string;
+}
+
+/**
+ * Large contact section, features a background image, some specified lines of text, with an interactive contact button in the center.
+ */
+export function ConnectSection({
+	image,
+	imageAlt = '',
+	heading,
+	body,
+	className = '',
+	buttonText = 'Get Involved',
+	to = '/connect',
+}: ConnectSectionProps) {
+	return (
+		<section className={`relative w-full pb-30 ${className}`}>
+			<div className="relative w-full">
+				<img
+					src={image}
+					alt={imageAlt}
+					className="mx-auto h-150 w-full object-cover object-[50%_5%] shadow-2xl"
+				/>
+
+				{/* Soft background glow */}
+				<div className="pointer-events-none absolute inset-0 flex items-center justify-center overflow-hidden pb-50">
+					<div
+						className="bg-background h-150 w-full max-w-3xl md:h-150 md:max-w-7xl"
+						style={{
+							maskImage: 'radial-gradient(ellipse at center, rgba(0,0,0,1) 15%, rgba(0,0,0,0) 70%)',
+							WebkitMaskImage:
+								'radial-gradient(ellipse at center, rgba(0,0,0,1) 0%, rgba(0,0,0,0) 70%)',
+						}}
+					/>
+				</div>
+
+				<div className="bg-background/40 absolute inset-0 z-10" />
+
+				<div className="absolute inset-0 z-30 flex flex-col items-center justify-center pb-20">
+					<motion.div
+						initial={{ opacity: 0, y: -50 }}
+						whileInView={{ opacity: 1, y: 0 }}
+						viewport={{ once: true, margin: '-150px' }}
+						transition={{ duration: 0.5, ease: 'easeIn' }}
+						className="text-center"
+					>
+						<h2 id="connect" data-nav-label={buttonText} className="pt-10 pb-5 text-5xl font-bold">
+							{heading}
+						</h2>
+						{body.map((line, i) => (
+							<p key={i} className="mx-auto max-w-sm py-3 text-xl md:max-w-2xl">
+								{line}
+							</p>
+						))}
+					</motion.div>
+
+					<SectionDivider my="my-10 mb-10" />
+
+					<motion.div
+						initial={{ opacity: 0, y: 30 }}
+						whileInView={{ opacity: 1, y: 0 }}
+						viewport={{ once: true, amount: 0.8 }}
+						transition={{ duration: 0.3, ease: 'easeIn' }}
+					>
+						<InteractiveLinkButton
+							to={to}
+							className="px-20 py-4 text-2xl tracking-widest uppercase md:px-30 md:text-2xl"
+							ariaLabel={buttonText}
+						>
+							{buttonText}
+						</InteractiveLinkButton>
+					</motion.div>
+				</div>
+			</div>
+		</section>
+	);
+}

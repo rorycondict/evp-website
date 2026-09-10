@@ -1,16 +1,13 @@
-FROM python:3.12-slim-trixie
+FROM python:3.14-slim
+
 COPY --from=ghcr.io/astral-sh/uv:latest /uv /uvx /bin/
 
 WORKDIR /app
 
-ENV UV_NO_DEV=1
-ENV PYTHONDONTWRITEBYTECODE=1
-ENV PYTHONUNBUFFERED=1
+ENV UV_COMPILE_BYTECODE=1
 
-COPY pyproject.toml uv.lock ./
-RUN uv sync --frozen --no-install-project
+COPY . /app
 
-COPY . .
-RUN uv sync --frozen
+RUN uv sync --frozen --no-cache --no-dev
 
-CMD ["uv", "run", "gunicorn", "config.wsgi:application", "--bind", "0.0.0.0:17017"]
+CMD ["uv", "run", "--no-dev", "uvicorn", "src.main:app", "--host", "0.0.0.0", "--port", "8000", "--proxy-headers"]

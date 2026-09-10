@@ -1,14 +1,19 @@
-# build Vite app
 FROM node:24-alpine AS builder
+
 WORKDIR /app
+
 COPY package*.json ./
-RUN npm install
-COPY . . 
+
+RUN npm ci
+
+COPY . .
 RUN npm run build
 
-# serve with Nginx
-FROM nginx:alpine
+
+FROM nginx:alpine-slim
+
 COPY --from=builder /app/dist /usr/share/nginx/html
-COPY nginx.conf /etc/nginx/conf.d/default.conf
+
 EXPOSE 16017
+
 CMD ["nginx", "-g", "daemon off;"]
