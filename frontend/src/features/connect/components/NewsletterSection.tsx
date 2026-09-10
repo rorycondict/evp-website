@@ -174,7 +174,7 @@ export function NewsletterSection() {
 						className="text-error text-center text-lg md:text-left"
 					>
 						{error.response?.status === 429
-							? 'Too many requests - please wait a few minutes and try again.'
+							? 'Too many requests - please wait a minute and try again.'
 							: 'Something went wrong. Please try again later.'}
 					</motion.p>
 				)}
