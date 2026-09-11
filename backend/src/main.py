@@ -70,25 +70,23 @@ async def submit_contact_form(form: ContactForm):
         return
 
     try:
-        params: list[resend.Emails.SendParams] = [
-            {
-                "from": "Edinburgh VenturePoint <noreply@mail.edinburghventurepoint.com>",
-                "to": email,
-                "subject": f"New contact form from {form.first_name} {form.last_name}",
-                "template": {
-                    "id": "contact-form-notification",
-                    "variables": {
-                        "SUBMITTER_FIRST_NAME": form.first_name,
-                        "SUBMITTER_LAST_NAME": form.last_name,
-                        "SUBMITTER_EMAIL": form.email,
-                        "SUBMITTER_MESSAGE": form.message,
-                    },
+        params: resend.Emails.SendParams = {
+            "from": "Edinburgh VenturePoint <noreply@mail.edinburghventurepoint.com>",
+            "to": "contact@mail.edinburghventurepoint.com",
+            "cc": recipient_emails,
+            "subject": f"New contact form from {form.first_name} {form.last_name}",
+            "template": {
+                "id": "contact-form-notification",
+                "variables": {
+                    "SUBMITTER_FIRST_NAME": form.first_name,
+                    "SUBMITTER_LAST_NAME": form.last_name,
+                    "SUBMITTER_EMAIL": form.email,
+                    "SUBMITTER_MESSAGE": form.message,
                 },
-            }
-            for email in recipient_emails
-        ]
+            },
+        }
 
-        result = resend.Batch.send(params)
+        result = resend.Emails.send(params)
 
         if getattr(result, "error", None) or (
             isinstance(result, dict) and result.get("error")
