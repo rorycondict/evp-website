@@ -7,9 +7,9 @@ export function Footer() {
 		<footer className="bg-background shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.05)]">
 			<div className="mx-auto max-w-6xl px-6 py-12">
 				<div className="text-foreground-muted flex flex-col justify-between gap-6 text-lg leading-relaxed sm:flex-row sm:items-start">
-					<div className="max-w-lg">
+					<div className="max-w-xl">
 						<p className="text-md">
-							Edinburgh VenturePoint is an entrepreneurship and venture capital society at{' '}
+							Edinburgh VenturePoint is a venture capital Special Interest Group (SIG) at{' '}
 							<a
 								href="https://www.ed.ac.uk/"
 								target="_blank"
@@ -21,7 +21,7 @@ export function Footer() {
 							.
 						</p>
 						<p className="text-foreground-muted mt-4 text-sm">
-							EVP is a registered member of Scotland's largest tech society,{' '}
+							As a SIG, EVP is a member of Scotland's largest tech society,{' '}
 							<a
 								href="https://comp-soc.com/"
 								target="_blank"
