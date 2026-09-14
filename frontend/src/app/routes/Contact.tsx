@@ -1,9 +1,16 @@
 import networkImg from '@/assets/contact/promo-network.webp';
 import scoutImg from '@/assets/contact/promo-scout.webp';
 import contactImg from '@/assets/homepage/homepage-bkg.webp';
-import { ConnectSection, PageMeta, SectionDivider, UnderlinedTitle } from '@/components/ui';
+import {
+	ConnectSection,
+	InteractiveLinkButton,
+	PageMeta,
+	SectionDivider,
+	UnderlinedTitle,
+} from '@/components/ui';
 import { MediaTextSection } from '@/components/ui/section/MediaTextSection';
 import { ContactHero, OfferCardsSection } from '@/features/contact';
+import { ArrowRight } from 'lucide-react';
 
 export default function Contact() {
 	return (
@@ -37,6 +44,12 @@ export default function Contact() {
 							Scouts gain access to free educational sessions with real early-stage investors,
 							experiences at exclusive investment meetings, and much more!
 						</p>
+						<InteractiveLinkButton
+							to="/connect#scout-applications"
+							className="mt-5 px-10 py-3 text-xl tracking-widest uppercase"
+						>
+							Applications Now Open
+						</InteractiveLinkButton>
 					</MediaTextSection>
 				</div>
 
