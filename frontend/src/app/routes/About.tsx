@@ -83,7 +83,7 @@ export default function About() {
 						transition={{ delay: 0.4, duration: 0.5, ease: 'easeOut' }}
 						src={ideaImg}
 						alt="A start-up presenting at one of EVP's events"
-						className="h-70 w-full max-w-sm rounded-lg object-cover shadow-2xl md:max-w-md"
+						className="h-70 w-full max-w-sm object-cover shadow-2xl md:max-w-md"
 					/>
 				</div>
 			</div>

@@ -38,11 +38,7 @@ export function MediaTextSection({
 			{...slideIn(reverse ? 'right' : 'left')}
 			className={`flex ${imageHeight} w-full justify-center md:w-1/2`}
 		>
-			<img
-				src={image}
-				alt={imageAlt}
-				className="w-full max-w-md rounded-lg object-cover shadow-2xl"
-			/>
+			<img src={image} alt={imageAlt} className="w-full max-w-md object-cover shadow-2xl" />
 		</motion.div>
 	);
 

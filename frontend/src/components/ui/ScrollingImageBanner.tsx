@@ -49,7 +49,7 @@ export function ScrollingImageBanner({
 						key={i}
 						src={img.src}
 						alt={img.alt}
-						className={`${heightClass} w-auto shrink-0 rounded-lg object-cover shadow-lg`}
+						className={`${heightClass} w-auto shrink-0 object-cover shadow-lg`}
 					/>
 				))}
 			</div>

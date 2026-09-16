@@ -22,7 +22,7 @@ export function MemberCard({ member }: { member: Member }) {
 	return (
 		<motion.div
 			variants={cardVariants}
-			className="bg-background hover:border-accent border-background flex flex-col items-center rounded-xl border-2 p-6 text-center transition-colors md:items-start md:p-4 md:text-left"
+			className="bg-background hover:border-accent border-background flex flex-col items-center border-2 p-6 text-center transition-colors md:items-start md:p-4 md:text-left"
 		>
 			{/* Avatar */}
 			<div className="mx-auto mt-2 mb-4 flex justify-center md:mb-6">

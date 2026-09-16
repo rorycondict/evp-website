@@ -88,7 +88,7 @@ export default function Startups() {
 						whileInView={{ opacity: 1, y: 0 }}
 						viewport={{ once: true, amount: 0.3 }}
 						transition={{ duration: 0.5, ease: 'easeIn' }}
-						className="border-accent group relative z-10 mx-auto flex h-150 flex-col items-center justify-center gap-4 overflow-hidden rounded-xl border-4 text-center"
+						className="border-accent group relative z-10 mx-auto flex h-150 flex-col items-center justify-center gap-4 overflow-hidden border-4 text-center"
 					>
 						<div className="glass-box pointer-events-none absolute inset-0 overflow-hidden" />
 

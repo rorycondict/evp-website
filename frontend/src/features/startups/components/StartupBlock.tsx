@@ -29,7 +29,7 @@ export function StartupBlock({ startup }: StartupBlockProps) {
 					setIsRevealed(!isRevealed);
 				}
 			}}
-			className="group bg-background-muted relative max-h-60 max-w-full min-w-full shrink-0 cursor-pointer overflow-hidden rounded-xl md:max-h-none md:min-w-0 md:cursor-auto"
+			className="group bg-background-muted relative max-h-60 max-w-full min-w-full shrink-0 cursor-pointer overflow-hidden md:max-h-none md:min-w-0 md:cursor-auto"
 			style={
 				{
 					width,
@@ -82,7 +82,7 @@ export function StartupBlock({ startup }: StartupBlockProps) {
 				}`}
 			>
 				<div
-					className="bg-foreground/10 absolute inset-0 -z-10 rounded-xl border-4 backdrop-blur-sm"
+					className="bg-foreground/10 absolute inset-0 -z-10 border-4 backdrop-blur-sm"
 					style={{ borderColor: accent }}
 				/>
 				<h3
@@ -103,7 +103,7 @@ export function StartupBlock({ startup }: StartupBlockProps) {
 									href={link.url}
 									target="_blank"
 									rel="noopener noreferrer"
-									className="inline-flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-base font-medium transition-colors duration-200 lg:text-lg"
+									className="inline-flex items-center gap-1.5 border px-3 py-1.5 text-base font-medium transition-colors duration-200 lg:text-lg"
 									style={{ borderColor: accent, color: accent }}
 									onMouseEnter={(e) => {
 										e.currentTarget.style.background = accent;

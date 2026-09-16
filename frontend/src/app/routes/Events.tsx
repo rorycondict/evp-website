@@ -79,7 +79,7 @@ export default function Events() {
 						whileInView={{ opacity: 1 }}
 						viewport={{ once: true }}
 						transition={{ duration: 0.5 }}
-						className="glass-box mt-10 rounded-xl py-16 text-center"
+						className="glass-box mt-10 py-16 text-center"
 					>
 						<p className="text-foreground-muted text-xl">
 							Unfortunately, looks like there are no upcoming events right now - check back soon!
@@ -119,7 +119,7 @@ export default function Events() {
 						whileInView={{ opacity: 1 }}
 						viewport={{ once: true }}
 						transition={{ duration: 0.5 }}
-						className="glass-box mt-10 rounded-xl py-16 text-center"
+						className="glass-box mt-10 py-16 text-center"
 					>
 						<p className="text-foreground-muted text-xl">No past events yet.</p>
 					</motion.div>

@@ -52,7 +52,7 @@ export function InteractiveLinkButton({
 			viewTransition
 			aria-label={ariaLabel}
 			className={cn(
-				'group relative flex overflow-hidden rounded-2xl text-center font-bold text-white shadow-lg',
+				'group overflow-hiddentext-center relative flex font-bold text-white shadow-lg',
 				className,
 			)}
 			style={{ backgroundColor: 'var(--color-accent)' }}

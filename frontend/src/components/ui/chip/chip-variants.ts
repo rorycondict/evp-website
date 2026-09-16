@@ -1,6 +1,6 @@
 import { cva } from 'class-variance-authority';
 
-export const chipVariants = cva('inline-block rounded-full font-bold tracking-widest uppercase', {
+export const chipVariants = cva('inline-block  font-bold tracking-widest uppercase', {
 	variants: {
 		variant: {
 			accent: 'bg-accent/10 text-accent',

@@ -16,7 +16,7 @@ export function EventCard({ event, isPast }: { event: EVPEvent; isPast?: boolean
 			whileInView={{ opacity: 1, y: 0 }}
 			viewport={{ once: true }}
 			transition={{ duration: 0.55, ease: 'easeIn' }}
-			className="glass-box group relative my-5 overflow-hidden rounded-xl"
+			className="glass-box group relative my-5 overflow-hidden"
 		>
 			<div className={`flex ${hasImage ? 'flex-col md:flex-row' : 'flex-col'}`}>
 				{/* Image */}
@@ -35,7 +35,7 @@ export function EventCard({ event, isPast }: { event: EVPEvent; isPast?: boolean
 					{/* Meta chips */}
 					<div className="flex flex-wrap items-center gap-3">
 						<span
-							className={`inline-block rounded-full px-3 py-1 text-xs font-bold tracking-widest uppercase ${
+							className={`inline-block px-3 py-1 text-xs font-bold tracking-widest uppercase ${
 								isPast ? 'bg-foreground-muted/15 text-foreground-muted' : 'bg-accent/10 text-accent'
 							}`}
 						>

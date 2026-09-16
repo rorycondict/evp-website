@@ -38,7 +38,7 @@ export function PartnerBlock({ partner, index }: PartnerBlockProps) {
 			className="group relative flex h-60 w-full flex-col items-center justify-center gap-5 md:w-1/3"
 		>
 			{/* Ambient glow behind the logo */}
-			<div className="from-accent/25 absolute top-1/2 left-1/2 -z-10 h-40 w-40 -translate-x-1/2 translate-y-[-70%] rounded-full bg-radial to-transparent opacity-0 blur-2xl transition-opacity duration-500 group-hover:opacity-100" />
+			<div className="from-accent/25 absolute top-1/2 left-1/2 -z-10 h-40 w-40 -translate-x-1/2 translate-y-[-70%] bg-radial to-transparent opacity-0 blur-2xl transition-opacity duration-500 group-hover:opacity-100" />
 
 			{/* Logo */}
 			{img && (
@@ -54,7 +54,7 @@ export function PartnerBlock({ partner, index }: PartnerBlockProps) {
 				<h2 className="font-title text-shadow-3xl text-3xl leading-tight font-bold lg:text-4xl">
 					{name}
 				</h2>
-				<div className="bg-accent h-1 w-15 rounded-full transition-all duration-500 group-hover:w-30" />
+				<div className="bg-accent h-1 w-15 transition-all duration-500 group-hover:w-30" />
 			</div>
 		</motion.div>
 	);
