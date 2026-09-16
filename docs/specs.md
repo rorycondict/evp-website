@@ -3,9 +3,9 @@
 |                  |                                           |
 | ---------------- | ----------------------------------------- |
 | **Product**      | Edinburgh VenturePoint (EVP) Website      |
-| **Status**       | FastAPI rewrite complete; Get Involved page built; frontend API wiring landed; edge rate limiting restored |
+| **Status**       | FastAPI rewrite complete; Get Involved page built; frontend API wiring landed; edge rate limiting restored; toolchain on bun; unused deps pruned |
 | **Hosting**      | Tardis servers (https://tardisproject.uk) |
-| **Last updated** | 2026-09-10                                |
+| **Last updated** | 2026-09-16                                |
 
 ## 1. Overview
 
@@ -76,7 +76,7 @@ visitors subscribe to a newsletter via the Get Involved page.
 - **Auto-generated API docs** at `/docs` on the backend (FastAPI default; not
   currently proxied through Nginx). The OpenAPI spec is exported to
   `backend/openapi.json` (`backend/scripts/export_openapi.py`) and consumed by the
-  frontend orval codegen (`npm run codegen`).
+  frontend orval codegen (`bun run codegen`).
 
 ### 4.3 Out of Scope / Removed
 
@@ -116,11 +116,11 @@ visitors subscribe to a newsletter via the Get Involved page.
 - **SEO**: `robots.txt` and `sitemap.xml` served from `frontend/public/`.
 - **Reliability**: fully containerized (Docker Compose); production deploys automated via GitHub Actions (CI test job → matrix build → GHCR → SSH update). Images are tagged `latest` + commit SHA, and the compose files pin `${IMAGE_TAG:-latest}`, so deploys run the exact commit SHA and rollback-by-tag works.
 - **Security**: environment-based secrets (`backend/.env` in dev; a root-level `.env` via compose `env_file` in prod; the only secret is `RESEND_API_KEY`), no committed credentials. Pydantic field length limits are enforced (names ≤ 100, email ≤ 254, message ≤ 10 000). Per-IP Nginx rate limiting on both POST endpoints has been restored (429 on excess); Nginx security headers (HSTS, CSP, etc.) are still pending (see AGENTS.md Known Issues).
-- **Maintainability**: TypeScript + oxlint/Prettier on the frontend; type-hinted Python + Pydantic on the backend. **No frontend or backend test suites yet** (Vitest was removed; CI's frontend test step is commented out until a suite is added).
+- **Maintainability**: TypeScript + oxlint/Prettier on the frontend; type-hinted Python + Pydantic on the backend. **No frontend or backend test suites yet** (Vitest was removed; CI's frontend job runs lint + build only until a suite is added).
 
 ## 7. Technical Architecture
 
-- **Frontend**: React 19 + Vite 8 + TypeScript 6, React Router 7, Tailwind CSS 4, three.js, framer-motion, lucide-react/react-icons, TanStack React Query + axios (orval-generated client). Path aliases `@/`. Served by Nginx on port 16017.
+- **Frontend**: React 19 + Vite 8 + TypeScript 6, React Router 7, Tailwind CSS 4, framer-motion, lucide-react/react-icons, TanStack React Query + axios (orval-generated client). Package manager: **bun** (`bun.lock`; CI and the Docker build both use it). Path aliases `@/`. Served by Nginx on port 16017.
 - **Backend**: FastAPI + Pydantic (single module at `backend/src/main.py`, Python ≥ 3.14 managed with uv), run by uvicorn/the FastAPI CLI. No database — Resend is the only external service.
 - **Infra**: Docker Compose orchestration (frontend, backend); images in GHCR at `ghcr.io/rorycondict/evp-website/<service>`; CI/CD on push to `main` (test → build-and-push → deploy) and on PRs (test + build only). GHA layer caching (type=gha) used for faster builds.
 - See `AGENTS.md` at the repo root for detailed developer/agent guidance (including known issues from the rewrite).
@@ -136,7 +136,7 @@ visitors subscribe to a newsletter via the Get Involved page.
 ## 9. Future Considerations
 
 - Re-add the **Vite dev proxy for `/api`** so the wired forms work under the standalone dev server (they 404 without it).
-- Restore a **frontend test suite** (CI's `npm run test` step is commented out until then) and add a **backend test suite** (pytest + FastAPI TestClient).
+- Restore a **frontend test suite** (CI has no frontend test step until then) and add a **backend test suite** (pytest + FastAPI TestClient).
 - Re-introduce **security headers** (HSTS, CSP, etc.) at the Nginx edge; consider app-level rate limiting if the backend is ever exposed directly.
 - Reduce **PII written to logs** (form data is logged on failures and in mock mode).
 - Move the hardcoded Resend segment/template IDs into configuration.
