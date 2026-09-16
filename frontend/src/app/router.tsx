@@ -1,15 +1,21 @@
+import { lazy, Suspense } from 'react';
 import { createBrowserRouter } from 'react-router';
 
+import { PageLoader } from '@/components/ui';
+
 import AppLayout from './AppLayout';
-import About from './routes/About';
-import Contact from './routes/Contact';
 import Error from './routes/Error';
-import Events from './routes/Events';
 import Home from './routes/Home';
-import Privacy from './routes/Privacy';
-import Startups from './routes/Startups';
-import Terms from './routes/Terms';
-import Connect from './routes/Connect';
+
+const About = lazy(() => import('./routes/About'));
+const Startups = lazy(() => import('./routes/Startups'));
+const Contact = lazy(() => import('./routes/Contact'));
+const Events = lazy(() => import('./routes/Events'));
+const Privacy = lazy(() => import('./routes/Privacy'));
+const Terms = lazy(() => import('./routes/Terms'));
+const Connect = lazy(() => import('./routes/Connect'));
+
+const withSuspense = (el: React.ReactNode) => <Suspense fallback={<PageLoader />}>{el}</Suspense>;
 
 export const router = createBrowserRouter([
 	{
@@ -21,15 +27,13 @@ export const router = createBrowserRouter([
 				errorElement: <Error />,
 				children: [
 					{ index: true, element: <Home /> },
-					{ path: 'about', element: <About /> },
-					{ path: 'startups', element: <Startups /> },
-					{ path: 'contact', element: <Contact /> },
-					{ path: 'events', element: <Events /> },
-					{ path: 'privacy', element: <Privacy /> },
-					{ path: 'terms', element: <Terms /> },
-					{ path: 'connect', element: <Connect /> },
-
-					// catch all for invalid pages
+					{ path: 'about', element: withSuspense(<About />) },
+					{ path: 'startups', element: withSuspense(<Startups />) },
+					{ path: 'contact', element: withSuspense(<Contact />) },
+					{ path: 'events', element: withSuspense(<Events />) },
+					{ path: 'privacy', element: withSuspense(<Privacy />) },
+					{ path: 'terms', element: withSuspense(<Terms />) },
+					{ path: 'connect', element: withSuspense(<Connect />) },
 					{
 						path: '*',
 						loader: () => {

@@ -80,10 +80,10 @@ export default function About() {
 						initial={{ opacity: 0, x: 50 }}
 						whileInView={{ opacity: 1, x: 0 }}
 						viewport={{ once: true, amount: 0.6 }}
-						transition={{ delay: 0.4, duration: 0.5, ease: 'easeOut' }}
+						transition={{ delay: 0.25, duration: 0.5, ease: 'easeOut' }}
 						src={ideaImg}
 						alt="A start-up presenting at one of EVP's events"
-						className="h-70 w-full max-w-sm rounded-lg object-cover shadow-2xl md:max-w-md"
+						className="h-100 w-full max-w-sm object-cover object-[15%_75%] shadow-2xl md:max-w-md"
 					/>
 				</div>
 			</div>

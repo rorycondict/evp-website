@@ -4,7 +4,7 @@ import { Socials } from '@/components/ui';
 
 export function Footer() {
 	return (
-		<footer className="bg-background shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.05)]">
+		<footer className="bg-background-muted shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.05)]">
 			<div className="mx-auto max-w-6xl px-6 py-12">
 				<div className="text-foreground-muted flex flex-col justify-between gap-6 text-lg leading-relaxed sm:flex-row sm:items-start">
 					<div className="max-w-xl">
@@ -38,9 +38,7 @@ export function Footer() {
 					</div>
 
 					<div className="flex flex-col gap-2 sm:items-end">
-						<div className="text-foreground-muted text-sm font-bold tracking-wide uppercase">
-							Socials
-						</div>
+						<div className="text-foreground-muted text-sm font-bold tracking-wide">Socials</div>
 
 						<div className="self-start md:self-auto">
 							<Socials />

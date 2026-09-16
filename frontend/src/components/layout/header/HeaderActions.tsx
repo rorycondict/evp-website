@@ -14,7 +14,7 @@ export function HeaderActions() {
 			</span>
 			<InteractiveLinkButton
 				to="/connect"
-				className="ml-auto px-6 py-2 text-xl tracking-widest uppercase md:ml-0 md:text-sm"
+				className="ml-auto px-6 py-2 text-xl tracking-widest md:ml-0 md:text-sm"
 				ariaLabel="Connect"
 			>
 				Get Involved

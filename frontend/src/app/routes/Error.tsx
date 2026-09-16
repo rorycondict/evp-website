@@ -56,7 +56,7 @@ export default function Error() {
 			</TextLink>
 
 			{isDev && devDetails && (
-				<details className="bg-background-muted mt-8 w-full overflow-hidden rounded-lg p-4 text-left">
+				<details className="bg-background-muted mt-8 w-full overflow-hidden p-4 text-left">
 					<summary className="text-foreground cursor-pointer font-semibold">
 						Developer Error Details
 					</summary>

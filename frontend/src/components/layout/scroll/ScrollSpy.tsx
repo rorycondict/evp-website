@@ -123,18 +123,6 @@ export function ScrollSpy({ fadeThreshold = 450 }: ScrollSpyProps = {}) {
 
 				return (
 					<div key={heading.id} className="group relative flex flex-col">
-						<div className="pointer-events-none absolute -inset-1 rounded-md transition-all duration-300">
-							<div
-								className="bg-background-muted h-10 py-7"
-								style={{
-									maskImage:
-										'radial-gradient(ellipse at center, rgba(0,0,0,1) 0%, rgba(0,0,0,0) 70%)',
-									WebkitMaskImage:
-										'radial-gradient(ellipse at center, rgba(0,0,0,1) 0%, rgba(0,0,0,0) 70%)',
-								}}
-							/>
-						</div>
-
 						{/* Node Row */}
 						<div
 							className="relative flex cursor-pointer items-center gap-2"
@@ -150,7 +138,7 @@ export function ScrollSpy({ fadeThreshold = 450 }: ScrollSpyProps = {}) {
 								}`}
 							/>
 
-							<span className="text-shadow-3xl z-10 max-w-35 rounded-lg px-3 py-1.5 text-lg tracking-wide transition-all duration-300">
+							<span className="text-shadow-3xl z-10 max-w-45 rounded-lg px-3 py-1.5 text-lg tracking-wide transition-all duration-300">
 								<p className={isActive ? 'text-accent font-bold' : 'font-md text-foreground'}>
 									<span className="button-underline">{heading.text}</span>
 								</p>

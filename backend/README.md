@@ -23,4 +23,4 @@ uv run ruff check     # lint
 
 ## OpenAPI / codegen
 
-`scripts/export_openapi.py` dumps the OpenAPI spec to `openapi.json`, which the frontend consumes via orval (`npm run codegen` from `frontend/`). Re-export and commit the spec after changing endpoints.
+`scripts/export_openapi.py` dumps the OpenAPI spec to `openapi.json`, which the frontend consumes via orval (`bun run codegen` from `frontend/`). Re-export and commit the spec after changing endpoints.

@@ -82,7 +82,7 @@ export function NewsletterSection() {
 		>
 			<form onSubmit={handleSubmit} noValidate className="flex w-full flex-col gap-4">
 				<div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-					<FormField id="newsletter-first-name-field" label="first name">
+					<FormField id="newsletter-first-name-field" label="First Name">
 						<Input
 							id="newsletter-first-name-field"
 							name="firstName"
@@ -95,7 +95,7 @@ export function NewsletterSection() {
 							size="md"
 						/>
 					</FormField>
-					<FormField id="newsletter-last-name-field" label="last name">
+					<FormField id="newsletter-last-name-field" label="Last Name">
 						<Input
 							id="newsletter-last-name-field"
 							name="lastName"
@@ -111,7 +111,7 @@ export function NewsletterSection() {
 				</div>
 
 				{/* Email */}
-				<FormField id="newsletter-email-field" label="email">
+				<FormField id="newsletter-email-field" label="Email">
 					<>
 						<Input
 							id="newsletter-email-field"
@@ -154,7 +154,7 @@ export function NewsletterSection() {
 					disabled={isPending || !canSubmit}
 					className={buttonVariants({ intent: 'primary', size: 'md', className: 'mt-2 w-full' })}
 				>
-					{isPending ? 'subscribing...' : isSuccess ? 'subscribed!' : 'subscribe'}
+					{isPending ? 'Subscribing...' : isSuccess ? 'Subscribed!' : 'Subscribe'}
 				</button>
 
 				{/* Feedback messages */}

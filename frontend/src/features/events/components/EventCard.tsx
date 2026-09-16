@@ -1,5 +1,7 @@
 import { motion } from 'framer-motion';
 
+import { FadeImage } from '@/components/ui';
+
 import type { EVPEvent } from '../types';
 import { ReserveButton } from './ReserveButton';
 
@@ -16,16 +18,16 @@ export function EventCard({ event, isPast }: { event: EVPEvent; isPast?: boolean
 			whileInView={{ opacity: 1, y: 0 }}
 			viewport={{ once: true }}
 			transition={{ duration: 0.55, ease: 'easeIn' }}
-			className="glass-box group relative my-5 overflow-hidden rounded-xl"
+			className="glass-box group relative my-5 overflow-hidden"
 		>
 			<div className={`flex ${hasImage ? 'flex-col md:flex-row' : 'flex-col'}`}>
 				{/* Image */}
 				{hasImage && (
 					<div className="w-full shrink-0 md:w-72 lg:w-80">
-						<img
+						<FadeImage
 							src={event.image}
 							alt={event.title}
-							className="h-56 w-full object-cover md:h-full"
+							className="bg-background-muted h-56 w-full object-cover md:h-full"
 						/>
 					</div>
 				)}
@@ -35,7 +37,7 @@ export function EventCard({ event, isPast }: { event: EVPEvent; isPast?: boolean
 					{/* Meta chips */}
 					<div className="flex flex-wrap items-center gap-3">
 						<span
-							className={`inline-block rounded-full px-3 py-1 text-xs font-bold tracking-widest uppercase ${
+							className={`inline-block px-3 py-1 text-xs font-bold tracking-widest ${
 								isPast ? 'bg-foreground-muted/15 text-foreground-muted' : 'bg-accent/10 text-accent'
 							}`}
 						>

@@ -37,7 +37,7 @@ export function AnimatedCheckbox({
 					backgroundColor: checked ? 'var(--color-accent)' : 'transparent',
 				}}
 				transition={{ duration: 0.2 }}
-				className="flex h-6 w-6 shrink-0 items-center justify-center rounded-md border-2"
+				className="flex h-6 w-6 shrink-0 items-center justify-center border-2"
 			>
 				<svg viewBox="0 0 16 16" className="h-3 w-3">
 					<motion.path

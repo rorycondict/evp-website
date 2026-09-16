@@ -15,7 +15,7 @@ export function HeroActions() {
 				</span>
 				<InteractiveLinkButton
 					to="/connect"
-					className="px-8 py-3 text-base tracking-widest uppercase"
+					className="px-8 py-3 text-base tracking-widest"
 					ariaLabel="Get Involved"
 				>
 					Get Involved

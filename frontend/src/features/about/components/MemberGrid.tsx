@@ -2,6 +2,8 @@ import { motion } from 'framer-motion';
 import { Globe, Mail, User } from 'lucide-react';
 import { FaLinkedin } from 'react-icons/fa6';
 
+import { FadeImage } from '@/components/ui';
+
 import type { Member } from '../types';
 
 const containerVariants = {
@@ -22,15 +24,15 @@ export function MemberCard({ member }: { member: Member }) {
 	return (
 		<motion.div
 			variants={cardVariants}
-			className="bg-background hover:border-accent border-background flex flex-col items-center rounded-xl border-2 p-6 text-center transition-colors md:items-start md:p-4 md:text-left"
+			className="bg-background border-background flex flex-col items-center border-2 p-6 text-center transition-colors md:items-start md:p-4 md:text-left"
 		>
 			{/* Avatar */}
 			<div className="mx-auto mt-2 mb-4 flex justify-center md:mb-6">
 				{member.image ? (
-					<img
+					<FadeImage
 						src={member.image}
 						alt={`${member.name}'s profile`}
-						className="border-background-muted h-32 w-32 rounded-full border-2 object-cover"
+						className="border-background-muted bg-background-muted h-32 w-32 rounded-full border-2 object-cover"
 					/>
 				) : (
 					<div className="text-foreground-muted bg-background-muted flex h-32 w-32 items-center justify-center rounded-full">

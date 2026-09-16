@@ -6,7 +6,7 @@ import aboutUsImg from '@/assets/homepage/promo-chairs.webp';
 import whatWeDoImg2 from '@/assets/homepage/promo-conf.webp';
 import whatWeDoImg1 from '@/assets/homepage/promo-present.webp';
 import contactImg from '@/assets/homepage/promo-tower.webp';
-import { ConnectSection, PageMeta, PromoCard, SectionDivider } from '@/components/ui';
+import { ConnectSection, FadeImage, PageMeta, PromoCard, SectionDivider } from '@/components/ui';
 import { TextLink } from '@/components/ui/interactive/TextLink';
 import { MediaTextSection } from '@/components/ui/section/MediaTextSection';
 import { EventsBanner } from '@/features/events';
@@ -22,10 +22,10 @@ export default function Home() {
 
 			{/* Full-bleed background image spacer */}
 			<div className="relative h-screen w-full shrink-0">
-				<img
+				<FadeImage
 					src={homepageBkg}
 					alt="Homepage Background"
-					className="absolute inset-0 h-full w-full object-cover shadow-2xl"
+					className="bg-background-muted absolute inset-0 h-full w-full object-cover shadow-2xl"
 				/>
 				<div className="bg-background/40 absolute inset-0" />
 			</div>

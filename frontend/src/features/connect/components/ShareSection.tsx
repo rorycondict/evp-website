@@ -4,7 +4,7 @@ import { Check, Copy } from 'lucide-react';
 
 import websiteQrImg from '@/assets/website-qr.webp';
 
-import { Button, FormSection } from '@/components/ui';
+import { Button, FadeImage, FormSection } from '@/components/ui';
 
 const WEBSITE_URL = 'https://www.edinburghventurepoint.com';
 const WEBSITE_LABEL = 'edinburghventurepoint.com';
@@ -66,7 +66,7 @@ export function ShareSection() {
 		>
 			<div className="flex w-full flex-col items-center gap-4">
 				<div className="rounded-3xl bg-white p-2 shadow-lg">
-					<img
+					<FadeImage
 						src={websiteQrImg}
 						alt="QR code linking to the EVP Connect page"
 						className="h-75 w-75"

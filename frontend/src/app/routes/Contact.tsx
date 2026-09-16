@@ -45,7 +45,7 @@ export default function Contact() {
 						</p>
 						<InteractiveLinkButton
 							to="/connect#scout-applications"
-							className="mt-5 px-10 py-3 text-xl tracking-widest uppercase"
+							className="mt-5 px-10 py-3 text-xl tracking-widest"
 						>
 							Applications Now Open
 						</InteractiveLinkButton>

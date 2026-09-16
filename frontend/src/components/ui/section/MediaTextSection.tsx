@@ -1,6 +1,7 @@
 import { motion } from 'framer-motion';
 import type { ReactNode } from 'react';
 
+import { FadeImage } from '@/components/ui';
 import { cn } from '@/utils/cn';
 import { slideIn } from '@/utils/motion';
 
@@ -38,10 +39,10 @@ export function MediaTextSection({
 			{...slideIn(reverse ? 'right' : 'left')}
 			className={`flex ${imageHeight} w-full justify-center md:w-1/2`}
 		>
-			<img
+			<FadeImage
 				src={image}
 				alt={imageAlt}
-				className="w-full max-w-md rounded-lg object-cover shadow-2xl"
+				className="bg-background-muted w-full max-w-md object-cover shadow-2xl"
 			/>
 		</motion.div>
 	);

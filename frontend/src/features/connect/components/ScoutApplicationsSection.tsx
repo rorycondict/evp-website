@@ -45,7 +45,7 @@ export function ScoutApplicationsSection() {
 						{...slideIn('left', index * 0.2)}
 						className="glass-box flex flex-col items-center gap-2 px-5 py-5 text-center"
 					>
-						<Icon className="text-accent h-10 w-10" aria-hidden="true" />
+						<Icon className="text-accent h-10 w-10 stroke-1" aria-hidden="true" />
 						<h3 className="text-xl font-bold">{title}</h3>
 						<p>{body}</p>
 					</motion.div>
@@ -57,7 +57,7 @@ export function ScoutApplicationsSection() {
 			</p>
 			<InteractiveLinkButton
 				to={SCOUT_APPLICATION_URL}
-				className="my-5 mt-5 px-30 py-5 text-2xl tracking-widest uppercase md:px-50"
+				className="my-5 mt-5 px-30 py-5 text-2xl tracking-widest md:px-50"
 			>
 				Apply Now
 			</InteractiveLinkButton>

@@ -80,7 +80,7 @@ export function ContactFormSection() {
 		>
 			<form onSubmit={handleSubmit} noValidate className="flex w-full flex-col gap-4">
 				<div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-					<FormField id="first-name-field" label="first name">
+					<FormField id="first-name-field" label="First Name">
 						<Input
 							id="first-name-field"
 							name="firstName"
@@ -93,7 +93,7 @@ export function ContactFormSection() {
 							size="md"
 						/>
 					</FormField>
-					<FormField id="last-name-field" label="last name">
+					<FormField id="last-name-field" label="Last Name">
 						<Input
 							id="last-name-field"
 							name="lastName"
@@ -109,7 +109,7 @@ export function ContactFormSection() {
 				</div>
 
 				{/* Email */}
-				<FormField id="email-field" label="email">
+				<FormField id="email-field" label="Email">
 					<>
 						<Input
 							id="email-field"
@@ -130,7 +130,7 @@ export function ContactFormSection() {
 					</>
 				</FormField>
 				{/* Message */}
-				<FormField id="message-field" label="message">
+				<FormField id="message-field" label="Message">
 					<textarea
 						id="message-field"
 						name="message"
@@ -148,7 +148,7 @@ export function ContactFormSection() {
 					disabled={isPending || !isComplete}
 					className={buttonVariants({ intent: 'primary', size: 'md', className: 'mt-2 w-full' })}
 				>
-					{isPending ? 'sending...' : isSuccess ? 'sent!' : 'send message'}
+					{isPending ? 'Sending...' : isSuccess ? 'Sent Successfully' : 'Send Message'}
 				</button>
 
 				{/* Feedback messages */}
