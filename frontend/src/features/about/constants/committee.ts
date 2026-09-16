@@ -28,7 +28,7 @@ export const COMMITTEE_DATA: YearData[] = [
 				email: 's2787831@ed.ac.uk',
 			},
 			{
-				role: 'Head Venture Scout',
+				role: 'CTO & Head Venture Scout',
 				name: 'Rory Condict',
 				image: roryImg,
 				linkedin: 'https://www.linkedin.com/in/rory-condict/',

@@ -1,5 +1,4 @@
-# The name of the workflow as it appears in the GitHub Actions tab
-name: CI/CD Production Deployment
+name: Deploy to Tardis
 
 on:
   push:
@@ -30,32 +29,25 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v6
 
-      - name: Setup Node.js
+      - name: Setup Bun
         if: matrix.service == 'frontend'
-        uses: actions/setup-node@v4
+        uses: oven-sh/setup-bun@v2
         with:
-          node-version: "24"
-          cache: "npm"
-          cache-dependency-path: frontend/package-lock.json
+          bun-version: latest
 
       - name: Install frontend dependencies
         if: matrix.service == 'frontend'
-        run: npm ci
+        run: bun install --frozen-lockfile
         working-directory: frontend
 
       - name: Lint frontend
         if: matrix.service == 'frontend'
-        run: npm run lint
+        run: bun run lint
         working-directory: frontend
-
-      # - name: Test frontend
-      #   if: matrix.service == 'frontend'
-      #   run: npm run test
-      #   working-directory: frontend
 
       - name: Build frontend
         if: matrix.service == 'frontend'
-        run: npm run build
+        run: bun run build
         working-directory: frontend
 
       - name: Setup Python
