@@ -10,7 +10,6 @@ import {
 } from '@/components/ui';
 import { MediaTextSection } from '@/components/ui/section/MediaTextSection';
 import { ContactHero, OfferCardsSection } from '@/features/contact';
-import { ArrowRight } from 'lucide-react';
 
 export default function Contact() {
 	return (
