@@ -82,7 +82,7 @@ export function StartupBlock({ startup }: StartupBlockProps) {
 				}`}
 			>
 				<div
-					className="bg-foreground/10 absolute inset-0 -z-10 border-4 backdrop-blur-sm"
+					className="bg-foreground/10 absolute inset-0 -z-10 border-2 backdrop-blur-sm"
 					style={{ borderColor: accent }}
 				/>
 				<h3

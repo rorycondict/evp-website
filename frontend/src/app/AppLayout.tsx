@@ -7,7 +7,7 @@ import { ScrollSpy } from '@/components/layout/scroll/ScrollSpy';
 export default function AppLayout() {
 	return (
 		<>
-			<div className="bg-background text-foreground relative flex min-h-screen flex-col justify-between font-sans transition-colors duration-200">
+			<div className="bg-background text-foreground relative flex min-h-screen flex-col justify-between transition-colors duration-200">
 				<div className="relative z-10 flex min-h-screen flex-col justify-between">
 					<Header />
 					<main className="mb-auto flex">

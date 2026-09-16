@@ -18,20 +18,17 @@
 	--color-highlight: var(--highlight);
 	--color-highlight-inverted: var(--highlight-inverted);
 
-	--color-accent: #433aeb;
+	--color-accent: var(--accent);
 	--color-error: var(--error);
 
+	--font-text: 'Montserrat', system-ui, sans-serif;
 	--font-title: 'Playfair Display', 'Georgia', serif;
-	--font-heading: 'Inter', system-ui, sans-serif;
-	--font-text: 'Inter', system-ui, sans-serif;
 
 	--animate-shimmer: shimmer 1s ease-in-out 1 both;
 }
 
 @utility glass-box {
-	background-color: color-mix(in srgb, var(--background-muted) 40%, transparent);
-	backdrop-filter: blur(12px);
-	border: 1px solid color-mix(in srgb, var(--foreground) 10%, transparent);
+	background-color: var(--background-muted);
 }
 
 @utility button-underline {
@@ -111,33 +108,21 @@
 	}
 }
 
-@keyframes scroll-left {
-	from {
-		transform: translateX(0);
-	}
+@keyframes page-out {
 	to {
-		transform: translateX(-50%);
+		opacity: 0;
+		transform: translateY(-60px);
 	}
 }
 
-@keyframes zoom-blur-out {
-	to {
-		transform: scale(1.15);
-		filter: blur(20px);
-		opacity: 0;
-	}
-}
-
-@keyframes zoom-blur-in {
+@keyframes page-in {
 	from {
-		transform: scale(0.85);
-		filter: blur(15px);
 		opacity: 0;
+		transform: translateY(-60px);
 	}
 	to {
-		transform: scale(1);
-		filter: blur(0);
 		opacity: 1;
+		transform: translateY(0);
 	}
 }
 
@@ -151,36 +136,39 @@ body,
 	scrollbar-gutter: stable;
 	scroll-padding-top: 30vh;
 
+	@apply font-text;
 	@apply scrollbar-thumb-foreground scrollbar-thin scrollbar-track-transparent;
 }
 
 /* Light mode */
 :root,
 [data-theme='light'] {
-	--background: #f4f4f4;
-	--background-muted: #e6e6e6;
-	--foreground: #272727;
-	--foreground-muted: #636363;
+	--background: #e8e6f0;
+	--background-muted: #f3f1fa;
+	--foreground: #24232b;
+	--foreground-muted: #605e6b;
 	--highlight: #000000;
 	--highlight-inverted: #ffffff;
+	--accent: #433aeb;
 	--error: #b91c1c;
 }
 
 /* Dark mode */
 [data-theme='dark'] {
-	--background: #111827;
-	--background-muted: #1f273a;
+	--background: #0f172e;
+	--background-muted: #151f3c;
 	--foreground: #e5e5e5;
-	--foreground-muted: #86868b;
+	--foreground-muted: #8b8fa3;
 	--highlight: #ffffff;
 	--highlight-inverted: #3c3c3c;
+	--accent: #433aeb;
 	--error: #f87171;
 }
 
 ::view-transition-old(root) {
-	animation: 0.5s cubic-bezier(0.25, 1, 0.5, 1) both zoom-blur-out;
+	animation: 0.2s cubic-bezier(0.4, 0, 1, 1) both page-out;
 }
 
 ::view-transition-new(root) {
-	animation: 0.6s cubic-bezier(0.25, 1, 0.5, 1) both zoom-blur-in;
+	animation: 0.7s 0.15s cubic-bezier(0, 0, 0.2, 1) both page-in;
 }
