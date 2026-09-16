@@ -1,5 +1,5 @@
 import type { ReactNode } from 'react';
-import { useEffect, useRef, useState } from 'react';
+import { useRef } from 'react';
 import { Link } from 'react-router';
 
 import { cn } from '@/utils/cn';
@@ -27,23 +27,6 @@ export function InteractiveLinkButton({
 	ariaLabel,
 }: InteractiveLinkButtonProps) {
 	const linkRef = useRef<HTMLAnchorElement>(null);
-	const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
-
-	useEffect(() => {
-		const el = linkRef.current;
-		if (!el) return;
-		const handle = (e: MouseEvent) => {
-			if (!linkRef.current) return;
-			const rect = linkRef.current.getBoundingClientRect();
-			setMousePos({
-				x: e.clientX - rect.left,
-				y: e.clientY - rect.top,
-			});
-		};
-
-		el.addEventListener('mousemove', handle);
-		return () => el.removeEventListener('mousemove', handle);
-	}, []);
 
 	return (
 		<Link
@@ -52,19 +35,10 @@ export function InteractiveLinkButton({
 			viewTransition
 			aria-label={ariaLabel}
 			className={cn(
-				'group overflow-hiddentext-center relative flex font-bold text-white shadow-lg',
+				'group bg-accent hover:bg-accent-dark relative flex overflow-hidden text-center font-bold text-white shadow-lg transition-colors duration-200',
 				className,
 			)}
-			style={{ backgroundColor: 'var(--color-accent)' }}
 		>
-			{/* Spotlight */}
-			<span
-				className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-300 group-hover:opacity-100"
-				style={{
-					background: `radial-gradient(circle 100px at ${mousePos.x}px ${mousePos.y}px, rgba(255,255,255,0.35), transparent)`,
-				}}
-			/>
-
 			<span className="button-underline relative z-10 drop-shadow-md">{children}</span>
 		</Link>
 	);

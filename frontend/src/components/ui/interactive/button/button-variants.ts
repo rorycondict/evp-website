@@ -1,7 +1,7 @@
 import { cva } from 'class-variance-authority';
 
 export const buttonVariants = cva(
-	'cursor-pointer font-bold tracking-widest uppercase transition-all duration-200 active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-40',
+	'cursor-pointer font-bold tracking-widest  transition-all duration-200 active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-40',
 	{
 		variants: {
 			intent: {

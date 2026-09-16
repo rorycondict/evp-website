@@ -57,7 +57,7 @@ export function ScoutApplicationsSection() {
 			</p>
 			<InteractiveLinkButton
 				to={SCOUT_APPLICATION_URL}
-				className="my-5 mt-5 px-30 py-5 text-2xl tracking-widest uppercase md:px-50"
+				className="my-5 mt-5 px-30 py-5 text-2xl tracking-widest md:px-50"
 			>
 				Apply Now
 			</InteractiveLinkButton>

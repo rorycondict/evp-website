@@ -148,7 +148,7 @@ export function ContactFormSection() {
 					disabled={isPending || !isComplete}
 					className={buttonVariants({ intent: 'primary', size: 'md', className: 'mt-2 w-full' })}
 				>
-					{isPending ? 'sending...' : isSuccess ? 'sent!' : 'send message'}
+					{isPending ? 'Sending...' : isSuccess ? 'Sent Successfully' : 'Send Message'}
 				</button>
 
 				{/* Feedback messages */}

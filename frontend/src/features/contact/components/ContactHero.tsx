@@ -34,7 +34,7 @@ export function ContactHero() {
 				</p>
 				<InteractiveLinkButton
 					to="/connect#contact"
-					className="mx-auto w-fit px-20 py-3 text-xl tracking-widest uppercase"
+					className="mx-auto w-fit px-20 py-3 text-xl tracking-widest"
 				>
 					Contact Us
 				</InteractiveLinkButton>

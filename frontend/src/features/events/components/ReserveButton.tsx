@@ -33,7 +33,7 @@ export function ReserveButton({ status, url }: { status: EventSpotStatus; url?: 
 			href={url}
 			target="_blank"
 			rel="noopener noreferrer"
-			className="group bg-accent hover:shadow-accent/40 relative inline-flex items-center gap-2 overflow-hidden px-6 py-2.5 text-sm font-bold tracking-widest text-white uppercase shadow-lg transition-all duration-300 hover:shadow-xl"
+			className="group bg-accent hover:shadow-accent/40 relative inline-flex items-center gap-2 overflow-hidden px-6 py-2.5 text-sm font-bold tracking-widest text-white shadow-lg transition-all duration-300 hover:shadow-xl"
 		>
 			<span className="relative z-10">reserve a spot</span>
 			<span className="absolute inset-0 -translate-x-full bg-linear-to-r from-transparent via-white/20 to-transparent transition-transform duration-500 group-hover:translate-x-full" />

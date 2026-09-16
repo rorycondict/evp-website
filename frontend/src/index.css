@@ -19,6 +19,7 @@
 	--color-highlight-inverted: var(--highlight-inverted);
 
 	--color-accent: var(--accent);
+	--color-accent-dark: var(--accent-dark);
 	--color-error: var(--error);
 
 	--font-text: 'Montserrat', system-ui, sans-serif;
@@ -150,6 +151,7 @@ body,
 	--highlight: #000000;
 	--highlight-inverted: #ffffff;
 	--accent: #433aeb;
+	--accent-dark: #332bc4;
 	--error: #b91c1c;
 }
 
@@ -162,6 +164,7 @@ body,
 	--highlight: #ffffff;
 	--highlight-inverted: #3c3c3c;
 	--accent: #433aeb;
+	--accent-dark: #332bc4;
 	--error: #f87171;
 }
 

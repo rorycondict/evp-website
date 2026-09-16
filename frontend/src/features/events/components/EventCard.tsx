@@ -35,7 +35,7 @@ export function EventCard({ event, isPast }: { event: EVPEvent; isPast?: boolean
 					{/* Meta chips */}
 					<div className="flex flex-wrap items-center gap-3">
 						<span
-							className={`inline-block px-3 py-1 text-xs font-bold tracking-widest uppercase ${
+							className={`inline-block px-3 py-1 text-xs font-bold tracking-widest ${
 								isPast ? 'bg-foreground-muted/15 text-foreground-muted' : 'bg-accent/10 text-accent'
 							}`}
 						>

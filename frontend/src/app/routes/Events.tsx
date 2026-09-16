@@ -34,7 +34,7 @@ export default function Events() {
 						{EVENTS_STATS.map((stat, index) => (
 							<div key={index} className="flex flex-col items-center justify-center">
 								<AnimatedCounter value={stat.value} suffix={stat.suffix} />
-								<p className="text-foreground-muted mt-2 text-sm font-medium tracking-wider uppercase">
+								<p className="text-foreground-muted mt-2 text-sm font-medium tracking-wider">
 									{stat.label}
 								</p>
 							</div>

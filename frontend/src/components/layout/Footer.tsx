@@ -38,9 +38,7 @@ export function Footer() {
 					</div>
 
 					<div className="flex flex-col gap-2 sm:items-end">
-						<div className="text-foreground-muted text-sm font-bold tracking-wide uppercase">
-							Socials
-						</div>
+						<div className="text-foreground-muted text-sm font-bold tracking-wide">Socials</div>
 
 						<div className="self-start md:self-auto">
 							<Socials />

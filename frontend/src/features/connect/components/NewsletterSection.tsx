@@ -154,7 +154,7 @@ export function NewsletterSection() {
 					disabled={isPending || !canSubmit}
 					className={buttonVariants({ intent: 'primary', size: 'md', className: 'mt-2 w-full' })}
 				>
-					{isPending ? 'subscribing...' : isSuccess ? 'subscribed!' : 'subscribe'}
+					{isPending ? 'Subscribing...' : isSuccess ? 'Subscribed!' : 'Subscribe'}
 				</button>
 
 				{/* Feedback messages */}

@@ -112,7 +112,7 @@ export default function Startups() {
 
 							<InteractiveLinkButton
 								to="/connect"
-								className="px-20 py-4 text-2xl tracking-widest uppercase md:text-2xl"
+								className="px-20 py-4 text-2xl tracking-widest md:text-2xl"
 								ariaLabel="Get Involved"
 							>
 								Get Involved
