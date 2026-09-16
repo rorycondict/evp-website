@@ -2,6 +2,8 @@ import { motion } from 'framer-motion';
 import { Globe, Mail, User } from 'lucide-react';
 import { FaLinkedin } from 'react-icons/fa6';
 
+import { FadeImage } from '@/components/ui';
+
 import type { Member } from '../types';
 
 const containerVariants = {
@@ -27,7 +29,7 @@ export function MemberCard({ member }: { member: Member }) {
 			{/* Avatar */}
 			<div className="mx-auto mt-2 mb-4 flex justify-center md:mb-6">
 				{member.image ? (
-					<img
+					<FadeImage
 						src={member.image}
 						alt={`${member.name}'s profile`}
 						className="border-background-muted bg-background-muted h-32 w-32 rounded-full border-2 object-cover"

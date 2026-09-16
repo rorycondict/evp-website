@@ -1,5 +1,7 @@
 import { useEffect, useRef } from 'react';
 
+import { FadeImage } from './FadeImage';
+
 interface ScrollingImageBannerProps {
 	images: { src: string; alt: string }[];
 	speed?: number;
@@ -45,7 +47,7 @@ export function ScrollingImageBanner({
 		<div className={`w-full overflow-hidden ${className}`}>
 			<div ref={trackRef} className="flex" style={{ width: 'max-content' }}>
 				{doubled.map((img, i) => (
-					<img
+					<FadeImage
 						key={i}
 						src={img.src}
 						alt={img.alt}

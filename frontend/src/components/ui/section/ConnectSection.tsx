@@ -1,7 +1,7 @@
 import { motion } from 'framer-motion';
 import type { ReactNode } from 'react';
 
-import { InteractiveLinkButton, SectionDivider } from '@/components/ui';
+import { FadeImage, InteractiveLinkButton, SectionDivider } from '@/components/ui';
 
 interface ConnectSectionProps {
 	image: string;
@@ -31,7 +31,7 @@ export function ConnectSection({
 	return (
 		<section className={`relative w-full pb-30 ${className}`}>
 			<div className="relative w-full">
-				<img
+				<FadeImage
 					src={image}
 					alt={imageAlt}
 					className="bg-background-muted mx-auto h-150 w-full object-cover object-[50%_5%] shadow-2xl"

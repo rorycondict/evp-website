@@ -2,6 +2,7 @@ import { motion } from 'framer-motion';
 import type { ReactNode } from 'react';
 import { Link } from 'react-router';
 
+import { FadeImage } from './FadeImage';
 import { cn } from '@/utils/cn';
 
 interface PromoCardProps {
@@ -21,7 +22,7 @@ interface PromoCardProps {
 export function PromoCard({ image, title, body, to, index = 0, className }: PromoCardProps) {
 	const content = (
 		<>
-			<img
+			<FadeImage
 				src={image}
 				alt={title}
 				className="bg-background-muted mx-auto h-100 w-full max-w-md object-cover shadow-2xl"

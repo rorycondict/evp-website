@@ -1,5 +1,7 @@
 import { motion } from 'framer-motion';
 
+import { FadeImage } from '@/components/ui';
+
 import type { EVPEvent } from '../types';
 import { ReserveButton } from './ReserveButton';
 
@@ -22,7 +24,7 @@ export function EventCard({ event, isPast }: { event: EVPEvent; isPast?: boolean
 				{/* Image */}
 				{hasImage && (
 					<div className="w-full shrink-0 md:w-72 lg:w-80">
-						<img
+						<FadeImage
 							src={event.image}
 							alt={event.title}
 							className="bg-background-muted h-56 w-full object-cover md:h-full"

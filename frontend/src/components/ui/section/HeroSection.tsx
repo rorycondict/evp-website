@@ -1,5 +1,7 @@
 import type { ReactNode } from 'react';
 
+import { FadeImage } from '@/components/ui';
+
 import { RadialGlowOverlay } from '../RadialGlowOverlay';
 
 interface HeroSectionProps {
@@ -31,7 +33,7 @@ export function HeroSection({
 		<div
 			className={`relative flex w-full items-center justify-center overflow-hidden pt-30 ${minHeight} ${className}`}
 		>
-			<img
+			<FadeImage
 				src={image}
 				alt={imageAlt}
 				className="bg-background-muted absolute inset-0 h-full w-full object-cover shadow-2xl"

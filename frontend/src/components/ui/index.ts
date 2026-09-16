@@ -10,6 +10,7 @@ export * from './interactive/InteractiveLinkButton';
 export * from './interactive/Socials';
 export * from './interactive/TextLink';
 export * from './UnderlinedTitle';
+export * from './FadeImage';
 export * from './PageMeta';
 export * from './PageLoader';
 export * from './PromoCard';
