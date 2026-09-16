@@ -43,13 +43,13 @@ export function ScrollingImageBanner({
 
 	return (
 		<div className={`w-full overflow-hidden ${className}`}>
-			<div ref={trackRef} className="flex gap-4" style={{ width: 'max-content' }}>
+			<div ref={trackRef} className="flex" style={{ width: 'max-content' }}>
 				{doubled.map((img, i) => (
 					<img
 						key={i}
 						src={img.src}
 						alt={img.alt}
-						className={`${heightClass} w-auto shrink-0 object-cover shadow-lg`}
+						className={`${heightClass} mr-4 w-auto shrink-0 object-cover shadow-lg`}
 					/>
 				))}
 			</div>
