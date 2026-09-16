@@ -24,7 +24,7 @@ export function PromoCard({ image, title, body, to, index = 0, className }: Prom
 			<img
 				src={image}
 				alt={title}
-				className="mx-auto h-100 w-full max-w-md object-cover shadow-2xl"
+				className="bg-background-muted mx-auto h-100 w-full max-w-md object-cover shadow-2xl"
 			/>
 			<h3 className="px-15 text-4xl font-bold">{title}</h3>
 			<div className="px-10 text-lg">{body}</div>

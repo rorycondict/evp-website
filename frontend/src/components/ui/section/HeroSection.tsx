@@ -34,7 +34,7 @@ export function HeroSection({
 			<img
 				src={image}
 				alt={imageAlt}
-				className="absolute inset-0 h-full w-full object-cover shadow-2xl"
+				className="bg-background-muted absolute inset-0 h-full w-full object-cover shadow-2xl"
 			/>
 			<div className="bg-background/40 absolute inset-0" />
 			<RadialGlowOverlay />

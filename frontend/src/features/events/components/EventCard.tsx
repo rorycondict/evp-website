@@ -25,7 +25,7 @@ export function EventCard({ event, isPast }: { event: EVPEvent; isPast?: boolean
 						<img
 							src={event.image}
 							alt={event.title}
-							className="h-56 w-full object-cover md:h-full"
+							className="bg-background-muted h-56 w-full object-cover md:h-full"
 						/>
 					</div>
 				)}

@@ -30,7 +30,7 @@ export function MemberCard({ member }: { member: Member }) {
 					<img
 						src={member.image}
 						alt={`${member.name}'s profile`}
-						className="border-background-muted h-32 w-32 rounded-full border-2 object-cover"
+						className="border-background-muted bg-background-muted h-32 w-32 rounded-full border-2 object-cover"
 					/>
 				) : (
 					<div className="text-foreground-muted bg-background-muted flex h-32 w-32 items-center justify-center rounded-full">

@@ -34,7 +34,7 @@ export function ConnectSection({
 				<img
 					src={image}
 					alt={imageAlt}
-					className="mx-auto h-150 w-full object-cover object-[50%_5%] shadow-2xl"
+					className="bg-background-muted mx-auto h-150 w-full object-cover object-[50%_5%] shadow-2xl"
 				/>
 
 				{/* Soft background glow */}

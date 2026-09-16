@@ -11,6 +11,7 @@ export * from './interactive/Socials';
 export * from './interactive/TextLink';
 export * from './UnderlinedTitle';
 export * from './PageMeta';
+export * from './PageLoader';
 export * from './PromoCard';
 export * from './RadialGlowOverlay';
 export * from './ScrollingImageBanner';
