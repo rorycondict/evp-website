@@ -130,11 +130,16 @@ export default function Terms() {
 					<p>
 						If you wish to make any use of the Services, Content, or Marks other than as set out in
 						this section or elsewhere in our Legal Terms, please address your request to:{' '}
-						<b>[Insert Contact Email/Address]</b>. If we ever grant you the permission to post,
-						reproduce, or publicly display any part of our Services or Content, you must identify us
-						as the owners or licensors of the Services, Content, or Marks and ensure that any
-						copyright or proprietary notice appears or is visible on posting, reproducing, or
-						displaying our Content.
+						<a
+							href="mailto:contact@mail.edinburghventurepoint.com"
+							className="text-accent button-underline font-bold"
+						>
+							contact@mail.edinburghventurepoint.com
+						</a>
+						. If we ever grant you the permission to post, reproduce, or publicly display any part
+						of our Services or Content, you must identify us as the owners or licensors of the
+						Services, Content, or Marks and ensure that any copyright or proprietary notice appears
+						or is visible on posting, reproducing, or displaying our Content.
 					</p>
 					<p>
 						We reserve all rights not expressly granted to you in and to the Services, Content, and
@@ -474,7 +479,12 @@ export default function Terms() {
 						<b>Edinburgh VenturePoint</b>
 						<br />
 						Email:{' '}
-						<TextLink to="/connect#contact">www.edinburghventurepoint.com/connect#contact</TextLink>
+						<a
+							href="mailto:contact@mail.edinburghventurepoint.com"
+							className="text-accent button-underline font-bold"
+						>
+							contact@mail.edinburghventurepoint.com
+						</a>
 					</p>
 				</PolicyDropdown>
 			</div>

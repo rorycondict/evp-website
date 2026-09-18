@@ -1,6 +1,6 @@
 import { motion } from 'framer-motion';
 
-import { PageMeta, SectionDivider, TextLink, UnderlinedTitle } from '@/components/ui';
+import { PageMeta, SectionDivider, UnderlinedTitle } from '@/components/ui';
 import { PolicyDropdown } from '@/features/privacy/components/PolicyDropdown';
 
 const icoLinkClass = 'text-accent button-underline font-bold';
@@ -57,8 +57,10 @@ export default function Privacy() {
 				<PolicyDropdown id="contact" title="Contact details">
 					<h3 className="text-xl font-bold">Email</h3>
 					<p>
-						You can reach us through the email contact form on the website:{' '}
-						<TextLink to="/connect#contact">www.edinburghventurepoint.com/connect#contact</TextLink>
+						You can contact us at:{' '}
+						<a href="mailto:contact@mail.edinburghventurepoint.com" className={icoLinkClass}>
+							contact@mail.edinburghventurepoint.com
+						</a>
 					</p>
 				</PolicyDropdown>
 
@@ -221,8 +223,11 @@ export default function Privacy() {
 						</li>
 					</ul>
 					<p>
-						You can request the erasure of your personal data at any time by reaching out to us via
-						the contact form.
+						You can request the erasure of your personal data at any time by contacting us at{' '}
+						<a href="mailto:contact@mail.edinburghventurepoint.com" className={icoLinkClass}>
+							contact@mail.edinburghventurepoint.com
+						</a>
+						.
 					</p>
 				</PolicyDropdown>
 
@@ -233,7 +238,9 @@ export default function Privacy() {
 					</p>
 					<p>
 						<b>Online:</b>{' '}
-						<TextLink to="/connect#contact">www.edinburghventurepoint.com/connect#contact</TextLink>
+						<a href="mailto:contact@mail.edinburghventurepoint.com" className={icoLinkClass}>
+							contact@mail.edinburghventurepoint.com
+						</a>
 					</p>
 					<p>
 						If you remain unhappy with how we&rsquo;ve used your data after raising a complaint with

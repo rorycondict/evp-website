@@ -8,10 +8,19 @@ export const EVENTS_STATS: EventStat[] = [
 	{ value: 10, suffix: '+', label: 'Events' },
 	{ value: 100, suffix: '+', label: 'Members' },
 	{ value: 20, suffix: '+', label: 'Speakers' },
-	{ value: 2, suffix: '', label: 'Years running' },
+	{ value: new Date().getFullYear() - 2024, suffix: '', label: 'Years running' },
 ];
 
 export const UPCOMING_EVENTS: EVPEvent[] = [
+	{
+		id: 'intro-session-2026',
+		title: 'EVP Intro Session',
+		date: 'TBC, Semester 1, 26/27',
+		location: 'TBC',
+		highlights: [],
+		image: meetUpNight2026Img,
+		spotStatus: 'coming-soon',
+	},
 	{
 		id: 'meet-up-night-2026',
 		title: 'Meet Up Night',
