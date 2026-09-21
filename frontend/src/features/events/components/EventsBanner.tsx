@@ -1,13 +1,13 @@
-import eventsImg1 from '@/assets/homepage/events-banner/event-1.webp';
-import eventsImg2 from '@/assets/homepage/events-banner/event-2.webp';
-import eventsImg3 from '@/assets/homepage/events-banner/event-3.webp';
+import conference3Img from '@/assets/promo/conference-3.webp';
+import present2Img from '@/assets/promo/present-2.webp';
+import socialImg from '@/assets/promo/social.webp';
 
 import { ScrollingImageBanner } from '@/components/ui/ScrollingImageBanner';
 
 const eventImages = [
-	{ src: eventsImg1, alt: 'Students collaborating' },
-	{ src: eventsImg2, alt: 'Workshop session' },
-	{ src: eventsImg3, alt: 'Networking event' },
+	{ src: socialImg, alt: 'Students collaborating' },
+	{ src: present2Img, alt: 'Workshop session' },
+	{ src: conference3Img, alt: 'Networking event' },
 ];
 
 export function EventsBanner() {

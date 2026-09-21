@@ -1,8 +1,7 @@
 import { motion } from 'framer-motion';
 
-import aboutBkg from '@/assets/about/about-bkg.webp';
-import ideaImg from '@/assets/homepage/events-banner/event-2.webp';
-import contactImg from '@/assets/homepage/events-banner/event-2.webp';
+import demoDayGroupImg from '@/assets/promo/demo-day-group.webp';
+import present2Img from '@/assets/promo/present-2.webp';
 import {
 	ConnectSection,
 	HeroSection,
@@ -17,7 +16,7 @@ export default function About() {
 		<div className="flex w-full flex-col overflow-x-hidden">
 			<PageMeta title="About Us" description="Meet the team behind EVP, and find out what we do." />
 
-			<HeroSection image={aboutBkg} imageAlt="About Background">
+			<HeroSection image={demoDayGroupImg} imageAlt="About Background">
 				<UnderlinedTitle id="who-we-are" title="Who We Are" />
 				<motion.p
 					initial={{ opacity: 0, y: 30 }}
@@ -81,7 +80,7 @@ export default function About() {
 						whileInView={{ opacity: 1, x: 0 }}
 						viewport={{ once: true, amount: 0.6 }}
 						transition={{ delay: 0.25, duration: 0.5, ease: 'easeOut' }}
-						src={ideaImg}
+						src={present2Img}
 						alt="A start-up presenting at one of EVP's events"
 						className="h-100 w-full max-w-sm object-cover object-[15%_75%] shadow-2xl md:max-w-md"
 					/>
@@ -103,7 +102,7 @@ export default function About() {
 			))}
 
 			<ConnectSection
-				image={contactImg}
+				image={present2Img}
 				imageAlt="Event photo"
 				heading="Want to get involved?"
 				body={[

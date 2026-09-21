@@ -1,11 +1,11 @@
 import { motion } from 'framer-motion';
 
-import homepageBkg from '@/assets/homepage/homepage-bkg.webp';
-import whatWeDoImg3 from '@/assets/homepage/promo-bar.webp';
-import aboutUsImg from '@/assets/homepage/promo-chairs.webp';
-import whatWeDoImg2 from '@/assets/homepage/promo-conf.webp';
-import whatWeDoImg1 from '@/assets/homepage/promo-present.webp';
-import contactImg from '@/assets/homepage/promo-tower.webp';
+import chatChairsImg from '@/assets/promo/chat-chairs.webp';
+import conference1Img from '@/assets/promo/conference-1.webp';
+import present1Img from '@/assets/promo/present-1.webp';
+import pub1Img from '@/assets/promo/pub-1.webp';
+import skylineImg from '@/assets/promo/skyline.webp';
+import towerImg from '@/assets/promo/tower.webp';
 import { ConnectSection, FadeImage, PageMeta, PromoCard, SectionDivider } from '@/components/ui';
 import { TextLink } from '@/components/ui/interactive/TextLink';
 import { MediaTextSection } from '@/components/ui/section/MediaTextSection';
@@ -23,7 +23,7 @@ export default function Home() {
 			{/* Full-bleed background image spacer */}
 			<div className="relative h-screen w-full shrink-0">
 				<FadeImage
-					src={homepageBkg}
+					src={skylineImg}
 					alt="Homepage Background"
 					className="bg-background-muted absolute inset-0 h-full w-full object-cover shadow-2xl"
 				/>
@@ -35,7 +35,7 @@ export default function Home() {
 				<WhatWeDoSection />
 				<EventsSection />
 				<ConnectSection
-					image={contactImg}
+					image={towerImg}
 					imageAlt="The Scottish flag on a cathedral tower"
 					heading="Interested?"
 					body={[
@@ -52,7 +52,7 @@ function AboutUsSection() {
 	return (
 		<section className="glass-box w-full overflow-hidden py-10 md:py-50">
 			<MediaTextSection
-				image={aboutUsImg}
+				image={chatChairsImg}
 				imageAlt="A group photo with several members of EVP's committee"
 			>
 				<h2 id="who-we-are" className="text-4xl font-bold md:text-5xl">
@@ -78,19 +78,19 @@ function AboutUsSection() {
 function WhatWeDoSection() {
 	const cards: { img: string; title: string; body: string; to: string }[] = [
 		{
-			img: whatWeDoImg1,
+			img: present1Img,
 			title: 'Discover Our Start-ups',
 			body: "Read about the student-led start-ups that we've worked with.",
 			to: 'startups',
 		},
 		{
-			img: whatWeDoImg2,
+			img: conference1Img,
 			title: 'Our Investing Programme',
 			body: 'We grant students real exposure to early-stage investing.',
 			to: 'contact#scout-programme',
 		},
 		{
-			img: whatWeDoImg3,
+			img: pub1Img,
 			title: 'Network & Partnerships',
 			body: 'From angel syndicates to celebrated founders.',
 			to: 'contact#network',

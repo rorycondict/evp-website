@@ -1,6 +1,6 @@
 import { motion } from 'framer-motion';
 
-import contactImg from '@/assets/homepage/events-banner/event-2.webp';
+import present2Img from '@/assets/promo/present-2.webp';
 
 import { ConnectSection, PageMeta, SectionHeading, UnderlinedTitle } from '@/components/ui';
 import {
@@ -90,7 +90,7 @@ export default function Events() {
 
 			<section className="mx-auto mt-30 w-full">
 				<ConnectSection
-					image={contactImg}
+					image={present2Img}
 					imageAlt="Event photo"
 					heading="Never miss another event."
 					body={['Subscribe to our newsletter and be the first to know when our next event is.']}

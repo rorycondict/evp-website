@@ -1,6 +1,6 @@
 import { motion } from 'framer-motion';
 
-import heroImg from '@/assets/homepage/promo-tower.webp';
+import towerImg from '@/assets/promo/tower.webp';
 import { HeroSection, Socials, UnderlinedTitle } from '@/components/ui';
 
 /**
@@ -11,7 +11,7 @@ import { HeroSection, Socials, UnderlinedTitle } from '@/components/ui';
 export function ConnectHero() {
 	return (
 		<HeroSection
-			image={heroImg}
+			image={towerImg}
 			imageAlt="The Scottish flag on a cathedral tower"
 			minHeight="min-h-120"
 		>

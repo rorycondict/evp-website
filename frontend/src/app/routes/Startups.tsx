@@ -1,7 +1,7 @@
 import { motion } from 'framer-motion';
 import { useMemo } from 'react';
 
-import startupsBkg from '@/assets/startups/startups-bkg.webp';
+import pub3Img from '@/assets/promo/pub-3.webp';
 import { HeroSection, InteractiveLinkButton, PageMeta, UnderlinedTitle } from '@/components/ui';
 import { generateColumns, PartnersSection, StartupBlock, STARTUPS } from '@/features/startups';
 
@@ -15,7 +15,7 @@ export default function Startups() {
 				description="Learn about the partners & start-ups EVP has worked with."
 			/>
 			{/* Hero */}
-			<HeroSection image={startupsBkg} imageAlt="About Background">
+			<HeroSection image={pub3Img} imageAlt="About Background">
 				<UnderlinedTitle id="our-start-ups" title="Our Start-ups" />
 
 				<motion.p

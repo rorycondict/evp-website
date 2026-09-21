@@ -1,6 +1,6 @@
 import { motion } from 'framer-motion';
 
-import contactImg from '@/assets/homepage/promo-tower.webp';
+import towerImg from '@/assets/promo/tower.webp';
 import { HeroSection, InteractiveLinkButton, UnderlinedTitle } from '@/components/ui';
 
 /**
@@ -9,7 +9,7 @@ import { HeroSection, InteractiveLinkButton, UnderlinedTitle } from '@/component
  */
 export function ContactHero() {
 	return (
-		<HeroSection image={contactImg} imageAlt="The Scottish flag on a cathedral tower">
+		<HeroSection image={towerImg} imageAlt="The Scottish flag on a cathedral tower">
 			<UnderlinedTitle id="get-in-touch" title="Get in Touch" />
 
 			<motion.div
