@@ -1,6 +1,7 @@
-import demoDay2026Img from '@/assets/event/demo-day.webp';
-import meetUpNight2026Img from '@/assets/event/meet-up-night.webp';
-import nextGenHack2026Img from '@/assets/event/next-gen-hack.webp';
+import demoDay2026Img from '@/assets/promo/demo-day.webp';
+import meetUpNight2026Img from '@/assets/promo/meet-up-night.webp';
+import nextGenHack2026Img from '@/assets/promo/next-gen-hack.webp';
+import eventIntro from '@/assets/promo/event-intro.webp';
 
 import type { EventStat, EVPEvent } from '../types';
 
@@ -15,11 +16,16 @@ export const UPCOMING_EVENTS: EVPEvent[] = [
 	{
 		id: 'intro-session-2026',
 		title: 'EVP Intro Session',
-		date: 'TBC, Semester 1, 26/27',
-		location: 'TBC',
-		highlights: [],
-		image: meetUpNight2026Img,
-		spotStatus: 'coming-soon',
+		date: 'Monday, 28 September, 2026',
+		location: 'G.158 - Quad Teaching Room, Old College',
+		highlights: [
+			'Meet the 2026/2027 EVP committee',
+			'A tour of our network, start-ups and events',
+			'Inside the Scout Programme and how to apply',
+			'Live Q&A with the team',
+		],
+		image: eventIntro,
+		spotStatus: 'available',
 	},
 	{
 		id: 'meet-up-night-2026',
