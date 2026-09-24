@@ -1,6 +1,7 @@
-import demoDay2026Img from '@/assets/events/demo-day.webp';
-import meetUpNight2026Img from '@/assets/events/meet-up-night.webp';
-import nextGenHack2026Img from '@/assets/events/next-gen-hack.webp';
+import demoDay2026Img from '@/assets/promo/demo-day.webp';
+import meetUpNight2026Img from '@/assets/promo/meet-up-night.webp';
+import nextGenHack2026Img from '@/assets/promo/next-gen-hack.webp';
+import eventIntro from '@/assets/promo/event-intro.webp';
 
 import type { EventStat, EVPEvent } from '../types';
 
@@ -8,10 +9,24 @@ export const EVENTS_STATS: EventStat[] = [
 	{ value: 10, suffix: '+', label: 'Events' },
 	{ value: 100, suffix: '+', label: 'Members' },
 	{ value: 20, suffix: '+', label: 'Speakers' },
-	{ value: 2, suffix: '', label: 'Years running' },
+	{ value: new Date().getFullYear() - 2024, suffix: '', label: 'Years running' },
 ];
 
 export const UPCOMING_EVENTS: EVPEvent[] = [
+	{
+		id: 'intro-session-2026',
+		title: 'EVP Intro Session',
+		date: 'Monday, 28 September, 2026',
+		location: 'G.158 - Quad Teaching Room, Old College',
+		highlights: [
+			'Meet the 2026/2027 EVP committee',
+			'A tour of our network, start-ups and events',
+			'Inside the Scout Programme and how to apply',
+			'Live Q&A with the team',
+		],
+		image: eventIntro,
+		spotStatus: 'available',
+	},
 	{
 		id: 'meet-up-night-2026',
 		title: 'Meet Up Night',

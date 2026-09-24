@@ -1,12 +1,12 @@
-import crumblessImg from '@/assets/startups/icons/crumbless.webp';
-import doriotImg from '@/assets/startups/icons/doriot.webp';
-import edubaImg from '@/assets/startups/icons/eduba.webp';
-import elevatedImg from '@/assets/startups/icons/elevated.webp';
-import kumaImg from '@/assets/startups/icons/kuma.webp';
-import lotusdxImg from '@/assets/startups/icons/lotusdx.webp';
-import melangeImg from '@/assets/startups/icons/melange.webp';
-import snowshadowImg from '@/assets/startups/icons/snowshadow.webp';
-import tutorCampusImg from '@/assets/startups/icons/tutor-campus.webp';
+import crumblessImg from '@/assets/startup/crumbless.webp';
+import doriotImg from '@/assets/startup/doriot.webp';
+import edubaImg from '@/assets/startup/eduba.webp';
+import elevatedImg from '@/assets/startup/elevated.webp';
+import kumaImg from '@/assets/startup/kuma.webp';
+import lotusdxImg from '@/assets/startup/lotusdx.webp';
+import melangeImg from '@/assets/startup/melange.webp';
+import snowshadowImg from '@/assets/startup/snowshadow.webp';
+import tutorCampusImg from '@/assets/startup/tutor-campus.webp';
 
 import type { Startup } from '../types';
 

@@ -1,6 +1,6 @@
-import networkImg from '@/assets/contact/promo-network.webp';
-import scoutImg from '@/assets/contact/promo-scout.webp';
-import contactImg from '@/assets/homepage/homepage-bkg.webp';
+import conference2Img from '@/assets/promo/conference-2.webp';
+import scoutGroupImg from '@/assets/promo/scout-group.webp';
+import skylineImg from '@/assets/promo/skyline.webp';
 import {
 	ConnectSection,
 	InteractiveLinkButton,
@@ -23,7 +23,7 @@ export default function Contact() {
 
 				<div className="glass-box my-20 w-full overflow-hidden py-25 md:py-40">
 					<MediaTextSection
-						image={scoutImg}
+						image={scoutGroupImg}
 						imageAlt="A group photo with several members of EVP's committee"
 						reverse
 					>
@@ -54,7 +54,7 @@ export default function Contact() {
 
 				<div className="glass-box my-10 w-full overflow-hidden py-25 md:mt-40 md:py-40">
 					<MediaTextSection
-						image={networkImg}
+						image={conference2Img}
 						imageAlt="A group photo with several members of EVP's committee"
 					>
 						<h2 id="network" className="text-4xl font-bold md:text-5xl">
@@ -81,7 +81,7 @@ export default function Contact() {
 
 			<div className="mx-auto flex w-full flex-col gap-20 py-10 md:py-30">
 				<ConnectSection
-					image={contactImg}
+					image={skylineImg}
 					imageAlt="Event photo"
 					heading="Any Questions?"
 					body={[

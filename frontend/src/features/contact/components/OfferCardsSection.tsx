@@ -1,8 +1,8 @@
 import type { ReactNode } from 'react';
 
-import offerImg1 from '@/assets/contact/offer-1.webp';
-import offerImg2 from '@/assets/contact/offer-2.webp';
-import offerImg3 from '@/assets/contact/offer-3.webp';
+import chatLaptopImg from '@/assets/promo/chat-laptop.webp';
+import eventIntroImg from '@/assets/promo/event-intro.webp';
+import pub2Img from '@/assets/promo/pub-2.webp';
 import { PromoCard } from '@/components/ui';
 
 /**
@@ -12,7 +12,7 @@ import { PromoCard } from '@/components/ui';
 export function OfferCardsSection() {
 	const cards: { img: string; title: string; body: ReactNode }[] = [
 		{
-			img: offerImg1,
+			img: eventIntroImg,
 			title: 'Angel Syndicates',
 			body: (
 				<p>
@@ -22,7 +22,7 @@ export function OfferCardsSection() {
 			),
 		},
 		{
-			img: offerImg2,
+			img: chatLaptopImg,
 			title: 'Exclusive Programmes',
 			body: (
 				<p>
@@ -32,7 +32,7 @@ export function OfferCardsSection() {
 			),
 		},
 		{
-			img: offerImg3,
+			img: pub2Img,
 			title: 'Top Tech Societies',
 			body: (
 				<p>

@@ -36,7 +36,7 @@ evp-website/
 │   │   ├── components/       # layout/ (header, footer, scroll), theme/, ui/ (shared UI)
 │   │   ├── features/         # about, connect, contact, events, homepage, privacy, startups
 │   │   ├── utils/            # cn.ts, motion.ts
-│   │   └── assets/
+│   │   └── assets/           # Images grouped by kind, not page (promo/, event/, member/, startup/, partner/) so they can be shared across pages
 │   ├── .oxlintrc.json        # oxlint config; loads @tanstack/eslint-plugin-query rules via jsPlugins
 │   ├── orval.config.ts       # orval codegen config (backend/openapi.json → src/api/generated.ts)
 │   ├── package.json          # scripts: dev, build, lint (oxlint), format (prettier), codegen — no test script
