@@ -53,13 +53,13 @@ export const COMMITTEE_DATA: YearData[] = [
 				linkedin: 'https://www.linkedin.com/in/laure-dehem-33ab2a1b9',
 			},
 			{
-				role: 'Fund Manager',
+				role: 'Outreach',
 				name: 'Xavier Martorell',
 				image: xavierImg,
 				linkedin: 'https://www.linkedin.com/in/xavier-martorell',
 			},
 			{
-				role: 'Fund Manager',
+				role: 'Outreach',
 				name: 'Matisse Afnan',
 				image: matisseImg,
 				linkedin: 'https://www.linkedin.com/in/matisseafnan/',
