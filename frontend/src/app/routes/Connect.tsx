@@ -15,9 +15,9 @@ export default function Connect() {
 			<ConnectHero />
 
 			<div className="flex w-full flex-col gap-20 pt-20 pb-25 md:gap-40 md:pt-40">
+				<ScoutApplicationsSection />
 				<NewsletterSection />
 				<ContactFormSection />
-				<ScoutApplicationsSection />
 				<ShareSection />
 			</div>
 		</div>
