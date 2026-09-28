@@ -14,20 +14,6 @@ export const EVENTS_STATS: EventStat[] = [
 
 export const UPCOMING_EVENTS: EVPEvent[] = [
 	{
-		id: 'intro-session-2026',
-		title: 'EVP Intro Session',
-		date: 'Monday, 28 September, 2026',
-		location: 'G.158 - Quad Teaching Room, Old College',
-		highlights: [
-			'Meet the 2026/2027 EVP committee',
-			'A tour of our network, start-ups and events',
-			'Inside the Scout Programme and how to apply',
-			'Live Q&A with the team',
-		],
-		image: eventIntro,
-		spotStatus: 'available',
-	},
-	{
 		id: 'meet-up-night-2026',
 		title: 'Meet Up Night',
 		date: 'TBC, Semester 1, 26/27',
@@ -39,6 +25,20 @@ export const UPCOMING_EVENTS: EVPEvent[] = [
 ];
 
 export const PAST_EVENTS: EVPEvent[] = [
+	{
+		id: 'intro-session-2026',
+		title: 'EVP Intro Session',
+		date: 'Monday, 28 September, 2026',
+		location: 'G.158 - Quad Teaching Room, Old College',
+		highlights: [
+			'Meet the 2026/2027 EVP committee',
+			'A tour of our network, start-ups and events',
+			'Inside the Scout Programme and how to apply',
+			'Live Q&A with the team',
+		],
+		image: eventIntro,
+		spotStatus: 'past',
+	},
 	{
 		id: 'sov-ai-launch-2026',
 		title: 'SOV AI Launch at STAC',
