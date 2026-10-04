@@ -4,3 +4,6 @@ build
 package-lock.json
 pnpm-lock.yaml
 yarn.lock
+
+# orval-generated (bun run codegen) — regenerated, never hand-edited
+src/api/generated.ts
