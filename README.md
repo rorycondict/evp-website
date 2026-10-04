@@ -88,7 +88,7 @@ The local development server will be available at: `http://localhost:16017`
 
 # Key Features
 
-* **Public-facing pages:** Home, About, Startups showcase, Events, Contact, **Get Involved (`/connect`)**: newsletter sign-up, contact form, venture-scout applications, and a share section + Privacy Policy and Terms of Service.
+* **Public-facing pages:** Home, About, Startups showcase, Events, Contact, **Get Involved (`/connect`)**: newsletter sign-up, contact form, and a share section (venture-scout applications are added here while a round is open) + Privacy Policy and Terms of Service.
 * **Contact form endpoint:** `POST /api/contact-submit` notifies the Resend "Contact Handler" segment of new enquiries.
 * **Newsletter subscribe endpoint:** `POST /api/newsletter-subscribe` creates a Resend contact.
 * **API wiring (landed):** both forms on the Get Involved page call the backend through an orval-generated React Query + axios client (`frontend/src/api/generated.ts`), with zod email validation and friendly pending/success/error (incl. 429 rate-limit) states.

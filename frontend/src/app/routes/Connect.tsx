@@ -1,10 +1,5 @@
 import { PageMeta } from '@/components/ui';
-import {
-	ConnectHero,
-	ScoutApplicationsSection,
-	ShareSection,
-	NewsletterSection,
-} from '@/features/connect';
+import { ConnectHero, ShareSection, NewsletterSection } from '@/features/connect';
 import { ContactFormSection } from '@/features/connect';
 
 export default function Connect() {
@@ -15,7 +10,6 @@ export default function Connect() {
 			<ConnectHero />
 
 			<div className="flex w-full flex-col gap-20 pt-20 pb-25 md:gap-40 md:pt-40">
-				<ScoutApplicationsSection />
 				<NewsletterSection />
 				<ContactFormSection />
 				<ShareSection />
