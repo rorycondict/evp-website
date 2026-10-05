@@ -20,7 +20,7 @@ visitors subscribe to a newsletter via the Get Involved page.
 > **removed**. The site is now fully public; the backend exposes exactly two endpoints
 > (contact form + newsletter subscribe), both mounted under `/api/`. The old `/subscribe`
 > stub was replaced by a **`/connect` ("Get Involved") page** hosting the newsletter
-> sign-up, contact form, venture-scout applications, and a share section. Both forms are
+> sign-up, contact form, and a share section (plus venture-scout applications while a round is open). Both forms are
 > wired to the API via an orval-generated React Query + axios client, and Nginx rate
 > limiting on the two POST endpoints has been restored. A full frontend code review was
 > completed on 2026-09-10 (all findings resolved) — see `AGENTS.md`.
@@ -52,7 +52,7 @@ visitors subscribe to a newsletter via the Get Involved page.
 | Startups  | `/startups`  | Showcase of society-affiliated startups and partner organisations |
 | Events    | `/events`    | Upcoming and past events                                          |
 | Contact   | `/contact`   | Offer highlights; links to the form on the Get Involved page      |
-| Connect   | `/connect`   | **Get Involved**: newsletter sign-up (`#newsletter`), contact form (`#contact`), venture-scout applications (`#scout-applications`), share section (`#share`) |
+| Connect   | `/connect`   | **Get Involved**: newsletter sign-up (`#newsletter`), contact form (`#contact`), share section (`#share`); venture-scout applications (`#scout-applications`) only while a round is open |
 | Privacy   | `/privacy`   | Privacy Policy (static legal copy)                                |
 | Terms     | `/terms`     | Terms of Service (static legal copy)                              |
 | Error     | `*` (404)    | Friendly not-found / error page                                   |

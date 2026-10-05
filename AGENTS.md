@@ -7,7 +7,7 @@ Guidance for autonomous code agents working in this repository.
 Official website for **Edinburgh VenturePoint (EVP)**, an entrepreneurship society at the University of Edinburgh.
 Live site: https://edinburghventurepoint.com — hosted on Tardis servers (https://tardisproject.uk).
 
-**Current state (2026-09-16): rewrite complete; API wiring landed; frontend code-reviewed; toolchain on bun; unused dependencies pruned.** The backend was rewritten from Django to **FastAPI** (single module at `backend/src/main.py`) and exposes exactly **two endpoints** (`POST /api/contact-submit`, `POST /api/newsletter-subscribe`). On the frontend, the old `/subscribe` stub was replaced by a **`/connect` ("Get Involved") page** hosting the newsletter sign-up (`NewsletterSection`), the contact form (`ContactFormSection`), venture-scout applications, and a share section. Both forms are **wired to the API** through an orval-generated **React Query + axios** client (`src/api/generated.ts`, regenerated with `bun run codegen`), and **Nginx rate limiting** for the two POST endpoints has been restored. A full frontend code review was performed on 2026-09-10 (all findings resolved); a follow-up full-stack review the same day found no new dead code, with lint/build/ruff all green. On 2026-09-16 the frontend toolchain was confirmed on **bun** and an import audit pruned the unused `three`/`@types/three` packages and the redundant `js-yaml` override (the 3D background had already been removed from the codebase). Remaining issues are recorded under "Known Issues & Discrepancies" below.
+**Current state (2026-09-16): rewrite complete; API wiring landed; frontend code-reviewed; toolchain on bun; unused dependencies pruned.** The backend was rewritten from Django to **FastAPI** (single module at `backend/src/main.py`) and exposes exactly **two endpoints** (`POST /api/contact-submit`, `POST /api/newsletter-subscribe`). On the frontend, the old `/subscribe` stub was replaced by a **`/connect` ("Get Involved") page** hosting the newsletter sign-up (`NewsletterSection`), the contact form (`ContactFormSection`), and a share section (the venture-scout applications section is unmounted between application rounds). Both forms are **wired to the API** through an orval-generated **React Query + axios** client (`src/api/generated.ts`, regenerated with `bun run codegen`), and **Nginx rate limiting** for the two POST endpoints has been restored. A full frontend code review was performed on 2026-09-10 (all findings resolved); a follow-up full-stack review the same day found no new dead code, with lint/build/ruff all green. On 2026-09-16 the frontend toolchain was confirmed on **bun** and an import audit pruned the unused `three`/`@types/three` packages and the redundant `js-yaml` override (the 3D background had already been removed from the codebase). Remaining issues are recorded under "Known Issues & Discrepancies" below.
 
 ## Repository Layout
 
@@ -84,7 +84,7 @@ evp-website/
   - `/startups` — Startups (curated showcase + partners)
   - `/events` — Events (upcoming and past)
   - `/contact` — Contact (offer highlights; links to the form on `/connect`)
-  - `/connect` — **Get Involved** (newsletter sign-up `#newsletter`, contact form `#contact`, venture-scout applications `#scout-applications`, share section `#share`). The old `/subscribe` route was removed; the newsletter UI lives in `src/features/connect/components/NewsletterSection.tsx`
+  - `/connect` — **Get Involved** (newsletter sign-up `#newsletter`, contact form `#contact`, share section `#share`). The venture-scout applications section (`ScoutApplicationsSection`, `#scout-applications`) is kept in `features/connect` but not mounted while applications are closed. The old `/subscribe` route was removed; the newsletter UI lives in `src/features/connect/components/NewsletterSection.tsx`
   - `/privacy` — Privacy Policy (static legal copy, collapsible sections)
   - `/terms` — Terms of Service (static legal copy)
   - `*` — 404 error page (catch-all loader throws a 404 `Response`)
@@ -188,7 +188,7 @@ Findings from the 2026-09 FastAPI rewrite review (2026-09-09), updated after the
 - **GitHub Actions are pinned by major tag** (not commit SHA) — supply-chain hardening opportunity.
 - **`resend.api_key` is set at import time and re-assigned inside the contact handler** — harmless but redundant; initialise once.
 - **No test suites** — neither frontend (Vitest removed; no CI test step) nor backend (pytest/TestClient) has any tests.
-- **Cosmetic**: `ScoutApplicationsSection.tsx` carries an intentional `TODO: add URL when applications open`.
+- **`ScoutApplicationsSection` is intentionally unmounted** (applications closed, 2026-10) — it's still exported from `features/connect` so it can be re-added to `Connect.tsx` for the next round. When reopening, also restore the "Applications Now Open" `InteractiveLinkButton` (→ `/connect#scout-applications`) in the Scout Programme block of `Contact.tsx`, and check that `SCOUT_APPLICATION_URL` points at the new form.
 
 ## Frontend code review findings (2026-09-10) — RESOLVED
 
